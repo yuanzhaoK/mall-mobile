@@ -21,7 +21,7 @@ class AppColors {
   static const Color price = Colors.red;
 
   // 阴影颜色
-  static final Color shadow = Colors.black.withOpacity(0.1);
+  static final Color shadow = Colors.black.withValues(alpha: 0.1);
 
   // 功能色
   static const Color success = Colors.green;

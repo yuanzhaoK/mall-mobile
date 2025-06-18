@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../models/data_source.dart';
+import '../models/api_models.dart';
+import '../services/graphql_service.dart';
 import '../widgets/feature_button.dart';
 import '../widgets/selection_row.dart';
 import '../widgets/recommendation_card.dart';
+import '../widgets/featured_product_card.dart';
+import 'debug_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +20,42 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String selectedHouseType = AppStrings.defaultHouseType;
   String selectedPackage = AppStrings.defaultPackage;
+
+  // API数据状态
+  AppHomeData? homeData;
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHomeData();
+  }
+
+  // 加载首页数据
+  Future<void> _loadHomeData() async {
+    try {
+      setState(() {
+        isLoading = true;
+        errorMessage = null;
+      });
+
+      final data = await GraphQLService.getHomeData();
+
+      setState(() {
+        homeData = data;
+        isLoading = false;
+        if (data == null) {
+          errorMessage = '加载数据失败，请检查网络连接';
+        }
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage = '加载数据时出现错误: $e';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +103,16 @@ class _HomePageState extends State<HomePage> {
             _buildRecommendationSection(),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DebugPage()),
+          );
+        },
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.bug_report, color: Colors.white),
       ),
     );
   }
@@ -141,7 +191,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(22),
       margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
+        color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -186,23 +236,223 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildRecommendationSection() {
-    final suites = DataSource.suites;
-
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            AppStrings.valueRecommendation,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                '精选推荐',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              if (isLoading)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else if (errorMessage != null)
+                IconButton(
+                  onPressed: _loadHomeData,
+                  icon: const Icon(Icons.refresh, color: AppColors.textPrimary),
+                ),
+            ],
           ),
           const SizedBox(height: 20),
-          ...suites.map(
+
+          if (isLoading)
+            _buildLoadingState()
+          else if (errorMessage != null)
+            _buildErrorState()
+          else if (homeData?.featuredProducts.isNotEmpty == true)
+            _buildFeaturedProducts()
+          else
+            _buildFallbackRecommendations(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Column(
+      children: List.generate(
+        3,
+        (index) => Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          height: 90,
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Center(child: CircularProgressIndicator()),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.red[50],
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.red[200]!),
+          ),
+          child: Column(
+            children: [
+              Icon(Icons.error_outline, color: Colors.red[600], size: 48),
+              const SizedBox(height: 16),
+              Text(
+                errorMessage!,
+                style: TextStyle(color: Colors.red[600], fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadHomeData,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[600],
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('重新加载'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          '显示默认推荐:',
+          style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: 10),
+        _buildFallbackRecommendations(),
+      ],
+    );
+  }
+
+  Widget _buildFeaturedProducts() {
+    final products = homeData!.featuredProducts
+        .where((p) => p.name.isNotEmpty)
+        .take(10)
+        .toList();
+
+    return Column(
+      children: [
+        // 显示分类信息
+        if (homeData!.categories.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: AppColors.primaryGradient1.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '商品分类',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: homeData!.categories
+                      .take(6)
+                      .map(
+                        (category) => Chip(
+                          label: Text(
+                            category.name,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          backgroundColor: Colors.white,
+                          side: BorderSide(
+                            color: AppColors.primaryGradient1.withValues(
+                              alpha: 0.3,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+
+        // 精选产品列表
+        ...products.map((product) => FeaturedProductCard(product: product)),
+
+        // 显示产品统计
+        if (homeData!.featuredProducts.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(top: 16),
+            decoration: BoxDecoration(
+              color: Colors.grey[50],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      '${homeData!.featuredProducts.length}',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryGradient1,
+                      ),
+                    ),
+                    const Text(
+                      '总商品数',
+                      style: TextStyle(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      '${homeData!.categories.length}',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryGradient1,
+                      ),
+                    ),
+                    const Text(
+                      '商品分类',
+                      style: TextStyle(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildFallbackRecommendations() {
+    final suites = DataSource.suites;
+
+    return Column(
+      children: suites
+          .map(
             (suite) => Column(
               children: [
                 RecommendationCard(
@@ -214,9 +464,8 @@ class _HomePageState extends State<HomePage> {
                 if (suite != suites.last) const SizedBox(height: 16),
               ],
             ),
-          ),
-        ],
-      ),
+          )
+          .toList(),
     );
   }
 
