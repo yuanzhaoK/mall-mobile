@@ -4,8 +4,14 @@ import 'constants/app_strings.dart';
 import 'pages/home_page.dart';
 import 'pages/mall_page.dart';
 import 'pages/profile_page.dart';
+import 'services/graphql_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 初始化GraphQL服务并加载保存的token
+  await GraphQLService.loadToken();
+
   runApp(const MyApp());
 }
 
