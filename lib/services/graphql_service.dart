@@ -146,7 +146,7 @@ class GraphQLService {
     query AppProfile {
       appProfile {
         id
-        username
+        identity
         email
         avatar
         member_level
@@ -174,8 +174,8 @@ class GraphQLService {
         record {
           id
           email
-          username
-          avatar_url
+          identity
+          avatar
         }
       }
     }

@@ -44,11 +44,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: SimpleCustomAppBar(
-        onSearchTap: _handleSearchTap,
-        onNotificationTap: _handleNotificationTap,
-        onCartTap: _handleCartTap,
-        onUserTap: _handleUserTap,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56),
+        child: Consumer<CartState>(
+          builder: (context, cartState, child) {
+            return SimpleCustomAppBar(
+              cartItemCount: cartState.itemCount,
+              onSearchTap: _handleSearchTap,
+              onNotificationTap: _handleNotificationTap,
+              onCartTap: _handleCartTap,
+              onUserTap: _handleUserTap,
+            );
+          },
+        ),
       ),
       body: Consumer<HomeState>(
         builder: (context, homeState, child) {
@@ -398,10 +406,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 处理搜索点击
   void _handleSearchTap() {
-    // TODO: 跳转到搜索页面
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('搜索功能开发中...')));
+    Navigator.pushNamed(context, '/search');
   }
 
   /// 处理通知点击
@@ -414,10 +419,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 处理购物车点击
   void _handleCartTap() {
-    // TODO: 跳转到购物车页面
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('购物车页面开发中...')));
+    Navigator.pushNamed(context, '/cart');
   }
 
   /// 处理用户头像点击

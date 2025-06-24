@@ -60,6 +60,9 @@ class AppColors {
     Color(0xFFE0F2F1),
   ];
 
+  // 卡片背景色
+  static const Color cardBackground = Color(0xFFFFFFFF);
+
   // 获取分类颜色
   static Color getCategoryColor(int index) {
     return categoryColors[index % categoryColors.length];

@@ -5,6 +5,7 @@ import '../models/api_models.dart';
 import '../constants/app_colors.dart';
 import '../core/themes/app_theme.dart';
 import '../providers/cart_state.dart';
+import '../pages/product_detail_page.dart';
 
 /// 商品卡片组件
 class ProductCard extends StatelessWidget {
@@ -33,7 +34,19 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap:
+            onTap ??
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailPage(
+                    productId: product.id,
+                    product: product,
+                  ),
+                ),
+              );
+            },
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +341,7 @@ class ProductCard extends StatelessWidget {
             action: SnackBarAction(
               label: '查看',
               onPressed: () {
-                // 跳转到购物车页面
+                Navigator.pushNamed(context, '/cart');
               },
             ),
           ),

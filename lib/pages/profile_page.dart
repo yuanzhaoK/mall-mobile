@@ -4,6 +4,7 @@ import '../constants/app_strings.dart';
 import '../widgets/menu_item.dart';
 import '../services/graphql_service.dart';
 import '../models/api_models.dart';
+import '../pages/order_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -147,7 +148,12 @@ class _ProfilePageState extends State<ProfilePage> {
         MenuItem(
           icon: Icons.shopping_cart,
           title: AppStrings.myOrders,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OrderListPage()),
+            );
+          },
         ),
         MenuItem(
           icon: Icons.favorite,

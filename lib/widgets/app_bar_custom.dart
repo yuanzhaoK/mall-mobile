@@ -368,7 +368,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       ),
       child: SafeArea(
         child: Container(
-          height: preferredSize.height,
+          height: widget.preferredSize.height,
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
           child: Row(
             children: [

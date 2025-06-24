@@ -3,7 +3,7 @@ import '../constants/app_colors.dart';
 import '../models/api_models.dart';
 
 class FeaturedProductCard extends StatelessWidget {
-  final FeaturedProduct product;
+  final Product product;
 
   const FeaturedProductCard({super.key, required this.product});
 

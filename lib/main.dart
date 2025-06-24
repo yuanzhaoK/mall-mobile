@@ -5,10 +5,15 @@ import 'constants/app_strings.dart';
 import 'pages/home_page.dart';
 import 'pages/mall_page.dart';
 import 'pages/profile_page.dart';
+import 'pages/cart_page.dart';
+import 'pages/search_page.dart';
 import 'services/graphql_service.dart';
 import 'providers/app_state.dart';
 import 'providers/home_state.dart';
 import 'providers/cart_state.dart';
+import 'providers/search_state.dart';
+import 'providers/product_detail_state.dart';
+import 'providers/order_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,12 +34,19 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => HomeState()),
         ChangeNotifierProvider(create: (_) => CartState()),
+        ChangeNotifierProvider(create: (_) => SearchState()),
+        ChangeNotifierProvider(create: (_) => ProductDetailState()),
+        ChangeNotifierProvider(create: (_) => OrderState()),
       ],
       child: MaterialApp(
         title: AppStrings.appTitle,
         theme: AppTheme.lightTheme,
         home: const MainScreen(),
         debugShowCheckedModeBanner: false,
+        routes: {
+          '/cart': (context) => const CartPage(),
+          '/search': (context) => const SearchPage(),
+        },
       ),
     );
   }
