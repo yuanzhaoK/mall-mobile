@@ -319,7 +319,7 @@ class _DebugPageState extends State<DebugPage> {
 
         if (result != null) {
           addLog('✅ 登录成功！');
-          addLog('👤 用户: ${result.user.name}');
+          addLog('👤 用户: ${result.user.username}');
           addLog('📧 邮箱: ${result.user.email}');
           addLog('🔑 Token: ${result.token.substring(0, 20)}...');
 

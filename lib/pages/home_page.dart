@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
-import '../models/data_source.dart';
+import '../core/themes/app_theme.dart';
+import '../providers/home_state.dart';
+import '../providers/cart_state.dart';
+import '../widgets/simple_banner.dart';
+import '../widgets/category_grid.dart';
+import '../widgets/product_card.dart';
+import '../widgets/simple_app_bar.dart';
 import '../models/api_models.dart';
-import '../services/graphql_service.dart';
-import '../widgets/feature_button.dart';
-import '../widgets/selection_row.dart';
-import '../widgets/recommendation_card.dart';
-import '../widgets/featured_product_card.dart';
 import 'debug_page.dart';
 
+/// 商城首页
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,500 +21,464 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String selectedHouseType = AppStrings.defaultHouseType;
-  String selectedPackage = AppStrings.defaultPackage;
-
-  // API数据状态
-  AppHomeData? homeData;
-  bool isLoading = true;
-  String? errorMessage;
+  final RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
 
   @override
   void initState() {
     super.initState();
-    _loadHomeData();
+    // 初始化加载数据
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeState>().loadHomeData();
+    });
   }
 
-  // 加载首页数据
-  Future<void> _loadHomeData() async {
-    try {
-      setState(() {
-        isLoading = true;
-        errorMessage = null;
-      });
-
-      final data = await GraphQLService.getHomeData();
-
-      setState(() {
-        homeData = data;
-        isLoading = false;
-        if (data == null) {
-          errorMessage = '加载数据失败，请检查网络连接';
-        }
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-        errorMessage = '加载数据时出现错误: $e';
-      });
-    }
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // 顶部黄色区域
-            Container(
-              height: 380,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.primaryGradient1,
-                    AppColors.primaryGradient2,
-                    AppColors.primaryGradient1,
-                  ],
-                ),
-              ),
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 品牌信息
-                      _buildBrandHeader(),
-                      const SizedBox(height: 35),
-
-                      // 功能按钮
-                      _buildFeatureButtons(),
-                      const SizedBox(height: 35),
-
-                      // 选择区域
-                      _buildSelectionArea(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            // 底部推荐区域
-            _buildRecommendationSection(),
-          ],
-        ),
+      backgroundColor: AppColors.background,
+      appBar: SimpleCustomAppBar(
+        onSearchTap: _handleSearchTap,
+        onNotificationTap: _handleNotificationTap,
+        onCartTap: _handleCartTap,
+        onUserTap: _handleUserTap,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const DebugPage()),
+      body: Consumer<HomeState>(
+        builder: (context, homeState, child) {
+          return SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            enablePullUp: false,
+            onRefresh: _onRefresh,
+            header: const WaterDropMaterialHeader(
+              backgroundColor: AppColors.primary,
+              color: Colors.white,
+            ),
+            child: _buildBody(homeState),
           );
         },
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.bug_report, color: Colors.white),
       ),
+      floatingActionButton: _buildDebugButton(),
     );
   }
 
-  Widget _buildBrandHeader() {
-    return Row(
-      children: [
-        Container(
-          width: 45,
-          height: 45,
-          decoration: BoxDecoration(
-            color: AppColors.textPrimary,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Center(
-            child: Text(
-              'Z',
-              style: TextStyle(
-                color: AppColors.background,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 15),
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppStrings.appTitle,
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            Text(
-              AppStrings.appSlogan,
-              style: TextStyle(fontSize: 15, color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  /// 构建主体内容
+  Widget _buildBody(HomeState homeState) {
+    if (homeState.isLoading && !homeState.hasData) {
+      return _buildLoadingState();
+    }
 
-  Widget _buildFeatureButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        FeatureButton(
-          icon: Icons.card_giftcard,
-          label: AppStrings.allPackages,
-          onTap: () {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('全部礼包功能')));
-          },
-        ),
-        FeatureButton(
-          icon: Icons.lightbulb_outline,
-          label: AppStrings.designInspiration,
-          onTap: () {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('装修灵感功能')));
-          },
-        ),
-      ],
-    );
-  }
+    if (homeState.error != null && !homeState.hasData) {
+      return _buildErrorState(homeState);
+    }
 
-  Widget _buildSelectionArea() {
-    return Container(
-      padding: const EdgeInsets.all(22),
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            spreadRadius: 2,
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+    return SingleChildScrollView(
       child: Column(
         children: [
-          SelectionRow(label: AppStrings.houseType, value: selectedHouseType),
-          const SizedBox(height: 18),
-          SelectionRow(
-            label: AppStrings.selectedPackage,
-            value: selectedPackage,
-          ),
-          const SizedBox(height: 28),
-          SizedBox(
-            width: double.infinity,
-            height: 55,
-            child: ElevatedButton(
-              onPressed: _showPackageSelection,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.textPrimary,
-                foregroundColor: AppColors.background,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                elevation: 3,
-              ),
-              child: const Text(
-                AppStrings.selectPackage,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
+          const SizedBox(height: AppSpacing.md),
+
+          // 轮播图
+          _buildBannerSection(homeState),
+
+          const SizedBox(height: AppSpacing.lg),
+
+          // 快捷入口
+          _buildQuickEntrySection(),
+
+          const SizedBox(height: AppSpacing.lg),
+
+          // 分类导航
+          _buildCategorySection(homeState),
+
+          const SizedBox(height: AppSpacing.lg),
+
+          // 营销板块
+          _buildMarketingSection(),
+
+          const SizedBox(height: AppSpacing.lg),
+
+          // 推荐商品
+          _buildRecommendationSection(homeState),
+
+          const SizedBox(height: AppSpacing.xl),
         ],
       ),
     );
   }
 
-  Widget _buildRecommendationSection() {
+  /// 构建轮播图区域
+  Widget _buildBannerSection(HomeState homeState) {
+    return SimpleBanner(
+      banners: homeState.banners,
+      onBannerTap: _handleBannerTap,
+    );
+  }
+
+  /// 构建快捷入口区域
+  Widget _buildQuickEntrySection() {
+    return QuickEntryGrid(
+      entries: QuickEntry.defaultEntries,
+      onEntryTap: _handleQuickEntryTap,
+    );
+  }
+
+  /// 构建分类区域
+  Widget _buildCategorySection(HomeState homeState) {
+    return CategoryGrid(
+      categories: homeState.categories,
+      onCategoryTap: _handleCategoryTap,
+      onViewAll: _handleViewAllCategories,
+    );
+  }
+
+  /// 构建营销板块
+  Widget _buildMarketingSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('营销活动', style: AppTextStyles.headline3),
+          const SizedBox(height: AppSpacing.md),
+
+          // 营销卡片
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '精选推荐',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+              Expanded(
+                child: _buildMarketingCard(
+                  '限时优惠',
+                  '低至3折起',
+                  AppColors.limitedTime,
+                  Icons.flash_on,
                 ),
               ),
-              if (isLoading)
-                const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else if (errorMessage != null)
-                IconButton(
-                  onPressed: _loadHomeData,
-                  icon: const Icon(Icons.refresh, color: AppColors.textPrimary),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _buildMarketingCard(
+                  '会员专享',
+                  '专属特权',
+                  AppColors.vipGold,
+                  Icons.diamond,
                 ),
+              ),
             ],
           ),
-          const SizedBox(height: 20),
-
-          if (isLoading)
-            _buildLoadingState()
-          else if (errorMessage != null)
-            _buildErrorState()
-          else if (homeData?.featuredProducts.isNotEmpty == true)
-            _buildFeaturedProducts()
-          else
-            _buildFallbackRecommendations(),
         ],
       ),
     );
   }
 
-  Widget _buildLoadingState() {
-    return Column(
-      children: List.generate(
-        3,
-        (index) => Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          height: 90,
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Center(child: CircularProgressIndicator()),
+  /// 构建营销卡片
+  Widget _buildMarketingCard(
+    String title,
+    String subtitle,
+    Color color,
+    IconData icon,
+  ) {
+    return Container(
+      height: 80,
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [color, color.withOpacity(0.7)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildErrorState() {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.red[50],
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.red[200]!),
-          ),
-          child: Column(
-            children: [
-              Icon(Icons.error_outline, color: Colors.red[600], size: 48),
-              const SizedBox(height: 16),
-              Text(
-                errorMessage!,
-                style: TextStyle(color: Colors.red[600], fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _loadHomeData,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red[600],
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('重新加载'),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          '显示默认推荐:',
-          style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
-        ),
-        const SizedBox(height: 10),
-        _buildFallbackRecommendations(),
-      ],
-    );
-  }
-
-  Widget _buildFeaturedProducts() {
-    final products = homeData!.featuredProducts
-        .where((p) => p.name.isNotEmpty)
-        .take(10)
-        .toList();
-
-    return Column(
-      children: [
-        // 显示分类信息
-        if (homeData!.categories.isNotEmpty)
-          Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: AppColors.primaryGradient1.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 32),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  '商品分类',
-                  style: TextStyle(
-                    fontSize: 16,
+                Text(
+                  title,
+                  style: AppTextStyles.body1.copyWith(
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: homeData!.categories
-                      .take(6)
-                      .map(
-                        (category) => Chip(
-                          label: Text(
-                            category.name,
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          backgroundColor: Colors.white,
-                          side: BorderSide(
-                            color: AppColors.primaryGradient1.withValues(
-                              alpha: 0.3,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                Text(
+                  subtitle,
+                  style: AppTextStyles.caption.copyWith(
+                    color: Colors.white.withOpacity(0.9),
+                  ),
                 ),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
 
-        // 精选产品列表
-        ...products.map((product) => FeaturedProductCard(product: product)),
+  /// 构建推荐商品区域
+  Widget _buildRecommendationSection(HomeState homeState) {
+    return Column(
+      children: [
+        // 热门商品
+        _buildProductSection(
+          '热门商品',
+          homeState.featuredProducts,
+          onViewAll: () => _handleViewAllProducts('featured'),
+        ),
 
-        // 显示产品统计
-        if (homeData!.featuredProducts.isNotEmpty)
-          Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(top: 16),
-            decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      '${homeData!.featuredProducts.length}',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryGradient1,
-                      ),
-                    ),
-                    const Text(
-                      '总商品数',
-                      style: TextStyle(color: AppColors.textSecondary),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      '${homeData!.categories.length}',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryGradient1,
-                      ),
-                    ),
-                    const Text(
-                      '商品分类',
-                      style: TextStyle(color: AppColors.textSecondary),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+        const SizedBox(height: AppSpacing.lg),
+
+        // 猜你喜欢
+        _buildProductSection(
+          '猜你喜欢',
+          homeState.getRecommendationsByType('recommend'),
+          onViewAll: () => _handleViewAllProducts('recommend'),
+        ),
       ],
     );
   }
 
-  Widget _buildFallbackRecommendations() {
-    final suites = DataSource.suites;
+  /// 构建商品区域
+  Widget _buildProductSection(
+    String title,
+    List<Product> products, {
+    VoidCallback? onViewAll,
+  }) {
+    if (products.isEmpty) return const SizedBox.shrink();
 
-    return Column(
-      children: suites
-          .map(
-            (suite) => Column(
-              children: [
-                RecommendationCard(
-                  title: suite.title,
-                  description: suite.description,
-                  price: suite.price,
-                  color: suite.color,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 标题栏
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title, style: AppTextStyles.headline3),
+              if (onViewAll != null)
+                GestureDetector(
+                  onTap: onViewAll,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '查看更多',
+                        style: AppTextStyles.body2.copyWith(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: AppColors.primary,
+                      ),
+                    ],
+                  ),
                 ),
-                if (suite != suites.last) const SizedBox(height: 16),
-              ],
+            ],
+          ),
+
+          const SizedBox(height: AppSpacing.md),
+
+          // 商品网格
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              crossAxisSpacing: AppSpacing.sm,
+              mainAxisSpacing: AppSpacing.sm,
             ),
-          )
-          .toList(),
+            itemCount: products.take(4).length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return ProductCard(
+                product: product,
+                onTap: () => _handleProductTap(product),
+                onAddToCart: () => _handleAddToCart(product),
+                onFavorite: () => _handleFavorite(product),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  void _showPackageSelection() {
-    final packages = DataSource.packages;
-
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  /// 构建加载状态
+  Widget _buildLoadingState() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: AppSpacing.md),
+          Text('正在加载...', style: AppTextStyles.body2),
+        ],
       ),
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                AppStrings.selectTitle,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
+    );
+  }
+
+  /// 构建错误状态
+  Widget _buildErrorState(HomeState homeState) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64, color: AppColors.textLight),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              '加载失败',
+              style: AppTextStyles.headline3.copyWith(
+                color: AppColors.textSecondary,
               ),
-              const SizedBox(height: 20),
-              ...packages.map(
-                (package) => ListTile(
-                  leading: Icon(package.icon, color: package.color),
-                  title: Text(
-                    package.name,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  subtitle: Text(package.price),
-                  onTap: () {
-                    setState(() {
-                      selectedPackage = package.name;
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              homeState.error ?? '未知错误',
+              style: AppTextStyles.body2.copyWith(color: AppColors.textLight),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            ElevatedButton(
+              onPressed: () => homeState.retry(),
+              child: const Text('重试'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 构建调试按钮
+  Widget _buildDebugButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DebugPage()),
         );
       },
+      backgroundColor: AppColors.secondary,
+      child: const Icon(Icons.bug_report, color: Colors.white),
     );
+  }
+
+  // 事件处理方法
+
+  /// 下拉刷新
+  void _onRefresh() async {
+    try {
+      await context.read<HomeState>().refreshHomeData();
+      _refreshController.refreshCompleted();
+    } catch (e) {
+      _refreshController.refreshFailed();
+    }
+  }
+
+  /// 处理搜索点击
+  void _handleSearchTap() {
+    // TODO: 跳转到搜索页面
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('搜索功能开发中...')));
+  }
+
+  /// 处理通知点击
+  void _handleNotificationTap() {
+    // TODO: 跳转到通知页面
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('通知功能开发中...')));
+  }
+
+  /// 处理购物车点击
+  void _handleCartTap() {
+    // TODO: 跳转到购物车页面
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('购物车页面开发中...')));
+  }
+
+  /// 处理用户头像点击
+  void _handleUserTap() {
+    // TODO: 跳转到用户中心或登录页面
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('用户中心开发中...')));
+  }
+
+  /// 处理轮播图点击
+  void _handleBannerTap(BannerItem banner) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('点击轮播图: ${banner.title}')));
+  }
+
+  /// 处理快捷入口点击
+  void _handleQuickEntryTap(QuickEntry entry) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('点击快捷入口: ${entry.title}')));
+  }
+
+  /// 处理分类点击
+  void _handleCategoryTap(Category category) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('点击分类: ${category.name}')));
+  }
+
+  /// 处理查看全部分类
+  void _handleViewAllCategories() {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('分类页面开发中...')));
+  }
+
+  /// 处理查看全部商品
+  void _handleViewAllProducts(String type) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$type商品列表页面开发中...')));
+  }
+
+  /// 处理商品点击
+  void _handleProductTap(Product product) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('点击商品: ${product.name}')));
+  }
+
+  /// 处理加购物车
+  void _handleAddToCart(Product product) {
+    // ProductCard内部已处理，这里可以添加额外逻辑
+  }
+
+  /// 处理收藏
+  void _handleFavorite(Product product) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('收藏商品: ${product.name}')));
   }
 }

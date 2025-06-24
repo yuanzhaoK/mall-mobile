@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'constants/app_colors.dart';
+import 'package:provider/provider.dart';
+import 'core/themes/app_theme.dart';
 import 'constants/app_strings.dart';
 import 'pages/home_page.dart';
 import 'pages/mall_page.dart';
 import 'pages/profile_page.dart';
 import 'services/graphql_service.dart';
+import 'providers/app_state.dart';
+import 'providers/home_state.dart';
+import 'providers/cart_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,15 +24,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppStrings.appTitle,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(create: (_) => HomeState()),
+        ChangeNotifierProvider(create: (_) => CartState()),
+      ],
+      child: MaterialApp(
+        title: AppStrings.appTitle,
+        theme: AppTheme.lightTheme,
+        home: const MainScreen(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: const MainScreen(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -50,9 +57,18 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // 初始化应用状态
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AppState>().initialize();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -60,8 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = index;
           });
         },
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textLight,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

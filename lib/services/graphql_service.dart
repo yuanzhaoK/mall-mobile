@@ -80,12 +80,88 @@ class GraphQLService {
   // 获取当前token
   static String? get token => _token;
 
-  // GraphQL查询语句
+  // GraphQL查询语句 - 根据实际schema修正
   static const String _homeDataQuery = '''
-    query {
+    query AppHomeData {
       appHomeData {
-        featured_products { id name price }
-        categories { id name, created, description }
+        banners {
+          id
+          title
+          image_url
+          link_url
+          type
+          sort_order
+        }
+        featured_products {
+          id 
+          name 
+          price 
+          original_price 
+          image_url 
+          rating 
+          sales_count
+        }
+        trending_items {
+          id
+          name
+          image_url
+          score
+          type
+        }
+        recommendations {
+          id
+          name
+          type
+          position
+          products {
+            id
+            name
+            price
+            original_price
+            image_url
+            rating
+            sales_count
+          }
+        }
+        advertisements {
+          id
+          title
+          image_url
+          link_url
+          position
+          type
+        }
+        categories {
+          id
+          name
+          icon_url 
+          product_count
+        }
+      }
+    }
+  ''';
+
+  // 用户资料查询
+  static const String _profileQuery = '''
+    query AppProfile {
+      appProfile {
+        id
+        username
+        email
+        avatar
+        member_level
+        points
+        balance
+        coupons_count
+      }
+    }
+  ''';
+
+  // 购物车数量查询
+  static const String _cartCountQuery = '''
+    query AppCartCount {
+      appCart {
+        total_items
       }
     }
   ''';
@@ -98,8 +174,8 @@ class GraphQLService {
         record {
           id
           email
-          name
-          avatar
+          username
+          avatar_url
         }
       }
     }
@@ -113,7 +189,7 @@ class GraphQLService {
   ''';
 
   // 获取首页数据
-  static Future<AppHomeData?> getHomeData() async {
+  static Future<HomeData?> getHomeData() async {
     try {
       final QueryOptions options = QueryOptions(
         document: gql(_homeDataQuery),
@@ -123,18 +199,69 @@ class GraphQLService {
       final QueryResult result = await client.query(options);
 
       if (result.hasException) {
-        // 在生产环境中，应该使用适当的日志系统替代print
         debugPrint('GraphQL Error: ${result.exception.toString()}');
         return null;
       }
 
       if (result.data != null && result.data!['appHomeData'] != null) {
-        return AppHomeData.fromJson(result.data!['appHomeData']);
+        return HomeData.fromJson(result.data!['appHomeData']);
       }
 
       return null;
     } catch (e) {
       debugPrint('Error fetching home data: $e');
+      return null;
+    }
+  }
+
+  // 获取用户资料
+  static Future<User?> getUserProfile() async {
+    try {
+      final QueryOptions options = QueryOptions(
+        document: gql(_profileQuery),
+        fetchPolicy: FetchPolicy.networkOnly,
+      );
+
+      final QueryResult result = await client.query(options);
+
+      if (result.hasException) {
+        debugPrint('GraphQL Error: ${result.exception.toString()}');
+        return null;
+      }
+
+      if (result.data != null && result.data!['appProfile'] != null) {
+        return User.fromJson(result.data!['appProfile']);
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching user profile: $e');
+      return null;
+    }
+  }
+
+  // 获取购物车数量
+  static Future<CartCount?> getCartCount() async {
+    try {
+      final QueryOptions options = QueryOptions(
+        document: gql(_cartCountQuery),
+        fetchPolicy: FetchPolicy.networkOnly,
+      );
+
+      final QueryResult result = await client.query(options);
+
+      if (result.hasException) {
+        debugPrint('GraphQL Error: ${result.exception.toString()}');
+        return null;
+      }
+
+      if (result.data != null && result.data!['appCart'] != null) {
+        return CartCount.fromJson(result.data!['appCart']);
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching cart count: $e');
       return null;
     }
   }
@@ -157,8 +284,6 @@ class GraphQLService {
       );
 
       debugPrint('🔐 发送GraphQL mutation...');
-      debugPrint('   Mutation: $_loginMutation');
-      debugPrint('   Variables: ${options.variables}');
 
       // 添加超时控制
       final QueryResult result = await client
@@ -176,9 +301,6 @@ class GraphQLService {
         if (result.exception?.graphqlErrors != null) {
           for (var error in result.exception!.graphqlErrors) {
             debugPrint('   GraphQL Error: ${error.message}');
-            debugPrint('   Extensions: ${error.extensions}');
-            debugPrint('   Path: ${error.path}');
-            debugPrint('   Locations: ${error.locations}');
           }
         }
         if (result.exception?.linkException != null) {
@@ -189,7 +311,6 @@ class GraphQLService {
 
       if (result.data != null && result.data!['mobileLogin'] != null) {
         debugPrint('🔐 登录成功！');
-        debugPrint('   Response data: ${result.data!['mobileLogin']}');
         final authResponse = AuthResponse.fromJson(result.data!['mobileLogin']);
         // 保存token
         await setToken(authResponse.token);
@@ -199,7 +320,7 @@ class GraphQLService {
       debugPrint('🔐 登录失败：未收到预期的响应数据');
       return null;
     } catch (e) {
-      debugPrint('🔐 Error during login: $e');
+      debugPrint('🔐 登录异常: $e');
       rethrow;
     }
   }
@@ -207,31 +328,40 @@ class GraphQLService {
   // 用户注销
   static Future<bool> logout() async {
     try {
+      debugPrint('🔐 用户注销...');
+
       final MutationOptions options = MutationOptions(
         document: gql(_logoutMutation),
+        fetchPolicy: FetchPolicy.noCache,
       );
 
-      final QueryResult result = await client.mutate(options);
-
-      if (result.hasException) {
-        debugPrint('Logout Error: ${result.exception.toString()}');
-        // 即使服务器端注销失败，也要清除本地token
-      }
+      final QueryResult result = await client
+          .mutate(options)
+          .timeout(const Duration(seconds: 10));
 
       // 清除本地token
       await setToken(null);
 
-      return result.data?['logout'] ?? true;
+      if (result.hasException) {
+        debugPrint('🔐 注销时出现错误，但仍清除本地token: ${result.exception}');
+      } else {
+        debugPrint('🔐 注销成功');
+      }
+
+      return true;
     } catch (e) {
-      debugPrint('Error during logout: $e');
-      // 即使出错也要清除本地token
+      debugPrint('🔐 注销异常: $e');
+      // 即使API调用失败，也要清除本地token
       await setToken(null);
-      return false;
+      return true;
     }
   }
 
   // 检查是否已登录
   static bool get isLoggedIn => _token != null;
+
+  // 检查是否有token
+  static bool get hasToken => _token != null;
 
   // 获取当前用户信息（如果需要的话，可以添加获取当前用户信息的查询）
   static Future<User?> getCurrentUser() async {

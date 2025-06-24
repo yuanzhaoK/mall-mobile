@@ -50,9 +50,9 @@ class _LoginTestPageState extends State<LoginTestPage> {
       if (result != null) {
         addLog('✅ 登录成功！');
         addLog('👤 用户ID: ${result.user.id}');
-        addLog('👤 用户名: ${result.user.name}');
+        addLog('👤 用户名: ${result.user.username}');
         addLog('📧 邮箱: ${result.user.email}');
-        addLog('👤 角色: ${result.user.role}');
+        addLog('👤 会员等级: ${result.user.memberLevel}');
         addLog('🔑 Token: ${result.token.substring(0, 30)}...');
         addLog('✅ 已保存到本地存储');
 
@@ -118,7 +118,7 @@ class _LoginTestPageState extends State<LoginTestPage> {
         );
 
         if (result != null) {
-          addLog('✅ 成功！用户: ${result.user.name}');
+          addLog('✅ 成功！用户: ${result.user.username}');
           await GraphQLService.logout();
           break; // 找到有效凭据就停止
         }

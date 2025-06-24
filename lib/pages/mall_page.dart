@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
-import '../models/data_source.dart';
+import '../models/api_models.dart';
 import '../widgets/product_card.dart';
 
 class MallPage extends StatelessWidget {
@@ -9,7 +9,8 @@ class MallPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final products = DataSource.products;
+    // 使用示例产品数据
+    final products = <Product>[];
 
     return Scaffold(
       appBar: AppBar(

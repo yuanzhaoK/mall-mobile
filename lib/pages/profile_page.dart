@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         elevation: 2,
       ),
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: AppColors.background,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -76,8 +76,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 backgroundColor: AppColors.primary,
                 child: isLoggedIn
                     ? Text(
-                        (currentUser?.name.isNotEmpty == true)
-                            ? currentUser!.name[0].toUpperCase()
+                        (currentUser?.username.isNotEmpty == true)
+                            ? currentUser!.username[0].toUpperCase()
                             : (username.isNotEmpty
                                   ? username[0].toUpperCase()
                                   : 'U'),
@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isLoggedIn ? (currentUser?.name ?? username) : '点击登录',
+                      isLoggedIn ? (currentUser?.username ?? username) : '点击登录',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -450,7 +450,7 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           isLoggedIn = true;
           currentUser = authResponse.user;
-          username = authResponse.user.name;
+          username = authResponse.user.username;
           isLoading = false;
         });
 
@@ -458,7 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('欢迎回来，${authResponse.user.name}！'),
+            content: Text('欢迎回来，${authResponse.user.username}！'),
             backgroundColor: Colors.green,
           ),
         );
