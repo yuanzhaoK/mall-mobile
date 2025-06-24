@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: AppColors.primary,
               color: Colors.white,
             ),
-            child: _buildBody(homeState),
+            child: _buildScrollableBody(homeState),
           );
         },
       ),
@@ -77,8 +77,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// 构建主体内容
-  Widget _buildBody(HomeState homeState) {
+  /// 构建可滚动的主体内容
+  Widget _buildScrollableBody(HomeState homeState) {
     if (homeState.isLoading && !homeState.hasData) {
       return _buildLoadingState();
     }
@@ -87,37 +87,41 @@ class _HomePageState extends State<HomePage> {
       return _buildErrorState(homeState);
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: AppSpacing.md),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              const SizedBox(height: AppSpacing.md),
 
-          // 轮播图
-          _buildBannerSection(homeState),
+              // 轮播图
+              _buildBannerSection(homeState),
 
-          const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-          // 快捷入口
-          _buildQuickEntrySection(),
+              // 快捷入口
+              _buildQuickEntrySection(),
 
-          const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-          // 分类导航
-          _buildCategorySection(homeState),
+              // 分类导航
+              _buildCategorySection(homeState),
 
-          const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-          // 营销板块
-          _buildMarketingSection(),
+              // 营销板块
+              _buildMarketingSection(),
 
-          const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-          // 推荐商品
-          _buildRecommendationSection(homeState),
+              // 推荐商品
+              _buildRecommendationSection(homeState),
 
-          const SizedBox(height: AppSpacing.xl),
-        ],
-      ),
+              const SizedBox(height: AppSpacing.xl),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -398,9 +402,35 @@ class _HomePageState extends State<HomePage> {
   void _onRefresh() async {
     try {
       await context.read<HomeState>().refreshHomeData();
-      _refreshController.refreshCompleted();
+
+      // 延迟一小段时间确保用户能看到刷新动画
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (mounted) {
+        _refreshController.refreshCompleted();
+
+        // 显示刷新成功提示
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('刷新成功'),
+            duration: Duration(seconds: 1),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
     } catch (e) {
-      _refreshController.refreshFailed();
+      if (mounted) {
+        _refreshController.refreshFailed();
+
+        // 显示刷新失败提示
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('刷新失败: ${e.toString()}'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 

@@ -75,12 +75,14 @@ class HomeState extends ChangeNotifier {
       final data = await GraphQLService.getHomeData();
       if (data != null) {
         _homeData = data;
+        debugPrint('首页数据刷新成功');
       } else {
-        _setError('刷新数据失败，请检查网络连接');
+        throw Exception('刷新数据失败，请检查网络连接');
       }
     } catch (e) {
       _setError('刷新数据时出现错误: ${e.toString()}');
       debugPrint('刷新首页数据失败: $e');
+      rethrow; // 重新抛出异常，让UI层能够捕获
     } finally {
       _setRefreshing(false);
     }
