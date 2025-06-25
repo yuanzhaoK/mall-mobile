@@ -2,6 +2,40 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../core/themes/app_theme.dart';
 
+/// 简单的AppBar组件
+class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final bool showBackButton;
+  final List<Widget>? actions;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+
+  const SimpleAppBar({
+    super.key,
+    required this.title,
+    this.showBackButton = false,
+    this.actions,
+    this.backgroundColor,
+    this.foregroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(title),
+      backgroundColor: backgroundColor ?? AppColors.primary,
+      foregroundColor: foregroundColor ?? Colors.white,
+      centerTitle: true,
+      elevation: 2,
+      automaticallyImplyLeading: showBackButton,
+      actions: actions,
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
 /// 简化版自定义顶部栏
 class SimpleCustomAppBar extends StatelessWidget
     implements PreferredSizeWidget {

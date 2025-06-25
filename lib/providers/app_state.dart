@@ -117,6 +117,12 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// 直接更新用户信息（用于本地更新）
+  void updateUser(User updatedUser) {
+    _user = updatedUser;
+    notifyListeners();
+  }
+
   /// 清除错误
   void clearError() {
     _error = null;

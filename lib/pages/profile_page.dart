@@ -5,6 +5,11 @@ import '../widgets/menu_item.dart';
 import '../services/graphql_service.dart';
 import '../models/api_models.dart';
 import '../pages/order_list_page.dart';
+import '../pages/profile_edit_page.dart';
+import '../pages/address_manage_page.dart';
+import '../pages/favorites_page.dart';
+import '../pages/settings_page.dart';
+import '../pages/help_center_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -63,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
       onTap: () {
         if (!isLoggedIn) {
           _showLoginBottomSheet();
+        } else {
+          _navigateToProfileEdit();
         }
       },
       child: Card(
@@ -129,12 +136,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              if (!isLoggedIn)
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.textSecondary,
-                  size: 16,
-                ),
+              Icon(
+                isLoggedIn ? Icons.edit : Icons.arrow_forward_ios,
+                color: AppColors.textSecondary,
+                size: 16,
+              ),
             ],
           ),
         ),
@@ -158,24 +164,57 @@ class _ProfilePageState extends State<ProfilePage> {
         MenuItem(
           icon: Icons.favorite,
           title: AppStrings.myFavorites,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FavoritesPage()),
+            );
+          },
         ),
         MenuItem(
           icon: Icons.location_on,
           title: AppStrings.shippingAddress,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddressManagePage(),
+              ),
+            );
+          },
         ),
         MenuItem(
           icon: Icons.support_agent,
           title: AppStrings.customerService,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CustomerServicePage(),
+              ),
+            );
+          },
         ),
         MenuItem(
           icon: Icons.settings,
           title: AppStrings.settings,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()),
+            );
+          },
         ),
-        MenuItem(icon: Icons.help, title: AppStrings.helpCenter, onTap: () {}),
+        MenuItem(
+          icon: Icons.help,
+          title: AppStrings.helpCenter,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HelpCenterPage()),
+            );
+          },
+        ),
         if (isLoggedIn)
           MenuItem(icon: Icons.logout, title: '退出登录', onTap: _logout),
       ],
@@ -506,6 +545,25 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // 在开发环境中显示完整错误信息
       debugPrint('🔐 完整错误信息: $e');
+    }
+  }
+
+  /// 导航到个人信息编辑页面
+  void _navigateToProfileEdit() {
+    if (currentUser != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileEditPage(user: currentUser!),
+        ),
+      ).then((result) {
+        if (result != null && result is User) {
+          setState(() {
+            currentUser = result;
+            username = result.username;
+          });
+        }
+      });
     }
   }
 
