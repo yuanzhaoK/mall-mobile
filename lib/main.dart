@@ -10,6 +10,7 @@ import 'pages/search_page.dart';
 import 'services/graphql_service.dart';
 import 'providers/app_state.dart';
 import 'providers/home_state.dart';
+import 'providers/mall_state.dart';
 import 'providers/cart_state.dart';
 import 'providers/search_state.dart';
 import 'providers/product_detail_state.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => HomeState()),
+        ChangeNotifierProvider(create: (_) => MallState()),
         ChangeNotifierProvider(create: (_) => CartState()),
         ChangeNotifierProvider(create: (_) => SearchState()),
         ChangeNotifierProvider(create: (_) => ProductDetailState()),
