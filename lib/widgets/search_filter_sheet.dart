@@ -96,7 +96,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -247,7 +247,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
           _maxPrice = max;
         });
       },
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
       checkmarkColor: AppColors.primary,
     );
   }
@@ -294,7 +294,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
           _sortBy = value;
         });
       },
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
       checkmarkColor: AppColors.primary,
     );
   }
@@ -348,7 +348,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
           _selectedCategory = value;
         });
       },
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
       checkmarkColor: AppColors.primary,
     );
   }
@@ -395,13 +395,13 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
         color: theme.colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),

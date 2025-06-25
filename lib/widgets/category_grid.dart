@@ -323,7 +323,7 @@ class QuickEntryGrid extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.md),
           boxShadow: [
             BoxShadow(
-              color: entry.gradientColors.first.withOpacity(0.3),
+              color: entry.gradientColors.first.withValues(alpha: 0.3),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -346,7 +346,7 @@ class QuickEntryGrid extends StatelessWidget {
               Text(
                 entry.subtitle!,
                 style: AppTextStyles.caption.copyWith(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                   fontSize: 10,
                 ),
                 textAlign: TextAlign.center,

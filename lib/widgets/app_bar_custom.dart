@@ -73,7 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildUserSection(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appState, child) {
-        final user = appState?.user;
+        final user = appState.user;
 
         return GestureDetector(
           onTap: onUserTap,

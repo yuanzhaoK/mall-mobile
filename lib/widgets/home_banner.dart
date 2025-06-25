@@ -137,7 +137,10 @@ class _HomeBannerState extends State<HomeBanner> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.3),
+                  ],
                 ),
               ),
             ),
@@ -156,7 +159,7 @@ class _HomeBannerState extends State<HomeBanner> {
                       Shadow(
                         offset: const Offset(0, 1),
                         blurRadius: 3,
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                       ),
                     ],
                   ),
@@ -216,7 +219,7 @@ class _HomeBannerState extends State<HomeBanner> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? Colors.white
-                    : Colors.white.withOpacity(0.4),
+                    : Colors.white.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(4),
               ),
             ),

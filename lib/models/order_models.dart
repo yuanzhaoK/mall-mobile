@@ -1,7 +1,6 @@
 // 订单相关数据模型
 import 'package:flutter/material.dart';
 import 'cart_models.dart';
-import 'product_models.dart';
 
 // 订单状态枚举
 enum OrderStatus {

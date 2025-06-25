@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/search_state.dart';
-import '../providers/cart_state.dart';
+
 import '../widgets/product_card.dart';
 import '../widgets/search_filter_sheet.dart';
 import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
+
 import '../models/api_models.dart';
 
 /// 搜索页面
@@ -110,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
         color: theme.colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -135,7 +135,7 @@ class _SearchPageState extends State<SearchPage> {
                 color: theme.colorScheme.surfaceVariant,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: theme.colorScheme.outline.withOpacity(0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               child: TextField(
@@ -347,11 +347,11 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: isHot
-              ? AppColors.primary.withOpacity(0.1)
+              ? AppColors.primary.withValues(alpha: 0.1)
               : theme.colorScheme.surfaceVariant,
           borderRadius: BorderRadius.circular(16),
           border: isHot
-              ? Border.all(color: AppColors.primary.withOpacity(0.3))
+              ? Border.all(color: AppColors.primary.withValues(alpha: 0.3))
               : null,
         ),
         child: Row(
@@ -433,7 +433,7 @@ class _SearchPageState extends State<SearchPage> {
         color: theme.colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -536,7 +536,7 @@ class _SearchPageState extends State<SearchPage> {
             Icon(
               Icons.search_off,
               size: 64,
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(

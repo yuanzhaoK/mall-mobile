@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import '../models/api_models.dart';
-import '../services/graphql_service.dart';
 
 /// 订单状态管理
 class OrderState extends ChangeNotifier {

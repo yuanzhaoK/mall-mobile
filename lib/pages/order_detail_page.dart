@@ -100,7 +100,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: order.statusColor.withOpacity(0.1),
+              color: order.statusColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Icon(
@@ -481,7 +481,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),

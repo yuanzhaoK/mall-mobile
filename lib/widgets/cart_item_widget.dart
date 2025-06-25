@@ -30,7 +30,7 @@ class CartItemWidget extends StatelessWidget {
         color: theme.colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -159,7 +159,9 @@ class CartItemWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.3)),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+        ),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Row(
@@ -215,7 +217,7 @@ class CartItemWidget extends StatelessWidget {
           size: 16,
           color: onPressed != null
               ? theme.colorScheme.onSurface
-              : theme.colorScheme.onSurface.withOpacity(0.3),
+              : theme.colorScheme.onSurface.withValues(alpha: 0.3),
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart' hide Category;
 import '../models/api_models.dart';
-import '../services/graphql_service.dart';
 
 /// 购物车状态管理
 class CartState extends ChangeNotifier {

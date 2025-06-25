@@ -137,7 +137,7 @@ class LoginTester {
             'success': false,
             'error': result.exception.toString(),
             'graphqlErrors': result.exception?.graphqlErrors
-                ?.map((e) => e.message)
+                .map((e) => e.message)
                 .toList(),
           };
         } else {

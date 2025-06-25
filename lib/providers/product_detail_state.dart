@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import '../models/api_models.dart';
-import '../services/graphql_service.dart';
 
 /// 商品详情状态管理
 class ProductDetailState extends ChangeNotifier {

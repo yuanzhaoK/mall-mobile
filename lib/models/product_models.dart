@@ -1,5 +1,4 @@
 // 商品相关数据模型
-import 'package:flutter/material.dart';
 
 // 商品模型
 class Product {

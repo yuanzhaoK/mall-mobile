@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import '../models/api_models.dart';
-import '../services/graphql_service.dart';
 
 /// 搜索状态管理
 class SearchState extends ChangeNotifier {

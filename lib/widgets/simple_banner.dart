@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
 
 /// 简化版轮播图组件
 class SimpleBanner extends StatefulWidget {
@@ -153,7 +153,10 @@ class _SimpleBannerState extends State<SimpleBanner> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.3),
+                  ],
                 ),
               ),
             ),
@@ -172,7 +175,7 @@ class _SimpleBannerState extends State<SimpleBanner> {
                       Shadow(
                         offset: const Offset(0, 1),
                         blurRadius: 3,
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                       ),
                     ],
                   ),
@@ -236,7 +239,7 @@ class _SimpleBannerState extends State<SimpleBanner> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? Colors.white
-                    : Colors.white.withOpacity(0.4),
+                    : Colors.white.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
