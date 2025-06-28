@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'core/themes/app_theme.dart';
 import 'constants/app_strings.dart';
@@ -15,9 +16,25 @@ import 'providers/cart_state.dart';
 import 'providers/search_state.dart';
 import 'providers/product_detail_state.dart';
 import 'providers/order_state.dart';
+import 'config/app_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 在开发模式下打印配置信息
+  if (kDebugMode) {
+    debugPrint('🚀 应用启动中...');
+    debugPrint('📋 配置摘要: ${AppConfig.getConfigSummary()}');
+
+    if (AppConfig.hasLocalConfig) {
+      debugPrint('✅ 本地配置已加载');
+    } else {
+      debugPrint('⚠️ 未找到本地配置，使用默认配置');
+      debugPrint(
+        '💡 提示：复制 lib/config/local_config.dart.template 为 local_config.dart',
+      );
+    }
+  }
 
   // 初始化GraphQL服务并加载保存的token
   await GraphQLService.loadToken();

@@ -1,12 +1,18 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 
 class ConnectionTester {
   /// 测试多个端点的连接状态
   static Future<String> findWorkingEndpoint({String port = '8082'}) async {
+    // 从配置中获取当前设置的基础URL
+    final currentBaseUrl = AppConfig.config.baseUrl;
+    final currentHost = Uri.parse(currentBaseUrl).host;
+
     final List<String> endpoints = [
-      'http://10.241.25.183:$port/graphql', // 你的电脑IP
+      AppConfig.config.graphqlEndpoint, // 优先使用配置的端点
+      'http://$currentHost:$port/graphql', // 使用配置的主机
       'http://10.0.2.2:$port/graphql', // Android模拟器
       'http://127.0.0.1:$port/graphql', // 本地回环
       'http://localhost:$port/graphql', // localhost

@@ -6,6 +6,7 @@ import '../utils/network_helper.dart';
 import '../utils/port_scanner.dart';
 import '../utils/graphql_diagnostics.dart';
 import '../utils/login_tester.dart';
+import '../config/app_config.dart';
 import 'login_test_page.dart';
 
 class DebugPage extends StatefulWidget {
@@ -27,6 +28,35 @@ class _DebugPageState extends State<DebugPage> {
     });
   }
 
+  void showCurrentConfig() {
+    setState(() {
+      logs.clear();
+    });
+
+    addLog('📋 当前配置信息:');
+    addLog('🔧 配置来源: ${AppConfig.hasLocalConfig ? "✅ 本地配置" : "⚠️ 默认配置"}');
+    addLog('🌍 当前环境: ${AppConfig.environment.name}');
+
+    final config = AppConfig.config;
+    addLog('📍 GraphQL端点: ${config.graphqlEndpoint}');
+    addLog('🌐 基础URL: ${config.baseUrl}');
+    addLog('🔌 WebSocket端点: ${config.websocketEndpoint}');
+    addLog('⏱️ 超时时间: ${config.timeout.inSeconds}秒');
+    addLog('📝 日志记录: ${config.enableLogging ? "启用" : "禁用"}');
+
+    if (!AppConfig.hasLocalConfig) {
+      addLog('');
+      addLog('💡 提示: 使用本地配置');
+      addLog('1. 复制 lib/config/local_config.dart.template');
+      addLog('2. 重命名为 local_config.dart');
+      addLog('3. 修改其中的IP地址为你的服务器地址');
+      addLog('4. 重新启动应用');
+    }
+
+    addLog('');
+    addLog('🏁 配置信息显示完成');
+  }
+
   Future<void> testConnections() async {
     setState(() {
       isTesting = true;
@@ -35,9 +65,10 @@ class _DebugPageState extends State<DebugPage> {
 
     addLog('🔍 开始网络诊断...');
 
-    // 测试确认的端点
-    const confirmedEndpoint = 'http://10.241.25.183:8082/graphql';
-    addLog('📍 确认的端点: $confirmedEndpoint');
+    // 测试配置的端点
+    final confirmedEndpoint = AppConfig.config.graphqlEndpoint;
+    addLog('📍 配置的端点: $confirmedEndpoint');
+    addLog('🔧 配置来源: ${AppConfig.hasLocalConfig ? "本地配置" : "默认配置"}');
 
     final isConfirmedWorking = await ConnectionTester.testEndpoint(
       confirmedEndpoint,
@@ -58,8 +89,11 @@ class _DebugPageState extends State<DebugPage> {
     );
 
     // 测试所有可能的端点
+    final currentHost = Uri.parse(AppConfig.config.baseUrl).host;
+    final currentPort = Uri.parse(AppConfig.config.baseUrl).port;
     final testEndpoints = [
-      'http://10.241.25.183:8082/graphql',
+      AppConfig.config.graphqlEndpoint, // 当前配置的端点
+      'http://$currentHost:$currentPort/graphql',
       'http://10.0.2.2:8082/graphql',
       'http://127.0.0.1:8082/graphql',
       'http://localhost:8082/graphql',
@@ -121,23 +155,24 @@ class _DebugPageState extends State<DebugPage> {
       addLog('❌ localhost没有找到开放端口 (8000-9000)');
     }
 
-    // 扫描你的IP的开放端口
-    addLog('📡 扫描 10.241.25.183 开放端口 (8000-9000)...');
+    // 扫描配置的主机的开放端口
+    final configuredHost = Uri.parse(AppConfig.config.baseUrl).host;
+    addLog('📡 扫描 $configuredHost 开放端口 (8000-9000)...');
     final remoteOpenPorts = await PortScanner.scanPortRange(
-      '10.241.25.183',
+      configuredHost,
       8000,
       9000,
     );
     if (remoteOpenPorts.isNotEmpty) {
-      addLog('✅ 10.241.25.183开放端口: ${remoteOpenPorts.join(', ')}');
+      addLog('✅ $configuredHost开放端口: ${remoteOpenPorts.join(', ')}');
     } else {
-      addLog('❌ 10.241.25.183没有找到开放端口 (8000-9000)');
+      addLog('❌ $configuredHost没有找到开放端口 (8000-9000)');
     }
 
     // 扫描GraphQL服务
     addLog('🔍 扫描GraphQL服务...');
     final graphqlServices = await PortScanner.scanForGraphQLServices(
-      '10.241.25.183',
+      configuredHost,
     );
     if (graphqlServices.isNotEmpty) {
       addLog('✅ 找到GraphQL服务:');
@@ -175,10 +210,11 @@ class _DebugPageState extends State<DebugPage> {
       logs.clear();
     });
 
-    addLog('🎯 测试确认的GraphQL端点...');
+    addLog('🎯 测试配置的GraphQL端点...');
 
-    const endpoint = 'http://10.241.25.183:8082/graphql';
-    addLog('📍 端点: $endpoint');
+    final endpoint = AppConfig.config.graphqlEndpoint;
+    addLog('📍 配置的端点: $endpoint');
+    addLog('🔧 配置来源: ${AppConfig.hasLocalConfig ? "本地配置" : "默认配置"}');
 
     // 详细连接测试
     final testResult = await ConnectionTester.testEndpointDetailed(endpoint);
@@ -246,8 +282,11 @@ class _DebugPageState extends State<DebugPage> {
     addLog('🌐 测试多个端点变体...');
 
     // 不同的端点组合
+    final currentHost = Uri.parse(AppConfig.config.baseUrl).host;
+    final currentPort = Uri.parse(AppConfig.config.baseUrl).port;
     final endpoints = [
-      'http://10.241.25.183:8082/graphql', // 原始地址
+      AppConfig.config.graphqlEndpoint, // 当前配置地址
+      'http://$currentHost:$currentPort/graphql', // 配置的基础地址
       'http://127.0.0.1:8082/graphql', // 本地回环
       'http://localhost:8082/graphql', // localhost
       'http://10.0.2.2:8082/graphql', // Android模拟器地址
@@ -364,7 +403,9 @@ class _DebugPageState extends State<DebugPage> {
 
     addLog('🔍 开始全面GraphQL诊断...');
 
-    const endpoint = 'http://10.241.25.183:8082/graphql';
+    final endpoint = AppConfig.config.graphqlEndpoint;
+    addLog('📍 诊断端点: $endpoint');
+    addLog('🔧 配置来源: ${AppConfig.hasLocalConfig ? "本地配置" : "默认配置"}');
 
     try {
       final results = await GraphQLDiagnostics.diagnoseConnection(endpoint);
@@ -525,6 +566,16 @@ class _DebugPageState extends State<DebugPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                ElevatedButton(
+                  onPressed: showCurrentConfig,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[700],
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text('📋 显示当前配置'),
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: isTesting ? null : testConnections,
                   style: ElevatedButton.styleFrom(

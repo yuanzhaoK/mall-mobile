@@ -1,0 +1,27 @@
+/// 本地开发配置模板
+/// 
+/// 使用方法：
+/// 1. 复制此文件为 local_config.dart
+/// 2. 根据你的开发环境修改下面的配置
+/// 3. local_config.dart 会被 git 忽略，不会提交到版本控制
+/// 
+/// 注意：请勿将此模板文件删除，其他开发者需要参考
+
+class LocalConfig {
+  /// 开发环境API配置
+  static const String developmentBaseUrl = 'http://10.241.25.183:8082';
+  static const String developmentGraphqlEndpoint = 'http://10.241.25.183:8082/graphql';
+  static const String developmentWebsocketEndpoint = 'ws://10.241.25.183:8082/graphql';
+  
+  /// 数据库配置
+  static const String developmentDatabaseUrl = 'mongodb://localhost:27017/flutter_mall_dev';
+  
+  /// 其他开发环境特定配置
+  static const bool enableMockData = false;
+  static const bool enableNetworkLogs = true;
+  static const int networkTimeout = 30; // 秒
+  
+  /// 第三方服务配置（开发环境）
+  static const String developmentPaymentApiKey = 'your_dev_payment_key';
+  static const String developmentAnalyticsKey = 'your_dev_analytics_key';
+} 

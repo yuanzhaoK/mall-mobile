@@ -2,9 +2,12 @@
 ///
 /// 此文件包含应用的所有配置信息，包括环境配置、API配置、功能开关等
 /// 遵循Flutter最佳实践，便于不同环境的配置管理
-library app_config;
 
 import 'package:flutter/foundation.dart';
+
+// 导入本地配置文件
+// 注意：如果本地配置文件不存在，请复制 local_config.dart.template 为 local_config.dart
+import 'package:flutter_home_mall/config/local_config.dart' show LocalConfig;
 
 /// 应用配置类
 class AppConfig {
@@ -41,16 +44,27 @@ class AppConfig {
   }
 
   /// 开发环境配置
-  static const EnvironmentConfig _developmentConfig = EnvironmentConfig(
-    environment: Environment.development,
-    baseUrl: 'http://10.241.25.183:8082',
-    graphqlEndpoint: 'http://10.241.25.183:8082/graphql',
-    websocketEndpoint: 'ws://10.241.25.183:8082/graphql',
-    timeout: Duration(seconds: 30),
-    enableLogging: true,
-    enableDebugMode: true,
-    enablePerformanceOverlay: false,
-  );
+  static EnvironmentConfig get _developmentConfig {
+    return EnvironmentConfig(
+      environment: Environment.development,
+      baseUrl: _getLocalConfigString(
+        'developmentBaseUrl',
+        'http://10.241.25.183:8082',
+      ),
+      graphqlEndpoint: _getLocalConfigString(
+        'developmentGraphqlEndpoint',
+        'http://10.241.25.183:8082/graphql',
+      ),
+      websocketEndpoint: _getLocalConfigString(
+        'developmentWebsocketEndpoint',
+        'ws://10.241.25.183:8082/graphql',
+      ),
+      timeout: Duration(seconds: _getLocalConfigInt('networkTimeout', 30)),
+      enableLogging: _getLocalConfigBool('enableNetworkLogs', true),
+      enableDebugMode: true,
+      enablePerformanceOverlay: false,
+    );
+  }
 
   /// 测试环境配置
   static const EnvironmentConfig _stagingConfig = EnvironmentConfig(
@@ -127,6 +141,115 @@ class AppConfig {
     slowDuration: Duration(milliseconds: 500),
     pageTransitionDuration: Duration(milliseconds: 250),
   );
+
+  /// 本地配置辅助方法
+  ///
+  /// 这些方法用于安全地从本地配置文件中读取值
+  /// 如果本地配置不存在或值不存在，将返回默认值
+
+  /// 获取本地配置字符串值
+  static String _getLocalConfigString(String key, String defaultValue) {
+    try {
+      // 使用反射或者硬编码的方式获取本地配置
+      final value = _getLocalConfigValue(key, defaultValue);
+      debugPrint('🔧 读取本地配置 $key: $value');
+      return value;
+    } catch (e) {
+      debugPrint('⚠️ 无法读取本地配置 $key，使用默认值: $defaultValue');
+      return defaultValue;
+    }
+  }
+
+  /// 获取本地配置整数值
+  static int _getLocalConfigInt(String key, int defaultValue) {
+    try {
+      return _getLocalConfigValue(key, defaultValue);
+    } catch (e) {
+      debugPrint('⚠️ 无法读取本地配置 $key，使用默认值: $defaultValue');
+      return defaultValue;
+    }
+  }
+
+  /// 获取本地配置布尔值
+  static bool _getLocalConfigBool(String key, bool defaultValue) {
+    try {
+      return _getLocalConfigValue(key, defaultValue);
+    } catch (e) {
+      debugPrint('⚠️ 无法读取本地配置 $key，使用默认值: $defaultValue');
+      return defaultValue;
+    }
+  }
+
+  /// 通用的本地配置值获取方法
+  static T _getLocalConfigValue<T>(String key, T defaultValue) {
+    try {
+      debugPrint('🔍 尝试读取本地配置: $key');
+
+      // 尝试从本地配置中获取值
+      switch (key) {
+        case 'developmentBaseUrl':
+          final value = LocalConfig.developmentBaseUrl;
+          debugPrint('✅ 本地配置 $key = $value');
+          return value as T;
+        case 'developmentGraphqlEndpoint':
+          final value = LocalConfig.developmentGraphqlEndpoint;
+          debugPrint('✅ 本地配置 $key = $value');
+          return value as T;
+        case 'developmentWebsocketEndpoint':
+          final value = LocalConfig.developmentWebsocketEndpoint;
+          debugPrint('✅ 本地配置 $key = $value');
+          return value as T;
+        case 'networkTimeout':
+          final value = LocalConfig.networkTimeout;
+          debugPrint('✅ 本地配置 $key = $value');
+          return value as T;
+        case 'enableNetworkLogs':
+          final value = LocalConfig.enableNetworkLogs;
+          debugPrint('✅ 本地配置 $key = $value');
+          return value as T;
+        default:
+          debugPrint('⚠️ 未知配置项 $key，使用默认值: $defaultValue');
+          return defaultValue;
+      }
+    } catch (e, stackTrace) {
+      // 如果本地配置不存在或出错，返回默认值
+      debugPrint('❌ 读取本地配置 $key 出错: $e');
+      debugPrint('📍 堆栈跟踪: $stackTrace');
+      return defaultValue;
+    }
+  }
+
+  /// 检查本地配置是否可用
+  static bool get hasLocalConfig {
+    try {
+      // 尝试访问本地配置
+      final _ = LocalConfig.developmentBaseUrl;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// 获取配置信息摘要（用于调试）
+  static Map<String, dynamic> getConfigSummary() {
+    return {
+      'environment': environment.name,
+      'hasLocalConfig': hasLocalConfig,
+      'currentConfig': {
+        'baseUrl': config.baseUrl,
+        'graphqlEndpoint': config.graphqlEndpoint,
+        'websocketEndpoint': config.websocketEndpoint,
+        'timeout': config.timeout.inSeconds,
+        'enableLogging': config.enableLogging,
+      },
+      'featureFlags': {
+        'enableBiometricAuth': featureFlags.enableBiometricAuth,
+        'enablePushNotifications': featureFlags.enablePushNotifications,
+        'enableDarkMode': featureFlags.enableDarkMode,
+        'enableOfflineMode': featureFlags.enableOfflineMode,
+      },
+    };
+  }
 }
 
 /// 环境枚举

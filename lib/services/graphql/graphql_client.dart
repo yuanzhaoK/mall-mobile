@@ -2,13 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../../config/app_config.dart';
 
 /// GraphQL客户端配置和管理
 class GraphQLClientManager {
-  // 使用确认可用的GraphQL端点
+  // 使用动态配置的GraphQL端点
   static String get endpoint {
-    const endpoint = 'http://10.241.25.183:8082/graphql';
+    final endpoint = AppConfig.config.graphqlEndpoint;
     debugPrint('🔗 GraphQL使用端点: $endpoint');
+    debugPrint('🔧 配置来源: ${AppConfig.hasLocalConfig ? "本地配置" : "默认配置"}');
     return endpoint;
   }
 
