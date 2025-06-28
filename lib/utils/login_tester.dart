@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../services/graphql_service.dart';
+import '../services/graphql/graphql_client.dart';
 
 class LoginTester {
   /// 测试不同的登录凭据
@@ -117,7 +118,7 @@ class LoginTester {
       debugPrint('🔐 测试mutation: ${mutationConfig['name']}');
 
       try {
-        final client = GraphQLService.client;
+        final client = GraphQLClientManager.client;
 
         final MutationOptions options = MutationOptions(
           document: gql(mutationConfig['mutation'] as String),
