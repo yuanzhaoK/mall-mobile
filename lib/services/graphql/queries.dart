@@ -5,12 +5,7 @@ class GraphQLQueries {
     query AppHomeData {
       appHomeData {
         banners {
-          id
-          title
-          image_url
-          link_url
-          type
-          sort_order
+          id title image_url link_url link_type target_type description
         }
         featured_products {
           id 
