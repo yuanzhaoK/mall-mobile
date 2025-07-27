@@ -1,4 +1,5 @@
 # Flutter Mall - 移动购物商城
+
 <div align="center">
 
 ![Flutter Version](https://img.shields.io/badge/Flutter-3.8.1+-blue.svg)
@@ -9,8 +10,6 @@
 一个基于Flutter开发的现代化移动购物商城应用，采用Material Design 3设计语言，提供完整的电商购物体验。
 
 </div>
-
-
 
 ## 🚀 快速开始
 
@@ -24,22 +23,26 @@
 ### 安装步骤
 
 1. **克隆项目**
+
    ```bash
    git clone https://github.com/your-repo/flutter_home_mall.git
    cd flutter_home_mall
    ```
 
 2. **安装依赖**
+
    ```bash
    flutter pub get
    ```
 
 3. **代码生成**（如果需要）
+
    ```bash
    flutter packages pub run build_runner build
    ```
 
 4. **运行应用**
+
    ```bash
    # iOS模拟器
    flutter run -d ios
@@ -115,10 +118,10 @@ lib/
 - **代码格式**: 使用`dart format`自动格式化
 - **静态分析**: 运行`flutter analyze`检查代码质量
 
-
 ### 开发流程
 
 1. **功能开发**
+
    ```bash
    # 创建功能分支
    git checkout -b feature/your-feature-name
@@ -129,6 +132,7 @@ lib/
    ```
 
 2. **代码检查**
+
    ```bash
    # 代码分析
    flutter analyze
@@ -141,6 +145,7 @@ lib/
    ```
 
 3. **提交代码**
+
    ```bash
    # 推送分支
    git push origin feature/your-feature-name
@@ -172,6 +177,7 @@ lib/
 ### 主要查询
 
 #### 首页数据
+
 ```graphql
 query AppHomeData {
   appHomeData {
@@ -183,6 +189,7 @@ query AppHomeData {
 ```
 
 #### 用户认证
+
 ```graphql
 mutation mobileLogin($input: LoginInput!) {
   mobileLogin(input: $input) {
@@ -191,7 +198,6 @@ mutation mobileLogin($input: LoginInput!) {
   }
 }
 ```
-
 
 ## 🧪 测试
 
@@ -208,8 +214,6 @@ flutter test test/models/product_test.dart
 flutter test --coverage
 genhtml coverage/lcov.info -o coverage/html
 ```
-
-
 
 ## 📦 构建部署
 
@@ -230,8 +234,6 @@ flutter build ios --release
 
 不同环境的配置在`lib/config/app_config.dart`中管理：
 
-
-
 ### 提交规范
 
 使用[Conventional Commits](https://conventionalcommits.org/)规范：
@@ -247,13 +249,12 @@ flutter build ios --release
 ## 📝 更新日志
 
 #### 新增
+
 - 初始项目架构
 - 首页和商品浏览功能
 - 用户认证系统
 - 购物车基础功能
 - GraphQL API集成
-
-
 
 ## 📄 许可证
 
@@ -268,6 +269,15 @@ flutter build ios --release
 - [GraphQL Flutter](https://pub.dev/packages/graphql_flutter) - GraphQL客户端
 - [GoRouter](https://pub.dev/packages/go_router) - 声明式路由
 
+## 📞 联系我们
+
+如有问题或建议，请通过以下方式联系：
+
+- **Issues**: [GitHub Issues](https://github.com/your-repo/flutter_home_mall/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-repo/flutter_home_mall/discussions)
+- **Email**: <your-email@example.com>
+
+---
 
 <div align="center">
 
