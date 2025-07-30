@@ -7,9 +7,35 @@ class GraphQLMutations {
         token
         record {
           id
-          email
-          identity
+          level_id
+          points
+          frozen_points
+          total_earned_points
+          total_spent_points
+          balance
+          frozen_balance
+          status
+          is_verified
+          register_time
+          last_login_time
+          last_active_time
+          level_upgrade_time
+          wechat_openid
+          wechat_unionid
+          groups
+          segment
+          risk_level
+          trust_score
+          blacklist_reason
+          custom_fields
+          metadata
           avatar
+          nickname
+          real_name
+          gender
+          birthday
+          bio
+          preferences
         }
       }
     }
