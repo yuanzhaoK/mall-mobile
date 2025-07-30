@@ -82,7 +82,10 @@ class _ProfilePageState extends State<ProfilePage> {
               CircleAvatar(
                 radius: 40,
                 backgroundColor: AppColors.primary,
-                child: isLoggedIn
+                backgroundImage: isLoggedIn && currentUser?.avatarUrl != null
+                    ? NetworkImage(currentUser!.avatarUrl!)
+                    : null,
+                child: isLoggedIn && currentUser?.avatarUrl == null
                     ? Text(
                         (currentUser?.username.isNotEmpty == true)
                             ? currentUser!.username[0].toUpperCase()
@@ -95,7 +98,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.white,
                         ),
                       )
-                    : const Icon(Icons.person, size: 40, color: Colors.white),
+                    : isLoggedIn == false
+                    ? const Icon(Icons.person, size: 40, color: Colors.white)
+                    : null,
               ),
               const SizedBox(width: 20),
               Expanded(

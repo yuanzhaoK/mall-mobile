@@ -249,33 +249,6 @@ class MemberGraphQLMutations {
     }
   ''';
 
-  /// 用户登录
-  static const String login = r'''
-    mutation Login($input: LoginInput!) {
-      login(input: $input) {
-        success
-        token
-        refresh_token
-        user {
-          id
-          username
-          email
-          phone
-          avatar
-          level {
-            id
-            name
-            color
-          }
-          points
-          balance
-        }
-        message
-        expires_in
-      }
-    }
-  ''';
-
   /// 微信登录
   static const String wechatLogin = r'''
     mutation WechatLogin($input: WechatLoginInput!) {

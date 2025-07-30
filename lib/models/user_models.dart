@@ -5,6 +5,11 @@ class User {
   final String id;
   final String identity;
   final String username;
+  final String? realName;
+  final String? phone;
+  final String? address;
+  final String? nickname;
+  final String? gender;
   final String email;
   final String? avatarUrl;
   final String memberLevel;
@@ -18,6 +23,11 @@ class User {
     required this.email,
     required this.username,
     this.avatarUrl,
+    this.realName,
+    this.phone,
+    this.address,
+    this.nickname,
+    this.gender,
     required this.memberLevel,
     required this.points,
     required this.balance,
