@@ -61,13 +61,10 @@ class GraphQLQueries {
     query AppProfile {
       appProfile {
         id
-        identity
         email
         avatar
-        member_level
         points
         balance
-        coupons_count
       }
     }
   ''';

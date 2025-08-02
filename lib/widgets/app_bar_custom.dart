@@ -88,7 +88,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               border: Border.all(color: AppColors.border, width: 1),
             ),
             child: user != null
-                ? _buildUserAvatar(user.avatarUrl, user.username)
+                ? _buildUserAvatar(user.avatar, user.username)
                 : const Icon(
                     Icons.person_outline,
                     color: AppColors.textSecondary,
@@ -101,11 +101,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   /// 构建用户头像
-  Widget _buildUserAvatar(String? avatarUrl, String username) {
-    if (avatarUrl != null && avatarUrl.isNotEmpty) {
+  Widget _buildUserAvatar(String? avatar, String username) {
+    if (avatar != null && avatar.isNotEmpty) {
       return ClipOval(
         child: Image.network(
-          avatarUrl,
+          avatar,
           width: 40,
           height: 40,
           fit: BoxFit.cover,

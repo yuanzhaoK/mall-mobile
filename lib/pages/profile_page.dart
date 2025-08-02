@@ -30,10 +30,25 @@ class _ProfilePageState extends State<ProfilePage> {
     _checkLoginStatus();
   }
 
-  void _checkLoginStatus() {
+  void _checkLoginStatus() async {
     setState(() {
       isLoggedIn = GraphQLService.isLoggedIn;
     });
+
+    // 如果已登录，获取用户信息
+    if (isLoggedIn) {
+      try {
+        final user = await GraphQLService.getCurrentUser();
+        if (user != null) {
+          setState(() {
+            currentUser = user;
+            username = user.username;
+          });
+        }
+      } catch (e) {
+        debugPrint('获取用户信息失败: $e');
+      }
+    }
   }
 
   @override
@@ -82,10 +97,10 @@ class _ProfilePageState extends State<ProfilePage> {
               CircleAvatar(
                 radius: 40,
                 backgroundColor: AppColors.primary,
-                backgroundImage: isLoggedIn && currentUser?.avatarUrl != null
-                    ? NetworkImage(currentUser!.avatarUrl!)
+                backgroundImage: isLoggedIn && currentUser?.avatar != null
+                    ? NetworkImage(currentUser!.avatar!)
                     : null,
-                child: isLoggedIn && currentUser?.avatarUrl == null
+                child: isLoggedIn && currentUser?.avatar == null
                     ? Text(
                         (currentUser?.username.isNotEmpty == true)
                             ? currentUser!.username[0].toUpperCase()

@@ -10,15 +10,7 @@ class LoginTester {
 
     // 测试用的凭据列表
     final testCredentials = [
-      {'identity': 'test@example.com', 'password': 'test123'},
-      {'identity': 'admin@example.com', 'password': 'admin123'},
-      {'identity': 'user@test.com', 'password': 'password'},
-      {'identity': 'demo@demo.com', 'password': 'demo123'},
-      {'identity': 'test', 'password': 'test'},
-      {'identity': 'admin', 'password': 'admin'},
-      // 添加用户提供的凭据
-      {'identity': 'test@example.com', 'password': 'kpyu1512'},
-      {'identity': 'ahukpyu@outlook.com', 'password': 'kpyu1512..@'},
+      {'identity': 'yushuyao@sohu.com', 'password': 'password123'},
     ];
 
     for (int i = 0; i < testCredentials.length; i++) {

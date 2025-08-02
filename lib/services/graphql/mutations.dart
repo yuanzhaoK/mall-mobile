@@ -4,38 +4,19 @@ class GraphQLMutations {
   static const String login = r'''
     mutation mobileLogin($input: LoginInput!) {
       mobileLogin(input: $input) {
+        success
         token
-        record {
+        refresh_token
+        expires_in
+        user {
           id
-          level_id
-          points
-          frozen_points
-          total_earned_points
-          total_spent_points
-          balance
-          frozen_balance
-          status
-          is_verified
-          register_time
-          last_login_time
-          last_active_time
-          level_upgrade_time
-          wechat_openid
-          wechat_unionid
-          groups
-          segment
-          risk_level
-          trust_score
-          blacklist_reason
-          custom_fields
-          metadata
+          email
+          permissions
           avatar
-          nickname
-          real_name
-          gender
-          birthday
-          bio
-          preferences
+          role
+          status
+          username
+          record
         }
       }
     }

@@ -120,10 +120,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   child: ClipOval(
                     child: _avatarImage != null
                         ? Image.file(_avatarImage!, fit: BoxFit.cover)
-                        : widget.user.avatarUrl != null &&
-                              widget.user.avatarUrl!.isNotEmpty
+                        : widget.user.avatar != null &&
+                              widget.user.avatar!.isNotEmpty
                         ? Image.network(
-                            widget.user.avatarUrl!,
+                            widget.user.avatar!,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 _buildDefaultAvatar(),
@@ -420,7 +420,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         identity: _phoneController.text.trim(),
         username: _usernameController.text.trim(),
         email: _emailController.text.trim(),
-        avatarUrl: widget.user.avatarUrl, // TODO: 上传头像后更新URL
+        avatar: widget.user.avatar, // TODO: 上传头像后更新URL
         memberLevel: widget.user.memberLevel,
         points: widget.user.points,
         balance: widget.user.balance,
