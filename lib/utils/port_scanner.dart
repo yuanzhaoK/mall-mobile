@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class PortScanner {
   /// 扫描常见端口寻找GraphQL服务
   static Future<List<String>> scanForGraphQLServices(String host) async {
-    List<String> foundServices = [];
+    var foundServices = <String>[];
 
     // 常见的GraphQL端口
     final ports = [
@@ -30,8 +30,8 @@ class PortScanner {
 
     debugPrint('🔍 开始扫描 $host 的GraphQL服务...');
 
-    for (int port in ports) {
-      for (String path in paths) {
+    for (var port in ports) {
+      for (var path in paths) {
         final url = 'http://$host:$port$path';
 
         try {
@@ -89,11 +89,11 @@ class PortScanner {
     int startPort,
     int endPort,
   ) async {
-    List<int> openPorts = [];
+    var openPorts = <int>[];
 
     debugPrint('🔍 扫描 $host 端口范围 $startPort-$endPort');
 
-    for (int port = startPort; port <= endPort; port++) {
+    for (var port = startPort; port <= endPort; port++) {
       if (await isPortOpen(host, port)) {
         openPorts.add(port);
         debugPrint('✅ 端口 $port 开放');

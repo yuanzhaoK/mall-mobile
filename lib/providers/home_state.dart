@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' hide Category;
-import '../models/api_models.dart';
-import '../services/graphql_service.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
 
 /// 首页状态管理
 class HomeState extends ChangeNotifier {

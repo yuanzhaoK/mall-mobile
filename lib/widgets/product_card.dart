@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
-import '../providers/cart_state.dart';
-import '../pages/product_detail_page.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
 
 /// 商品卡片组件
 class ProductCard extends StatelessWidget {
-  final Product product;
-  final VoidCallback? onTap;
-  final VoidCallback? onAddToCart;
-  final VoidCallback? onFavorite;
-  final bool showAddToCart;
-  final bool showFavorite;
-
   const ProductCard({
     super.key,
     required this.product,
@@ -25,6 +18,12 @@ class ProductCard extends StatelessWidget {
     this.showAddToCart = true,
     this.showFavorite = true,
   });
+  final Product product;
+  final VoidCallback? onTap;
+  final VoidCallback? onAddToCart;
+  final VoidCallback? onFavorite;
+  final bool showAddToCart;
+  final bool showFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +93,8 @@ class ProductCard extends StatelessWidget {
         Container(
           height: 120,
           width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
               topLeft: Radius.circular(AppRadius.md),
               topRight: Radius.circular(AppRadius.md),
             ),
@@ -109,13 +108,13 @@ class ProductCard extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: product.imageUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
+              placeholder: (context, url) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
-              errorWidget: (context, url, error) => Container(
+              errorWidget: (context, url, error) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: const Icon(
                   Icons.image_not_supported,
@@ -132,7 +131,7 @@ class ProductCard extends StatelessWidget {
           Positioned(
             top: AppSpacing.sm,
             right: AppSpacing.sm,
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.9),
                 shape: BoxShape.circle,
@@ -329,7 +328,7 @@ class ProductCard extends StatelessWidget {
   }
 
   /// 处理加购物车
-  void _handleAddToCart(BuildContext context) async {
+  Future<void> _handleAddToCart(BuildContext context) async {
     try {
       await context.read<CartState>().addToCart(product);
 

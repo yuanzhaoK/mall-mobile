@@ -7,12 +7,6 @@ import 'package:flutter_home_mall/core/themes/app_theme.dart';
 
 /// 简化版轮播图组件
 class SimpleBanner extends StatefulWidget {
-  final List<BannerItem> banners;
-  final Duration autoPlayInterval;
-  final bool autoPlay;
-  final double height;
-  final Function(BannerItem)? onBannerTap;
-
   const SimpleBanner({
     super.key,
     required this.banners,
@@ -21,6 +15,11 @@ class SimpleBanner extends StatefulWidget {
     this.height = 180,
     this.onBannerTap,
   });
+  final List<BannerItem> banners;
+  final Duration autoPlayInterval;
+  final bool autoPlay;
+  final double height;
+  final Function(BannerItem)? onBannerTap;
 
   @override
   State<SimpleBanner> createState() => _SimpleBannerState();
@@ -118,18 +117,18 @@ class _SimpleBannerState extends State<SimpleBanner> {
             CachedNetworkImage(
               imageUrl: banner.imageUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
+              placeholder: (context, url) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
-              errorWidget: (context, url, error) => Container(
+              errorWidget: (context, url, error) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.image_not_supported,
                       size: 48,
                       color: AppColors.textLight,
@@ -261,7 +260,11 @@ class _SimpleBannerState extends State<SimpleBanner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.image_outlined, size: 48, color: AppColors.textLight),
+          const Icon(
+            Icons.image_outlined,
+            size: 48,
+            color: AppColors.textLight,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             '暂无轮播图',

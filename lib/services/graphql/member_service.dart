@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'graphql_client.dart';
-import 'member_queries.dart';
-import '../../models/user_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/member_queries.dart';
+import 'package:flutter_home_mall/models/user_models.dart';
 
 ///
 /// 提供用户端会员相关功能
@@ -16,11 +16,11 @@ class MemberService {
   /// 获取当前登录用户信息
   static Future<User?> getCurrentMember() async {
     try {
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(MemberGraphQLQueries.appMember),
       );
 
-      final QueryResult result = await _client.query(options);
+      final result = await _client.query(options);
 
       if (result.hasException) {
         print('❌ 获取当前用户信息失败: ${result.exception}');
@@ -47,7 +47,7 @@ class MemberService {
     String? phone,
   }) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.updateProfile),
         variables: {
           'input': {
@@ -60,7 +60,7 @@ class MemberService {
         },
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 更新个人资料失败: ${result.exception}');
@@ -85,7 +85,7 @@ class MemberService {
     required String confirmPassword,
   }) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.changePassword),
         variables: {
           'input': {
@@ -96,7 +96,7 @@ class MemberService {
         },
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 修改密码失败: ${result.exception}');
@@ -117,11 +117,11 @@ class MemberService {
   /// 获取用户地址列表
   static Future<AddressList?> getMemberAddresses() async {
     try {
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(MemberGraphQLQueries.appMemberAddresses),
       );
 
-      final QueryResult result = await _client.query(options);
+      final result = await _client.query(options);
 
       if (result.hasException) {
         print('❌ 获取地址列表失败: ${result.exception}');
@@ -152,7 +152,7 @@ class MemberService {
     String? tag,
   }) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.addAddress),
         variables: {
           'input': {
@@ -169,7 +169,7 @@ class MemberService {
         },
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 添加地址失败: ${result.exception}');
@@ -201,7 +201,7 @@ class MemberService {
     String? tag,
   }) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.updateAddress),
         variables: {
           'id': id,
@@ -219,7 +219,7 @@ class MemberService {
         },
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 更新地址失败: ${result.exception}');
@@ -240,12 +240,12 @@ class MemberService {
   /// 删除收货地址
   static Future<bool> deleteAddress(String id) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.deleteAddress),
         variables: {'id': id},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 删除地址失败: ${result.exception}');
@@ -262,12 +262,12 @@ class MemberService {
   /// 设置默认地址
   static Future<bool> setDefaultAddress(String id) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.setDefaultAddress),
         variables: {'id': id},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 设置默认地址失败: ${result.exception}');
@@ -291,7 +291,7 @@ class MemberService {
     int limit = 20,
   }) async {
     try {
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(MemberGraphQLQueries.memberFavorites),
         variables: {
           'input': {
@@ -300,7 +300,7 @@ class MemberService {
         },
       );
 
-      final QueryResult result = await _client.query(options);
+      final result = await _client.query(options);
 
       if (result.hasException) {
         print('❌ 获取收藏列表失败: ${result.exception}');
@@ -321,12 +321,12 @@ class MemberService {
   /// 添加收藏
   static Future<bool> addToFavorites(String productId) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.addToFavorites),
         variables: {'product_id': productId},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 添加收藏失败: ${result.exception}');
@@ -343,12 +343,12 @@ class MemberService {
   /// 取消收藏
   static Future<bool> removeFromFavorites(String productId) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.removeFromFavorites),
         variables: {'product_id': productId},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 取消收藏失败: ${result.exception}');
@@ -365,12 +365,12 @@ class MemberService {
   /// 批量取消收藏
   static Future<bool> batchRemoveFavorites(List<String> productIds) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.batchRemoveFavorites),
         variables: {'product_ids': productIds},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 批量取消收藏失败: ${result.exception}');
@@ -447,10 +447,6 @@ class MemberService {
 
 /// 地址列表
 class AddressList {
-  final List<Address> addresses;
-  final Address? defaultAddress;
-  final int total;
-
   AddressList({
     required this.addresses,
     this.defaultAddress,
@@ -468,24 +464,13 @@ class AddressList {
       total: json['total'] ?? 0,
     );
   }
+  final List<Address> addresses;
+  final Address? defaultAddress;
+  final int total;
 }
 
 /// 地址
 class Address {
-  final String id;
-  final String userId;
-  final String name;
-  final String phone;
-  final String province;
-  final String city;
-  final String district;
-  final String address;
-  final String? postalCode;
-  final bool isDefault;
-  final String? tag;
-  final DateTime created;
-  final DateTime updated;
-
   Address({
     required this.id,
     required this.userId,
@@ -523,6 +508,19 @@ class Address {
       ),
     );
   }
+  final String id;
+  final String userId;
+  final String name;
+  final String phone;
+  final String province;
+  final String city;
+  final String district;
+  final String address;
+  final String? postalCode;
+  final bool isDefault;
+  final String? tag;
+  final DateTime created;
+  final DateTime updated;
 
   /// 获取完整地址
   String get fullAddress => '$province$city$district$address';
@@ -533,10 +531,6 @@ class Address {
 
 /// 收藏列表响应
 class FavoritesResponse {
-  final List<Favorite> favorites;
-  final PaginationInfo pagination;
-  final int total;
-
   FavoritesResponse({
     required this.favorites,
     required this.pagination,
@@ -552,15 +546,13 @@ class FavoritesResponse {
       total: json['total'] ?? 0,
     );
   }
+  final List<Favorite> favorites;
+  final PaginationInfo pagination;
+  final int total;
 }
 
 /// 收藏
 class Favorite {
-  final String id;
-  final String userId;
-  final Product product;
-  final DateTime created;
-
   Favorite({
     required this.id,
     required this.userId,
@@ -578,18 +570,14 @@ class Favorite {
       ),
     );
   }
+  final String id;
+  final String userId;
+  final Product product;
+  final DateTime created;
 }
 
 /// 商品信息
 class Product {
-  final String id;
-  final String name;
-  final double price;
-  final double? originalPrice;
-  final String imageUrl;
-  final double? rating;
-  final int? salesCount;
-
   Product({
     required this.id,
     required this.name,
@@ -611,16 +599,17 @@ class Product {
       salesCount: json['sales_count'],
     );
   }
+  final String id;
+  final String name;
+  final double price;
+  final double? originalPrice;
+  final String imageUrl;
+  final double? rating;
+  final int? salesCount;
 }
 
 /// 分页信息
 class PaginationInfo {
-  final int currentPage;
-  final int totalPages;
-  final int totalItems;
-  final bool hasMore;
-  final int perPage;
-
   PaginationInfo({
     required this.currentPage,
     required this.totalPages,
@@ -638,4 +627,9 @@ class PaginationInfo {
       perPage: json['per_page'] ?? 20,
     );
   }
+  final int currentPage;
+  final int totalPages;
+  final int totalItems;
+  final bool hasMore;
+  final int perPage;
 }

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
 
 /// 首页轮播图组件
 class HomeBanner extends StatefulWidget {
-  final List<BannerItem> banners;
-  final Duration autoPlayInterval;
-  final bool autoPlay;
-  final double height;
-  final Function(BannerItem)? onBannerTap;
-
   const HomeBanner({
     super.key,
     required this.banners,
@@ -21,6 +15,11 @@ class HomeBanner extends StatefulWidget {
     this.height = 180,
     this.onBannerTap,
   });
+  final List<BannerItem> banners;
+  final Duration autoPlayInterval;
+  final bool autoPlay;
+  final double height;
+  final Function(BannerItem)? onBannerTap;
 
   @override
   State<HomeBanner> createState() => _HomeBannerState();
@@ -68,13 +67,9 @@ class _HomeBannerState extends State<HomeBanner> {
         },
         options: carousel.CarouselOptions(
           height: widget.height,
-          viewportFraction: 1.0,
+          viewportFraction: 1,
           autoPlay: widget.autoPlay && widget.banners.length > 1,
           autoPlayInterval: widget.autoPlayInterval,
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: false,
-          scrollDirection: Axis.horizontal,
           onPageChanged: (index, reason) {
             setState(() {
               _currentIndex = index;
@@ -102,18 +97,18 @@ class _HomeBannerState extends State<HomeBanner> {
             CachedNetworkImage(
               imageUrl: banner.imageUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
+              placeholder: (context, url) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
-              errorWidget: (context, url, error) => Container(
+              errorWidget: (context, url, error) => ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.image_not_supported,
                       size: 48,
                       color: AppColors.textLight,
@@ -237,8 +232,8 @@ class _HomeBannerState extends State<HomeBanner> {
           // 左箭头
           Expanded(
             child: GestureDetector(
-              onTap: () => _carouselController.previousPage(),
-              child: Container(
+              onTap: _carouselController.previousPage,
+              child: ColoredBox(
                 color: Colors.transparent,
                 child: const Align(
                   alignment: Alignment.centerLeft,
@@ -258,8 +253,8 @@ class _HomeBannerState extends State<HomeBanner> {
           // 右箭头
           Expanded(
             child: GestureDetector(
-              onTap: () => _carouselController.nextPage(),
-              child: Container(
+              onTap: _carouselController.nextPage,
+              child: ColoredBox(
                 color: Colors.transparent,
                 child: const Align(
                   alignment: Alignment.centerRight,
@@ -292,7 +287,11 @@ class _HomeBannerState extends State<HomeBanner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.image_outlined, size: 48, color: AppColors.textLight),
+          const Icon(
+            Icons.image_outlined,
+            size: 48,
+            color: AppColors.textLight,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             '暂无轮播图',

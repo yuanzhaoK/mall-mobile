@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/constants/app_strings.dart';
 
 class RecommendationCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String price;
-  final Color color;
-
   const RecommendationCard({
     super.key,
     required this.title,
@@ -15,6 +10,10 @@ class RecommendationCard extends StatelessWidget {
     required this.price,
     required this.color,
   });
+  final String title;
+  final String description;
+  final String price;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

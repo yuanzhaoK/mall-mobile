@@ -2,7 +2,7 @@
 
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import '../config/app_config.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
 
 class NetworkHelper {
   /// 获取适合当前平台的API端点

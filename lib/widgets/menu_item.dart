@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 class MenuItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-
   const MenuItem({
     super.key,
     required this.icon,
     required this.title,
     required this.onTap,
   });
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

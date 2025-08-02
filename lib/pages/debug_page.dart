@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../services/graphql_service.dart';
-import '../utils/connection_tester.dart';
-import '../utils/network_helper.dart';
-import '../utils/port_scanner.dart';
-import '../utils/graphql_diagnostics.dart';
-import '../utils/login_tester.dart';
-import '../config/app_config.dart';
-import 'login_test_page.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/utils/connection_tester.dart';
+import 'package:flutter_home_mall/utils/network_helper.dart';
+import 'package:flutter_home_mall/utils/port_scanner.dart';
+import 'package:flutter_home_mall/utils/graphql_diagnostics.dart';
+import 'package:flutter_home_mall/utils/login_tester.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
+import 'package:flutter_home_mall/pages/login_test_page.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({super.key});
@@ -101,7 +101,7 @@ class _DebugPageState extends State<DebugPage> {
 
     addLog('🔄 测试所有可能的端点...');
 
-    for (String endpoint in testEndpoints) {
+    for (var endpoint in testEndpoints) {
       addLog('测试: $endpoint');
       final isWorking = await ConnectionTester.testEndpoint(endpoint);
       addLog('${isWorking ? '✅' : '❌'} $endpoint - ${isWorking ? '成功' : '失败'}');
@@ -110,7 +110,7 @@ class _DebugPageState extends State<DebugPage> {
     // 获取网络信息
     addLog('📶 获取网络信息...');
     final networkInfo = await ConnectionTester.getNetworkInfo();
-    for (String info in networkInfo) {
+    for (var info in networkInfo) {
       addLog('🌐 $info');
     }
 
@@ -176,7 +176,7 @@ class _DebugPageState extends State<DebugPage> {
     );
     if (graphqlServices.isNotEmpty) {
       addLog('✅ 找到GraphQL服务:');
-      for (String service in graphqlServices) {
+      for (var service in graphqlServices) {
         addLog('   📍 $service');
       }
     } else {
@@ -190,7 +190,7 @@ class _DebugPageState extends State<DebugPage> {
     );
     if (localGraphqlServices.isNotEmpty) {
       addLog('✅ 找到localhost GraphQL服务:');
-      for (String service in localGraphqlServices) {
+      for (var service in localGraphqlServices) {
         addLog('   📍 $service');
       }
     } else {
@@ -253,7 +253,7 @@ class _DebugPageState extends State<DebugPage> {
           // 显示前几个产品
           if (result.featuredProducts.isNotEmpty) {
             addLog('🛍️ 产品示例:');
-            for (int i = 0; i < 3 && i < result.featuredProducts.length; i++) {
+            for (var i = 0; i < 3 && i < result.featuredProducts.length; i++) {
               final product = result.featuredProducts[i];
               addLog('   • ${product.name} - ${product.formattedPrice}');
             }
@@ -295,7 +295,7 @@ class _DebugPageState extends State<DebugPage> {
 
     String? workingEndpoint;
 
-    for (String endpoint in endpoints) {
+    for (var endpoint in endpoints) {
       addLog('🔗 测试: $endpoint');
 
       final testResult = await ConnectionTester.testEndpointDetailed(endpoint);
@@ -413,7 +413,7 @@ class _DebugPageState extends State<DebugPage> {
 
       // 将报告按行分割并添加到日志
       final reportLines = report.split('\n');
-      for (String line in reportLines) {
+      for (var line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }
@@ -441,7 +441,7 @@ class _DebugPageState extends State<DebugPage> {
         addLog('✅ GraphQL连接正常');
 
         // 检查超时结果
-        bool hasTimeoutIssues = true;
+        var hasTimeoutIssues = true;
         timeoutTest.forEach((key, value) {
           if (key.startsWith('timeout_') && value['success']) {
             hasTimeoutIssues = false;
@@ -487,14 +487,14 @@ class _DebugPageState extends State<DebugPage> {
         mutationResults,
       );
       final reportLines = mutationReport.split('\n');
-      for (String line in reportLines) {
+      for (var line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }
       }
 
       // 检查是否有成功的mutation
-      bool foundWorkingMutation = false;
+      var foundWorkingMutation = false;
       mutationResults.forEach((key, value) {
         if (value['success'] == true) {
           foundWorkingMutation = true;
@@ -520,7 +520,7 @@ class _DebugPageState extends State<DebugPage> {
         credentialsResults,
       );
       final reportLines = credentialsReport.split('\n');
-      for (String line in reportLines) {
+      for (var line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }
@@ -563,7 +563,7 @@ class _DebugPageState extends State<DebugPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 ElevatedButton(
@@ -726,7 +726,7 @@ class _DebugPageState extends State<DebugPage> {
                 itemCount: logs.length,
                 itemBuilder: (context, index) {
                   final log = logs[index];
-                  Color textColor = Colors.white;
+                  var textColor = Colors.white;
 
                   if (log.contains('✅')) {
                     textColor = Colors.green;

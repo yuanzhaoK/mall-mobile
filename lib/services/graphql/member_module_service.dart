@@ -2,6 +2,7 @@
 ///
 /// 整合用户端会员管理、积分系统、推荐系统等服务
 /// 提供统一的API入口和服务管理
+library;
 
 // 导入所有模块化服务
 export 'schema_types.dart'
@@ -16,16 +17,16 @@ export 'member_service.dart';
 export 'recommendation_service.dart';
 
 // 导入依赖
-import 'member_service.dart';
-import 'points_service.dart';
-import 'recommendation_service.dart';
-import 'cart_service.dart';
-import 'auth_service.dart';
-import 'graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/member_service.dart';
+import 'package:flutter_home_mall/services/graphql/points_service.dart';
+import 'package:flutter_home_mall/services/graphql/recommendation_service.dart';
+import 'package:flutter_home_mall/services/graphql/cart_service.dart';
+import 'package:flutter_home_mall/services/graphql/auth_service.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
 
 // 导入数据模型
-import '../../models/user_models.dart';
-import '../../models/api_models.dart';
+import 'package:flutter_home_mall/models/user_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 会员模块服务管理器（用户端）
 ///
@@ -411,11 +412,6 @@ class MemberModuleConfig {
 
 /// 服务响应包装器
 class ServiceResponse<T> {
-  final bool success;
-  final T? data;
-  final String? error;
-  final int? code;
-
   ServiceResponse({required this.success, this.data, this.error, this.code});
 
   factory ServiceResponse.success(T data) {
@@ -425,4 +421,8 @@ class ServiceResponse<T> {
   factory ServiceResponse.error(String error, {int? code}) {
     return ServiceResponse(success: false, error: error, code: code);
   }
+  final bool success;
+  final T? data;
+  final String? error;
+  final int? code;
 }

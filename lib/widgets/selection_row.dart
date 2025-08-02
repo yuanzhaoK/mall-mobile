@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 class SelectionRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final VoidCallback? onTap;
-
   const SelectionRow({
     super.key,
     required this.label,
     required this.value,
     this.onTap,
   });
+  final String label;
+  final String value;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

@@ -170,7 +170,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppColors.border),
+            borderSide: const BorderSide(color: AppColors.border),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -178,7 +178,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppColors.border),
+            borderSide: const BorderSide(color: AppColors.border),
           ),
           filled: true,
           fillColor: AppColors.surfaceVariant.withValues(alpha: 0.3),
@@ -206,7 +206,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           const SizedBox(height: 16),
 
           // 帮助分类
-          ..._categories.map((category) => _buildCategoryCard(category)),
+          ..._categories.map(_buildCategoryCard),
           const SizedBox(height: 16),
 
           // 联系客服
@@ -238,11 +238,11 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
               Icon(Icons.whatshot, color: Colors.red, size: 20),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 '热门问题',
                 style: TextStyle(
                   fontSize: 16,
@@ -253,7 +253,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
             ],
           ),
           const SizedBox(height: 12),
-          ...popularQuestions.map((question) => _buildQuestionTile(question)),
+          ...popularQuestions.map(_buildQuestionTile),
         ],
       ),
     );
@@ -296,9 +296,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           '${category.questions.length} 个问题',
           style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
         ),
-        children: category.questions.map((question) {
-          return _buildQuestionAnswerTile(question);
-        }).toList(),
+        children: category.questions.map(_buildQuestionAnswerTile).toList(),
       ),
     );
   }
@@ -586,12 +584,6 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
 
 /// 帮助分类模型
 class HelpCategory {
-  final String id;
-  final String title;
-  final IconData icon;
-  final Color color;
-  final List<HelpQuestion> questions;
-
   HelpCategory({
     required this.id,
     required this.title,
@@ -599,14 +591,18 @@ class HelpCategory {
     required this.color,
     required this.questions,
   });
+  final String id;
+  final String title;
+  final IconData icon;
+  final Color color;
+  final List<HelpQuestion> questions;
 }
 
 /// 帮助问题模型
 class HelpQuestion {
+  HelpQuestion({required this.question, required this.answer});
   final String question;
   final String answer;
-
-  HelpQuestion({required this.question, required this.answer});
 }
 
 /// 客服页面
@@ -708,14 +704,10 @@ class _CustomerServicePageState extends State<CustomerServicePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!message.isFromUser) ...[
-            CircleAvatar(
+            const CircleAvatar(
               backgroundColor: AppColors.primary,
               radius: 16,
-              child: const Icon(
-                Icons.support_agent,
-                color: Colors.white,
-                size: 16,
-              ),
+              child: Icon(Icons.support_agent, color: Colors.white, size: 16),
             ),
             const SizedBox(width: 8),
           ],
@@ -761,10 +753,10 @@ class _CustomerServicePageState extends State<CustomerServicePage> {
 
           if (message.isFromUser) ...[
             const SizedBox(width: 8),
-            CircleAvatar(
+            const CircleAvatar(
               backgroundColor: AppColors.surfaceVariant,
               radius: 16,
-              child: const Icon(
+              child: Icon(
                 Icons.person,
                 color: AppColors.textSecondary,
                 size: 16,
@@ -796,7 +788,7 @@ class _CustomerServicePageState extends State<CustomerServicePage> {
                   hintText: '输入消息...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -804,7 +796,7 @@ class _CustomerServicePageState extends State<CustomerServicePage> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: AppColors.border),
+                    borderSide: const BorderSide(color: AppColors.border),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -874,13 +866,12 @@ class _CustomerServicePageState extends State<CustomerServicePage> {
 
 /// 聊天消息模型
 class ChatMessage {
-  final String content;
-  final bool isFromUser;
-  final DateTime timestamp;
-
   ChatMessage({
     required this.content,
     required this.isFromUser,
     required this.timestamp,
   });
+  final String content;
+  final bool isFromUser;
+  final DateTime timestamp;
 }

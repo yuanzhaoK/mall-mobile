@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'core/themes/app_theme.dart';
-import 'constants/app_strings.dart';
-import 'pages/home_page.dart';
-import 'pages/mall_page.dart';
-import 'pages/profile_page.dart';
-import 'pages/cart_page.dart';
-import 'pages/search_page.dart';
-import 'services/graphql_service.dart';
-import 'providers/app_state.dart';
-import 'providers/home_state.dart';
-import 'providers/mall_state.dart';
-import 'providers/cart_state.dart';
-import 'providers/search_state.dart';
-import 'providers/product_detail_state.dart';
-import 'providers/order_state.dart';
-import 'config/app_config.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/constants/app_strings.dart';
+import 'package:flutter_home_mall/pages/home_page.dart';
+import 'package:flutter_home_mall/pages/mall_page.dart';
+import 'package:flutter_home_mall/pages/profile_page.dart';
+import 'package:flutter_home_mall/pages/cart_page.dart';
+import 'package:flutter_home_mall/pages/search_page.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/providers/app_state.dart';
+import 'package:flutter_home_mall/providers/home_state.dart';
+import 'package:flutter_home_mall/providers/mall_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/providers/search_state.dart';
+import 'package:flutter_home_mall/providers/product_detail_state.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

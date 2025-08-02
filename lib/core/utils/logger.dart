@@ -1,11 +1,11 @@
 /// 应用日志系统
 ///
 /// 提供统一的日志记录功能，支持不同日志级别和输出格式
-library app_logger;
+library;
 
 import 'package:flutter/foundation.dart';
 
-import '../../config/app_config.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
 
 /// 日志级别
 enum LogLevel {
@@ -25,18 +25,17 @@ enum LogLevel {
 
 /// 应用日志记录器
 class Logger {
+  /// 创建带标签的日志记录器
+  factory Logger.forTag(String tag) => Logger._(tag);
+
+  /// 创建带类名的日志记录器
+  factory Logger.forClass(Type type) => Logger._(type.toString());
   Logger._(this._tag);
 
   final String _tag;
 
   /// 当前最小日志级别
   static LogLevel _minLevel = LogLevel.debug;
-
-  /// 创建带标签的日志记录器
-  factory Logger.forTag(String tag) => Logger._(tag);
-
-  /// 创建带类名的日志记录器
-  factory Logger.forClass(Type type) => Logger._(type.toString());
 
   /// 设置最小日志级别
   static void setMinLevel(LogLevel level) {

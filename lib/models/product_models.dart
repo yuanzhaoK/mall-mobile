@@ -2,14 +2,6 @@
 
 // 商品模型
 class Product {
-  final String id;
-  final String name;
-  final double price;
-  final double? originalPrice;
-  final String imageUrl;
-  final double rating;
-  final int salesCount;
-
   Product({
     required this.id,
     required this.name,
@@ -31,6 +23,13 @@ class Product {
       salesCount: json['sales_count'] ?? 0,
     );
   }
+  final String id;
+  final String name;
+  final double price;
+  final double? originalPrice;
+  final String imageUrl;
+  final double rating;
+  final int salesCount;
 
   // 计算折扣百分比
   double? get discountPercentage {
@@ -51,20 +50,6 @@ class Product {
 
 // 商品详情模型
 class ProductDetail {
-  final Product product;
-  final List<String> images;
-  final String description;
-  final String brand;
-  final String category;
-  final List<ProductSpec> specifications;
-  final List<ProductSku> skus;
-  final ProductService service;
-  final List<ProductReview> reviews;
-  final int stock;
-  final bool isInWishlist;
-  final String shopName;
-  final double shopRating;
-
   ProductDetail({
     required this.product,
     required this.images,
@@ -110,6 +95,19 @@ class ProductDetail {
       shopRating: (json['shop_rating'] ?? 0).toDouble(),
     );
   }
+  final Product product;
+  final List<String> images;
+  final String description;
+  final String brand;
+  final String category;
+  final List<ProductSpec> specifications;
+  final List<ProductSku> skus;
+  final ProductService service;
+  final List<ProductReview> reviews;
+  final int stock;
+  final bool isInWishlist;
+  final String shopName;
+  final double shopRating;
 
   // 是否有库存
   bool get hasStock => stock > 0;
@@ -123,8 +121,8 @@ class ProductDetail {
 
   // 平均评分
   double get averageRating {
-    if (reviews.isEmpty) return 0.0;
-    return reviews.fold(0.0, (sum, review) => sum + review.rating) /
+    if (reviews.isEmpty) return 0;
+    return reviews.fold(0, (sum, review) => sum + review.rating) /
         reviews.length;
   }
 
@@ -140,10 +138,6 @@ class ProductDetail {
 
 // 商品规格模型
 class ProductSpec {
-  final String name;
-  final String value;
-  final String? unit;
-
   ProductSpec({required this.name, required this.value, this.unit});
 
   factory ProductSpec.fromJson(Map<String, dynamic> json) {
@@ -153,20 +147,15 @@ class ProductSpec {
       unit: json['unit'],
     );
   }
+  final String name;
+  final String value;
+  final String? unit;
 
   String get displayValue => unit != null ? '$value$unit' : value;
 }
 
 // 商品SKU模型
 class ProductSku {
-  final String id;
-  final String name;
-  final double price;
-  final double? originalPrice;
-  final int stock;
-  final String? image;
-  final Map<String, String> attributes;
-
   ProductSku({
     required this.id,
     required this.name,
@@ -188,6 +177,13 @@ class ProductSku {
       attributes: Map<String, String>.from(json['attributes'] ?? {}),
     );
   }
+  final String id;
+  final String name;
+  final double price;
+  final double? originalPrice;
+  final int stock;
+  final String? image;
+  final Map<String, String> attributes;
 
   bool get hasStock => stock > 0;
   String get formattedPrice => '¥${price.toStringAsFixed(2)}';
@@ -195,12 +191,6 @@ class ProductSku {
 
 // 商品服务模型
 class ProductService {
-  final bool freeShipping;
-  final bool returnGuarantee;
-  final bool qualityAssurance;
-  final int returnDays;
-  final String warranty;
-
   ProductService({
     required this.freeShipping,
     required this.returnGuarantee,
@@ -218,6 +208,11 @@ class ProductService {
       warranty: json['warranty'] ?? '',
     );
   }
+  final bool freeShipping;
+  final bool returnGuarantee;
+  final bool qualityAssurance;
+  final int returnDays;
+  final String warranty;
 
   List<String> get serviceList {
     final services = <String>[];
@@ -231,17 +226,6 @@ class ProductService {
 
 // 商品评价模型
 class ProductReview {
-  final String id;
-  final String userId;
-  final String userName;
-  final String? userAvatar;
-  final double rating;
-  final String content;
-  final List<String> images;
-  final DateTime createdAt;
-  final String? skuInfo;
-  final bool isAnonymous;
-
   ProductReview({
     required this.id,
     required this.userId,
@@ -269,6 +253,16 @@ class ProductReview {
       isAnonymous: json['is_anonymous'] ?? false,
     );
   }
+  final String id;
+  final String userId;
+  final String userName;
+  final String? userAvatar;
+  final double rating;
+  final String content;
+  final List<String> images;
+  final DateTime createdAt;
+  final String? skuInfo;
+  final bool isAnonymous;
 
   String get displayUserName => isAnonymous ? '匿名用户' : userName;
   String get formattedDate =>

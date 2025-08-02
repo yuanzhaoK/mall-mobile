@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../providers/search_state.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/search_state.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 搜索筛选面板
 class SearchFilterSheet extends StatefulWidget {
-  final SearchState searchState;
-
   const SearchFilterSheet({Key? key, required this.searchState})
     : super(key: key);
+  final SearchState searchState;
 
   @override
   State<SearchFilterSheet> createState() => _SearchFilterSheetState();
@@ -35,7 +34,7 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.only(
@@ -97,7 +96,6 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
       ),
@@ -177,7 +175,6 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
         // 价格范围滑块
         RangeSlider(
           values: RangeValues(_minPrice, _maxPrice),
-          min: 0,
           max: 10000,
           divisions: 100,
           labels: RangeLabels(
@@ -396,7 +393,6 @@ class _SearchFilterSheetState extends State<SearchFilterSheet> {
         border: Border(
           top: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
         boxShadow: [

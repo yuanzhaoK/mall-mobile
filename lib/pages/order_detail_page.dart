@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/order_state.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 订单详情页面
 class OrderDetailPage extends StatefulWidget {
-  final String orderId;
-
   const OrderDetailPage({super.key, required this.orderId});
+  final String orderId;
 
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
@@ -143,11 +142,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
               Icon(Icons.location_on, color: AppColors.primary, size: 20),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 '收货地址',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
@@ -185,25 +184,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget _buildProductList(Order order) {
-    return Container(
+    return ColoredBox(
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
+          const Padding(
+            padding: EdgeInsets.all(16),
             child: Row(
               children: [
                 Icon(Icons.store, color: AppColors.primary, size: 20),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: 8),
+                Text(
                   '商城自营',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
           ),
-          ...order.items.map((item) => _buildProductItem(item)),
+          ...order.items.map(_buildProductItem),
         ],
       ),
     );
@@ -213,7 +212,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey[100]!, width: 1)),
+        border: Border(top: BorderSide(color: Colors.grey[100]!)),
       ),
       child: Row(
         children: [

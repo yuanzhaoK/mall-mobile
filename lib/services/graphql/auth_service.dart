@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import '../../models/api_models.dart';
-import 'graphql_client.dart';
-import 'mutations.dart';
-import 'queries.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/mutations.dart';
+import 'package:flutter_home_mall/services/graphql/queries.dart';
 
 /// 认证服务 - 处理用户登录、注册、注销等认证相关操作
 class AuthService {

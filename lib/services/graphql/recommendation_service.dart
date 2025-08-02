@@ -1,8 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'graphql_client.dart';
-import 'member_queries.dart';
-import '../../models/product_models.dart';
-import '../../models/user_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/member_queries.dart';
+import 'package:flutter_home_mall/models/product_models.dart';
+import 'package:flutter_home_mall/models/user_models.dart';
 
 /// 推荐类型枚举
 enum RecommendationType {
@@ -40,12 +40,12 @@ class RecommendationService {
   /// 获取推荐商品
   static Future<List<Product>?> getRecommendedProducts({int limit = 10}) async {
     try {
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(MemberGraphQLQueries.recommendedProducts),
         variables: {'limit': limit},
       );
 
-      final QueryResult result = await _client.query(options);
+      final result = await _client.query(options);
 
       if (result.hasException) {
         print('❌ 获取推荐商品失败: ${result.exception}');
@@ -138,12 +138,12 @@ class RecommendationService {
   /// 关注用户
   static Future<bool> followMember(String userId) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.followMember),
         variables: {'user_id': userId},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 关注用户失败: ${result.exception}');
@@ -160,12 +160,12 @@ class RecommendationService {
   /// 取消关注用户
   static Future<bool> unfollowMember(String userId) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.unfollowMember),
         variables: {'user_id': userId},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 取消关注失败: ${result.exception}');
@@ -182,12 +182,12 @@ class RecommendationService {
   /// 分享商品
   static Future<bool> shareProduct(String productId, String platform) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.shareProduct),
         variables: {'product_id': productId, 'platform': platform},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 分享商品失败: ${result.exception}');
@@ -469,28 +469,20 @@ class SocialService {
 
 /// 缓存推荐结果
 class CachedRecommendation {
-  final List<Product> products;
-  final DateTime timestamp;
-  final Duration ttl;
-
   CachedRecommendation({
     required this.products,
     required this.timestamp,
     required this.ttl,
   });
+  final List<Product> products;
+  final DateTime timestamp;
+  final Duration ttl;
 
   bool get isExpired => DateTime.now().difference(timestamp) > ttl;
 }
 
 /// 用户活动
 class UserActivity {
-  final String id;
-  final String userId;
-  final String type;
-  final String content;
-  final Map<String, dynamic>? data;
-  final DateTime created;
-
   UserActivity({
     required this.id,
     required this.userId,
@@ -512,30 +504,28 @@ class UserActivity {
       ),
     );
   }
+  final String id;
+  final String userId;
+  final String type;
+  final String content;
+  final Map<String, dynamic>? data;
+  final DateTime created;
 }
 
 /// 推荐结果评分
 class RecommendationScore {
-  final String productId;
-  final double score;
-  final Map<String, double> factors;
-
   RecommendationScore({
     required this.productId,
     required this.score,
     required this.factors,
   });
+  final String productId;
+  final double score;
+  final Map<String, double> factors;
 }
 
 /// 推荐配置
 class RecommendationConfig {
-  final double collaborativeWeight;
-  final double contentWeight;
-  final double popularityWeight;
-  final double behaviorWeight;
-  final int maxRecommendations;
-  final Duration cacheTime;
-
   const RecommendationConfig({
     this.collaborativeWeight = 0.4,
     this.contentWeight = 0.3,
@@ -544,4 +534,10 @@ class RecommendationConfig {
     this.maxRecommendations = 20,
     this.cacheTime = const Duration(hours: 1),
   });
+  final double collaborativeWeight;
+  final double contentWeight;
+  final double popularityWeight;
+  final double behaviorWeight;
+  final int maxRecommendations;
+  final Duration cacheTime;
 }

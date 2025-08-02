@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 class FeaturedProductCard extends StatelessWidget {
-  final Product product;
-
   const FeaturedProductCard({super.key, required this.product});
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +14,12 @@ class FeaturedProductCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.shadow,
             spreadRadius: 1,
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),

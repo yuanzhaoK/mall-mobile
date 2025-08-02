@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../providers/mall_state.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/mall_state.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 商场筛选面板
 class MallFilterSheet extends StatefulWidget {
-  final MallState mallState;
-
   const MallFilterSheet({super.key, required this.mallState});
+  final MallState mallState;
 
   @override
   State<MallFilterSheet> createState() => _MallFilterSheetState();
@@ -34,7 +33,7 @@ class _MallFilterSheetState extends State<MallFilterSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.only(
@@ -91,7 +90,7 @@ class _MallFilterSheetState extends State<MallFilterSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey[200]!, width: 1)),
+        border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -350,7 +349,7 @@ class _MallFilterSheetState extends State<MallFilterSheet> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1)),
+        border: Border(top: BorderSide(color: Colors.grey[200]!)),
       ),
       child: Row(
         children: [
@@ -360,9 +359,12 @@ class _MallFilterSheetState extends State<MallFilterSheet> {
               onPressed: _resetFilters,
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                side: BorderSide(color: AppColors.primary),
+                side: const BorderSide(color: AppColors.primary),
               ),
-              child: Text('重置', style: TextStyle(color: AppColors.primary)),
+              child: const Text(
+                '重置',
+                style: TextStyle(color: AppColors.primary),
+              ),
             ),
           ),
 

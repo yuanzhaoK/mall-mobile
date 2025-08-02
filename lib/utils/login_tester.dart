@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../services/graphql_service.dart';
-import '../services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
 
 class LoginTester {
   /// 测试不同的登录凭据
@@ -13,7 +13,7 @@ class LoginTester {
       {'identity': 'yushuyao@sohu.com', 'password': 'password123'},
     ];
 
-    for (int i = 0; i < testCredentials.length; i++) {
+    for (var i = 0; i < testCredentials.length; i++) {
       final cred = testCredentials[i];
       debugPrint('🔐 测试凭据 ${i + 1}: ${cred['identity']}');
 
@@ -27,7 +27,7 @@ class LoginTester {
           results['success'] = {
             'credentials': cred,
             'user': result.user,
-            'token': result.token.substring(0, 20) + '...',
+            'token': '${result.token.substring(0, 20)}...',
           };
           debugPrint('✅ 成功找到有效凭据！');
           break;
@@ -55,9 +55,9 @@ class LoginTester {
     final mutations = [
       {
         'name': 'login',
-        'mutation': '''
-          mutation Login(\$input: LoginInput!) {
-            login(input: \$input) {
+        'mutation': r'''
+          mutation Login($input: LoginInput!) {
+            login(input: $input) {
               token
               record {
                 id
@@ -72,9 +72,9 @@ class LoginTester {
       },
       {
         'name': 'mobileLogin',
-        'mutation': '''
-          mutation MobileLogin(\$input: LoginInput!) {
-            mobileLogin(input: \$input) {
+        'mutation': r'''
+          mutation MobileLogin($input: LoginInput!) {
+            mobileLogin(input: $input) {
               token
               record {
                 id
@@ -89,9 +89,9 @@ class LoginTester {
       },
       {
         'name': 'authenticate',
-        'mutation': '''
-          mutation Authenticate(\$input: LoginInput!) {
-            authenticate(input: \$input) {
+        'mutation': r'''
+          mutation Authenticate($input: LoginInput!) {
+            authenticate(input: $input) {
               token
               user {
                 id
@@ -112,7 +112,7 @@ class LoginTester {
       try {
         final client = GraphQLClientManager.client;
 
-        final MutationOptions options = MutationOptions(
+        final options = MutationOptions(
           document: gql(mutationConfig['mutation'] as String),
           variables: {
             'input': {'identity': identity, 'password': password},
@@ -121,7 +121,7 @@ class LoginTester {
           errorPolicy: ErrorPolicy.all,
         );
 
-        final QueryResult result = await client
+        final result = await client
             .mutate(options)
             .timeout(const Duration(seconds: 15));
 

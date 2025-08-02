@@ -1,24 +1,18 @@
 // 购物车相关数据模型
-import 'product_models.dart';
+import 'package:flutter_home_mall/models/product_models.dart';
 
 // 购物车数量模型
 class CartCount {
-  final int totalItems;
-
   CartCount({required this.totalItems});
 
   factory CartCount.fromJson(Map<String, dynamic> json) {
     return CartCount(totalItems: json['total_items'] ?? 0);
   }
+  final int totalItems;
 }
 
 // 购物车项目模型
 class CartItem {
-  final String id;
-  final Product product;
-  final int quantity;
-  final double unitPrice;
-
   CartItem({
     required this.id,
     required this.product,
@@ -34,6 +28,10 @@ class CartItem {
       unitPrice: (json['unit_price'] ?? 0).toDouble(),
     );
   }
+  final String id;
+  final Product product;
+  final int quantity;
+  final double unitPrice;
 
   double get totalPrice => unitPrice * quantity;
 }

@@ -100,9 +100,9 @@ class GraphQLDiagnostics {
     final timeouts = [5, 10, 15, 30];
     final results = <String, dynamic>{};
 
-    for (int timeout in timeouts) {
+    for (var timeout in timeouts) {
       try {
-        debugPrint('⏱️ 测试 ${timeout}秒 超时...');
+        debugPrint('⏱️ 测试 $timeout秒 超时...');
 
         final startTime = DateTime.now();
 
@@ -123,7 +123,7 @@ class GraphQLDiagnostics {
           'actualTime': actualTime,
         };
 
-        debugPrint('✅ ${timeout}秒超时测试成功，实际耗时: ${actualTime}ms');
+        debugPrint('✅ $timeout秒超时测试成功，实际耗时: ${actualTime}ms');
 
         // 如果成功，不需要测试更长的超时
         break;
@@ -132,7 +132,7 @@ class GraphQLDiagnostics {
           'success': false,
           'error': e.toString(),
         };
-        debugPrint('❌ ${timeout}秒超时测试失败: $e');
+        debugPrint('❌ $timeout秒超时测试失败: $e');
       }
     }
 
@@ -153,7 +153,7 @@ class GraphQLDiagnostics {
 
     final results = <String, dynamic>{};
 
-    for (int i = 0; i < headerCombinations.length; i++) {
+    for (var i = 0; i < headerCombinations.length; i++) {
       try {
         debugPrint('📋 测试Headers组合 ${i + 1}...');
 
@@ -215,9 +215,9 @@ class GraphQLDiagnostics {
       if (key.startsWith('timeout_')) {
         final timeout = key.replaceAll('timeout_', '').replaceAll('s', '');
         if (value['success']) {
-          buffer.writeln('✅ ${timeout}秒: 成功 (${value['actualTime']}ms)');
+          buffer.writeln('✅ $timeout秒: 成功 (${value['actualTime']}ms)');
         } else {
-          buffer.writeln('❌ ${timeout}秒: 失败');
+          buffer.writeln('❌ $timeout秒: 失败');
         }
       }
     });

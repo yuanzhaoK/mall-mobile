@@ -1,27 +1,27 @@
 /// 应用路由配置
 ///
 /// 使用GoRouter实现声明式路由管理，支持深度链接、路由守卫等功能
-library app_router;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/app_state.dart';
-import '../../pages/home_page.dart';
-import '../../pages/mall_page.dart';
-import '../../pages/profile_page.dart';
-import '../../pages/cart_page.dart';
-import '../../pages/search_page.dart';
-import '../../pages/product_detail_page.dart';
-import '../../pages/order_list_page.dart';
-import '../../pages/order_detail_page.dart';
-import '../../pages/order_confirm_page.dart';
-import '../../pages/address_select_page.dart';
-import '../../pages/login_test_page.dart';
-import '../../pages/debug_page.dart';
-import '../../models/cart_models.dart';
-import '../utils/logger.dart';
+import 'package:flutter_home_mall/providers/app_state.dart';
+import 'package:flutter_home_mall/pages/home_page.dart';
+import 'package:flutter_home_mall/pages/mall_page.dart';
+import 'package:flutter_home_mall/pages/profile_page.dart';
+import 'package:flutter_home_mall/pages/cart_page.dart';
+import 'package:flutter_home_mall/pages/search_page.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/pages/order_list_page.dart';
+import 'package:flutter_home_mall/pages/order_detail_page.dart';
+import 'package:flutter_home_mall/pages/order_confirm_page.dart';
+import 'package:flutter_home_mall/pages/address_select_page.dart';
+import 'package:flutter_home_mall/pages/login_test_page.dart';
+import 'package:flutter_home_mall/pages/debug_page.dart';
+import 'package:flutter_home_mall/models/cart_models.dart';
+import 'package:flutter_home_mall/core/utils/logger.dart';
 
 /// 应用路由配置类
 class AppRouter {
@@ -34,7 +34,7 @@ class AppRouter {
     debugLogDiagnostics: true,
     routes: _routes,
     redirect: _redirect,
-    errorBuilder: (context, state) => _buildErrorPage(context, state),
+    errorBuilder: _buildErrorPage,
     observers: [_AppRouteObserver()],
   );
 
@@ -293,7 +293,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _updateCurrentIndex(String location) {
-    int newIndex = 0;
+    var newIndex = 0;
     if (location == AppRoutes.mall) {
       newIndex = 1;
     } else if (location == AppRoutes.profile) {

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../../models/api_models.dart';
-import '../../models/home_models.dart' as home_models;
-import 'graphql_client.dart';
-import 'queries.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/models/home_models.dart' as home_models;
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/queries.dart';
 
 /// 首页服务 - 处理首页数据获取相关操作
 class HomeService {
@@ -84,9 +84,9 @@ class HomeService {
     try {
       debugPrint('🏠 获取推荐商品...');
 
-      const query = '''
-        query GetFeaturedProducts(\$limit: Int) {
-          featuredProducts(limit: \$limit) {
+      const query = r'''
+        query GetFeaturedProducts($limit: Int) {
+          featuredProducts(limit: $limit) {
             id 
             name 
             price 

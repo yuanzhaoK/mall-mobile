@@ -10,7 +10,7 @@ class FeaturedScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Featured Partners"),
+        title: const Text('Featured Partners'),
       ),
       body: const Body(),
     );
@@ -58,7 +58,7 @@ class _BodyState extends State<Body> {
                     rating: 4.3,
                     numOfRating: 200,
                     deliveryTime: 25,
-                    foodType: const ["Chinese", "American", "Deshi food"],
+                    foodType: const ['Chinese', 'American', 'Deshi food'],
                     press: () {},
                   ),
           ),
@@ -69,13 +69,6 @@ class _BodyState extends State<Body> {
 }
 
 class RestaurantInfoBigCard extends StatelessWidget {
-  final List<String> images, foodType;
-  final String name;
-  final double rating;
-  final int numOfRating, deliveryTime;
-  final bool isFreeDelivery;
-  final VoidCallback press;
-
   const RestaurantInfoBigCard({
     super.key,
     required this.name,
@@ -87,6 +80,14 @@ class RestaurantInfoBigCard extends StatelessWidget {
     required this.foodType,
     required this.press,
   });
+  final List<String> images;
+  final List<String> foodType;
+  final String name;
+  final double rating;
+  final int numOfRating;
+  final int deliveryTime;
+  final bool isFreeDelivery;
+  final VoidCallback press;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -118,7 +119,7 @@ class RestaurantInfoBigCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                "$deliveryTime Min",
+                '$deliveryTime Min',
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               const Padding(
@@ -138,7 +139,7 @@ class RestaurantInfoBigCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                isFreeDelivery ? "Free" : "Paid",
+                isFreeDelivery ? 'Free' : 'Paid',
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
@@ -152,7 +153,7 @@ class RestaurantInfoBigCard extends StatelessWidget {
 class PriceRangeAndFoodtype extends StatelessWidget {
   const PriceRangeAndFoodtype({
     super.key,
-    this.priceRange = "\$\$",
+    this.priceRange = '\$\$',
     required this.foodType,
   });
 
@@ -284,7 +285,7 @@ class RatingWithCounter extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          "$numOfRating+ Ratings",
+          '$numOfRating+ Ratings',
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
             color: const Color(0xFF010F07).withOpacity(0.74),
           ),
@@ -364,7 +365,8 @@ class DotIndicator extends StatelessWidget {
   });
 
   final bool isActive;
-  final Color activeColor, inActiveColor;
+  final Color activeColor;
+  final Color inActiveColor;
 
   @override
   Widget build(BuildContext context) {
@@ -388,7 +390,8 @@ class ScaltonLine extends StatelessWidget {
     this.width = double.infinity,
   });
 
-  final double height, width;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -401,10 +404,10 @@ class ScaltonLine extends StatelessWidget {
 }
 
 List<String> demoBigImages = [
-  "https://i.postimg.cc/VsTTkQ1j/big-1.png",
-  "https://i.postimg.cc/xTzZkxTB/big-2.png",
-  "https://i.postimg.cc/jSKrR0QM/big-3.png",
-  "https://i.postimg.cc/90TvjJ43/big-4.png",
+  'https://i.postimg.cc/VsTTkQ1j/big-1.png',
+  'https://i.postimg.cc/xTzZkxTB/big-2.png',
+  'https://i.postimg.cc/jSKrR0QM/big-3.png',
+  'https://i.postimg.cc/90TvjJ43/big-4.png',
 ];
 
 const clockIconSvg = '''

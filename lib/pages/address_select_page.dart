@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/order_state.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 地址选择页面
 class AddressSelectPage extends StatefulWidget {
@@ -36,10 +36,8 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
         elevation: 0,
         actions: [
           TextButton(
-            onPressed: () {
-              _showAddAddressDialog();
-            },
-            child: Text(
+            onPressed: _showAddAddressDialog,
+            child: const Text(
               '新增',
               style: TextStyle(
                 color: AppColors.primary,
@@ -137,7 +135,7 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
         borderRadius: BorderRadius.circular(12),
         border: isSelected
             ? Border.all(color: AppColors.primary, width: 2)
-            : Border.all(color: Colors.grey[200]!, width: 1),
+            : Border.all(color: Colors.grey[200]!),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -188,7 +186,7 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
                               color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Text(
+                            child: const Text(
                               '默认',
                               style: TextStyle(
                                 fontSize: 10,
@@ -204,7 +202,11 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
 
                   // 选中状态
                   if (isSelected)
-                    Icon(Icons.check_circle, color: AppColors.primary, size: 24)
+                    const Icon(
+                      Icons.check_circle,
+                      color: AppColors.primary,
+                      size: 24,
+                    )
                   else
                     Icon(
                       Icons.radio_button_unchecked,
@@ -233,8 +235,12 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
                     onPressed: () {
                       _showEditAddressDialog(address);
                     },
-                    icon: Icon(Icons.edit, size: 16, color: AppColors.primary),
-                    label: Text(
+                    icon: const Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                    label: const Text(
                       '编辑',
                       style: TextStyle(color: AppColors.primary, fontSize: 14),
                     ),
@@ -291,7 +297,7 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
     final addressController = TextEditingController(
       text: address?.address ?? '',
     );
-    bool isDefault = address?.isDefault ?? false;
+    var isDefault = address?.isDefault ?? false;
 
     showDialog(
       context: context,

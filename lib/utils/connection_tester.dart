@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import '../config/app_config.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
 
 class ConnectionTester {
   /// 测试多个端点的连接状态
@@ -10,7 +10,7 @@ class ConnectionTester {
     final currentBaseUrl = AppConfig.config.baseUrl;
     final currentHost = Uri.parse(currentBaseUrl).host;
 
-    final List<String> endpoints = [
+    final endpoints = <String>[
       AppConfig.config.graphqlEndpoint, // 优先使用配置的端点
       'http://$currentHost:$port/graphql', // 使用配置的主机
       'http://10.0.2.2:$port/graphql', // Android模拟器
@@ -22,7 +22,7 @@ class ConnectionTester {
 
     debugPrint('🔍 开始测试GraphQL端点连接...');
 
-    for (String endpoint in endpoints) {
+    for (var endpoint in endpoints) {
       debugPrint('测试端点: $endpoint');
 
       try {
@@ -52,12 +52,12 @@ class ConnectionTester {
 
   /// 获取本机网络信息
   static Future<List<String>> getNetworkInfo() async {
-    List<String> networkInfo = [];
+    var networkInfo = <String>[];
 
     try {
-      for (var interface in await NetworkInterface.list()) {
+      for (final interface in await NetworkInterface.list()) {
         networkInfo.add('Interface: ${interface.name}');
-        for (var addr in interface.addresses) {
+        for (final addr in interface.addresses) {
           networkInfo.add('  Address: ${addr.address} (${addr.type})');
         }
       }

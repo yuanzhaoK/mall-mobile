@@ -1,7 +1,7 @@
 /// 应用异常处理系统
 ///
 /// 统一管理应用中的所有异常类型，提供清晰的错误分类和处理机制
-library app_exceptions;
+library;
 
 import 'package:flutter/foundation.dart';
 
@@ -33,42 +33,6 @@ abstract class AppException implements Exception {
 
 /// 网络异常
 class NetworkException extends AppException {
-  const NetworkException({
-    required super.message,
-    required super.code,
-    super.details,
-    super.stackTrace,
-    this.statusCode,
-  });
-
-  /// HTTP状态码
-  final int? statusCode;
-
-  /// 连接超时
-  static const NetworkException connectionTimeout = NetworkException(
-    message: '连接超时，请检查网络连接',
-    code: 'NETWORK_CONNECTION_TIMEOUT',
-  );
-
-  /// 请求超时
-  static const NetworkException requestTimeout = NetworkException(
-    message: '请求超时，请稍后重试',
-    code: 'NETWORK_REQUEST_TIMEOUT',
-  );
-
-  /// 无网络连接
-  static const NetworkException noConnection = NetworkException(
-    message: '无网络连接，请检查网络设置',
-    code: 'NETWORK_NO_CONNECTION',
-  );
-
-  /// 服务器错误
-  static const NetworkException serverError = NetworkException(
-    message: '服务器错误，请稍后重试',
-    code: 'NETWORK_SERVER_ERROR',
-    statusCode: 500,
-  );
-
   /// 创建网络异常
   factory NetworkException.fromStatusCode(int statusCode, [String? message]) {
     switch (statusCode) {
@@ -110,6 +74,41 @@ class NetworkException extends AppException {
         );
     }
   }
+  const NetworkException({
+    required super.message,
+    required super.code,
+    super.details,
+    super.stackTrace,
+    this.statusCode,
+  });
+
+  /// HTTP状态码
+  final int? statusCode;
+
+  /// 连接超时
+  static const NetworkException connectionTimeout = NetworkException(
+    message: '连接超时，请检查网络连接',
+    code: 'NETWORK_CONNECTION_TIMEOUT',
+  );
+
+  /// 请求超时
+  static const NetworkException requestTimeout = NetworkException(
+    message: '请求超时，请稍后重试',
+    code: 'NETWORK_REQUEST_TIMEOUT',
+  );
+
+  /// 无网络连接
+  static const NetworkException noConnection = NetworkException(
+    message: '无网络连接，请检查网络设置',
+    code: 'NETWORK_NO_CONNECTION',
+  );
+
+  /// 服务器错误
+  static const NetworkException serverError = NetworkException(
+    message: '服务器错误，请稍后重试',
+    code: 'NETWORK_SERVER_ERROR',
+    statusCode: 500,
+  );
 }
 
 /// 认证异常

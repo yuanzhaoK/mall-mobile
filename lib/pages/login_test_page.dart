@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../services/graphql_service.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 class LoginTestPage extends StatefulWidget {
   const LoginTestPage({super.key});
@@ -175,7 +175,7 @@ class _LoginTestPageState extends State<LoginTestPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 // 输入框
@@ -270,7 +270,7 @@ class _LoginTestPageState extends State<LoginTestPage> {
                 itemCount: logs.length,
                 itemBuilder: (context, index) {
                   final log = logs[index];
-                  Color textColor = Colors.white;
+                  var textColor = Colors.white;
 
                   if (log.contains('✅')) {
                     textColor = Colors.green;

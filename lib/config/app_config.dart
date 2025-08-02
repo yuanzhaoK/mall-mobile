@@ -2,6 +2,7 @@
 ///
 /// 此文件包含应用的所有配置信息，包括环境配置、API配置、功能开关等
 /// 遵循Flutter最佳实践，便于不同环境的配置管理
+library;
 
 import 'package:flutter/foundation.dart';
 
@@ -188,23 +189,23 @@ class AppConfig {
       // 尝试从本地配置中获取值
       switch (key) {
         case 'developmentBaseUrl':
-          final value = LocalConfig.developmentBaseUrl;
+          const value = LocalConfig.developmentBaseUrl;
           debugPrint('✅ 本地配置 $key = $value');
           return value as T;
         case 'developmentGraphqlEndpoint':
-          final value = LocalConfig.developmentGraphqlEndpoint;
+          const value = LocalConfig.developmentGraphqlEndpoint;
           debugPrint('✅ 本地配置 $key = $value');
           return value as T;
         case 'developmentWebsocketEndpoint':
-          final value = LocalConfig.developmentWebsocketEndpoint;
+          const value = LocalConfig.developmentWebsocketEndpoint;
           debugPrint('✅ 本地配置 $key = $value');
           return value as T;
         case 'networkTimeout':
-          final value = LocalConfig.networkTimeout;
+          const value = LocalConfig.networkTimeout;
           debugPrint('✅ 本地配置 $key = $value');
           return value as T;
         case 'enableNetworkLogs':
-          final value = LocalConfig.enableNetworkLogs;
+          const value = LocalConfig.enableNetworkLogs;
           debugPrint('✅ 本地配置 $key = $value');
           return value as T;
         default:
@@ -223,7 +224,7 @@ class AppConfig {
   static bool get hasLocalConfig {
     try {
       // 尝试访问本地配置
-      final _ = LocalConfig.developmentBaseUrl;
+      const _ = LocalConfig.developmentBaseUrl;
       return true;
     } catch (e) {
       return false;

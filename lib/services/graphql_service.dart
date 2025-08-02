@@ -1,6 +1,7 @@
 // 导入模块化的GraphQL服务
-import 'graphql/graphql_service.dart' as modular;
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_service.dart'
+    as modular;
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// GraphQL服务主入口
 ///

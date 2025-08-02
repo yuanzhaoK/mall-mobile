@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'graphql_client.dart';
-import 'member_queries.dart';
-import '../../models/user_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/member_queries.dart';
+import 'package:flutter_home_mall/models/user_models.dart';
 
 /// 积分系统GraphQL服务（用户端）
 ///
@@ -23,7 +23,7 @@ class PointsService {
     int limit = 20,
   }) async {
     try {
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(MemberGraphQLQueries.pointsExchanges),
         variables: {
           'input': {
@@ -37,7 +37,7 @@ class PointsService {
         },
       );
 
-      final QueryResult result = await _client.query(options);
+      final result = await _client.query(options);
 
       if (result.hasException) {
         print('❌ 获取积分兑换商品失败: ${result.exception}');
@@ -66,12 +66,12 @@ class PointsService {
   /// 兑换积分商品
   static Future<PointsExchangeRecord?> exchangePoints(String exchangeId) async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.exchangePoints),
         variables: {'exchange_id': exchangeId},
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 积分兑换失败: ${result.exception}');
@@ -96,11 +96,11 @@ class PointsService {
   /// 每日签到获取积分
   static Future<PointsRecord?> dailyCheckIn() async {
     try {
-      final MutationOptions options = MutationOptions(
+      final options = MutationOptions(
         document: gql(MemberGraphQLMutations.dailyCheckIn),
       );
 
-      final QueryResult result = await _client.mutate(options);
+      final result = await _client.mutate(options);
 
       if (result.hasException) {
         print('❌ 每日签到失败: ${result.exception}');
@@ -258,18 +258,6 @@ class PointsService {
 
 /// 积分记录
 class PointsRecord {
-  final String id;
-  final String userId;
-  final String username;
-  final String type;
-  final int points;
-  final int balance;
-  final String reason;
-  final String? orderId;
-  final String? relatedId;
-  final DateTime? expireTime;
-  final DateTime created;
-
   PointsRecord({
     required this.id,
     required this.userId,
@@ -303,14 +291,21 @@ class PointsRecord {
       ),
     );
   }
+  final String id;
+  final String userId;
+  final String username;
+  final String type;
+  final int points;
+  final int balance;
+  final String reason;
+  final String? orderId;
+  final String? relatedId;
+  final DateTime? expireTime;
+  final DateTime created;
 }
 
 /// 积分兑换商品响应
 class PointsExchangesResponse {
-  final List<PointsExchange> exchanges;
-  final PaginationInfo pagination;
-  final int total;
-
   PointsExchangesResponse({
     required this.exchanges,
     required this.pagination,
@@ -326,21 +321,13 @@ class PointsExchangesResponse {
       total: json['total'] ?? 0,
     );
   }
+  final List<PointsExchange> exchanges;
+  final PaginationInfo pagination;
+  final int total;
 }
 
 /// 积分兑换商品
 class PointsExchange {
-  final String id;
-  final String name;
-  final String? description;
-  final String? image;
-  final int pointsRequired;
-  final String exchangeType;
-  final double? rewardValue;
-  final int? stock;
-  final String status;
-  final int sortOrder;
-
   PointsExchange({
     required this.id,
     required this.name,
@@ -368,21 +355,20 @@ class PointsExchange {
       sortOrder: json['sort_order'] ?? 0,
     );
   }
+  final String id;
+  final String name;
+  final String? description;
+  final String? image;
+  final int pointsRequired;
+  final String exchangeType;
+  final double? rewardValue;
+  final int? stock;
+  final String status;
+  final int sortOrder;
 }
 
 /// 积分兑换记录
 class PointsExchangeRecord {
-  final String id;
-  final String userId;
-  final String username;
-  final PointsExchange exchange;
-  final int pointsCost;
-  final String rewardType;
-  final double? rewardValue;
-  final String status;
-  final DateTime created;
-  final DateTime? processedTime;
-
   PointsExchangeRecord({
     required this.id,
     required this.userId,
@@ -414,16 +400,20 @@ class PointsExchangeRecord {
           : null,
     );
   }
+  final String id;
+  final String userId;
+  final String username;
+  final PointsExchange exchange;
+  final int pointsCost;
+  final String rewardType;
+  final double? rewardValue;
+  final String status;
+  final DateTime created;
+  final DateTime? processedTime;
 }
 
 /// 分页信息
 class PaginationInfo {
-  final int currentPage;
-  final int totalPages;
-  final int totalItems;
-  final bool hasMore;
-  final int perPage;
-
   PaginationInfo({
     required this.currentPage,
     required this.totalPages,
@@ -441,4 +431,9 @@ class PaginationInfo {
       perPage: json['per_page'] ?? 20,
     );
   }
+  final int currentPage;
+  final int totalPages;
+  final int totalItems;
+  final bool hasMore;
+  final int perPage;
 }

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/cart_state.dart';
-import '../widgets/cart_item_widget.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/widgets/cart_item_widget.dart';
 
-import '../constants/app_colors.dart';
-import '../pages/order_confirm_page.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/pages/order_confirm_page.dart';
 
 /// 购物车页面
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text('购物车'),
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -128,7 +128,6 @@ class CartPage extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
       ),
@@ -184,7 +183,6 @@ class CartPage extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
         boxShadow: [
@@ -279,7 +277,7 @@ class CartPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.3),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

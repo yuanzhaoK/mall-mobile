@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 订单状态管理
 class OrderState extends ChangeNotifier {
@@ -303,7 +303,7 @@ class OrderState extends ChangeNotifier {
 
       // 如果是默认地址，取消其他地址的默认状态
       if (address.isDefault) {
-        for (int i = 0; i < _addresses.length - 1; i++) {
+        for (var i = 0; i < _addresses.length - 1; i++) {
           if (_addresses[i].isDefault) {
             _addresses[i] = ShippingAddress(
               id: _addresses[i].id,
@@ -372,8 +372,8 @@ class OrderState extends ChangeNotifier {
             productName: 'iPhone 15 Pro Max 256GB 深空黑色',
             productImage:
                 'https://via.placeholder.com/100x100/FF6B6B/FFFFFF?text=iPhone',
-            price: 9999.0,
-            originalPrice: 10999.0,
+            price: 9999,
+            originalPrice: 10999,
             quantity: 1,
             skuId: 'sku_1',
             skuName: '256GB 深空黑色',
@@ -390,10 +390,10 @@ class OrderState extends ChangeNotifier {
           address: '科技园南区深南大道1000号',
           isDefault: true,
         ),
-        subtotal: 9999.0,
-        shippingFee: 0.0,
-        discount: 0.0,
-        totalAmount: 9999.0,
+        subtotal: 9999,
+        shippingFee: 0,
+        discount: 0,
+        totalAmount: 9999,
         createdAt: now.subtract(const Duration(hours: 2)),
       ),
       Order(
@@ -408,7 +408,7 @@ class OrderState extends ChangeNotifier {
             productName: 'MacBook Pro 14英寸 M3芯片',
             productImage:
                 'https://via.placeholder.com/100x100/4ECDC4/FFFFFF?text=MacBook',
-            price: 14999.0,
+            price: 14999,
             quantity: 1,
             attributes: {},
           ),
@@ -418,7 +418,7 @@ class OrderState extends ChangeNotifier {
             productName: 'AirPods Pro 第三代',
             productImage:
                 'https://via.placeholder.com/100x100/45B7D1/FFFFFF?text=AirPods',
-            price: 1999.0,
+            price: 1999,
             quantity: 1,
             attributes: {},
           ),
@@ -433,10 +433,10 @@ class OrderState extends ChangeNotifier {
           address: '科技园南区深南大道1000号',
           isDefault: true,
         ),
-        subtotal: 16998.0,
-        shippingFee: 0.0,
-        discount: 500.0,
-        totalAmount: 16498.0,
+        subtotal: 16998,
+        shippingFee: 0,
+        discount: 500,
+        totalAmount: 16498,
         paymentMethod: PaymentMethod.alipay,
         createdAt: now.subtract(const Duration(days: 3)),
         paidAt: now.subtract(const Duration(days: 3, hours: 1)),
@@ -455,7 +455,7 @@ class OrderState extends ChangeNotifier {
             productName: 'iPad Air 第五代 64GB WiFi版',
             productImage:
                 'https://via.placeholder.com/100x100/96CEB4/FFFFFF?text=iPad',
-            price: 4399.0,
+            price: 4399,
             quantity: 1,
             attributes: {},
           ),
@@ -470,10 +470,10 @@ class OrderState extends ChangeNotifier {
           address: '科技园南区深南大道1000号',
           isDefault: true,
         ),
-        subtotal: 4399.0,
-        shippingFee: 0.0,
-        discount: 200.0,
-        totalAmount: 4199.0,
+        subtotal: 4399,
+        shippingFee: 0,
+        discount: 200,
+        totalAmount: 4199,
         paymentMethod: PaymentMethod.wechat,
         createdAt: now.subtract(const Duration(days: 10)),
         paidAt: now.subtract(const Duration(days: 10, hours: 1)),
@@ -491,10 +491,8 @@ class OrderState extends ChangeNotifier {
   /// 从请求生成模拟订单
   Order _generateMockOrderFromRequest(CreateOrderRequest request) {
     final now = DateTime.now();
-    final orderItems = request.items
-        .map((item) => OrderItem.fromCartItem(item))
-        .toList();
-    final subtotal = orderItems.fold(0.0, (sum, item) => sum + item.subtotal);
+    final orderItems = request.items.map(OrderItem.fromCartItem).toList();
+    final subtotal = orderItems.fold(0, (sum, item) => sum + item.subtotal);
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/order_state.dart';
-import '../providers/cart_state.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../pages/address_select_page.dart';
-import '../pages/order_detail_page.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/pages/address_select_page.dart';
+import 'package:flutter_home_mall/pages/order_detail_page.dart';
 
 /// 订单确认页面
 class OrderConfirmPage extends StatefulWidget {
-  final List<CartItem> items;
-
   const OrderConfirmPage({super.key, required this.items});
+  final List<CartItem> items;
 
   @override
   State<OrderConfirmPage> createState() => _OrderConfirmPageState();
@@ -96,7 +95,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   Widget _buildAddressSection(OrderState orderState) {
     final address = orderState.selectedAddress;
 
-    return Container(
+    return ColoredBox(
       color: Colors.white,
       child: InkWell(
         onTap: () async {
@@ -112,7 +111,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.location_on, color: AppColors.primary, size: 24),
+              const Icon(Icons.location_on, color: AppColors.primary, size: 24),
               const SizedBox(width: 12),
 
               if (address != null) ...[
@@ -148,7 +147,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                                 color: AppColors.primary.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: Text(
+                              child: const Text(
                                 '默认',
                                 style: TextStyle(
                                   fontSize: 10,
@@ -189,18 +188,18 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   }
 
   Widget _buildProductList() {
-    return Container(
+    return ColoredBox(
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
+          const Padding(
+            padding: EdgeInsets.all(16),
             child: Row(
               children: [
                 Icon(Icons.store, color: AppColors.primary, size: 20),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: 8),
+                Text(
                   '商城自营',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
@@ -208,7 +207,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
             ),
           ),
 
-          ...widget.items.map((item) => _buildProductItem(item)),
+          ...widget.items.map(_buildProductItem),
         ],
       ),
     );
@@ -218,7 +217,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey[100]!, width: 1)),
+        border: Border(top: BorderSide(color: Colors.grey[100]!)),
       ),
       child: Row(
         children: [
@@ -317,7 +316,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.primary),
+                borderSide: const BorderSide(color: AppColors.primary),
               ),
               contentPadding: const EdgeInsets.all(12),
             ),
@@ -328,7 +327,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   }
 
   Widget _buildCouponSection() {
-    return Container(
+    return ColoredBox(
       color: Colors.white,
       child: InkWell(
         onTap: () {
@@ -341,7 +340,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.local_offer, color: AppColors.warning, size: 20),
+              const Icon(Icons.local_offer, color: AppColors.warning, size: 20),
               const SizedBox(width: 12),
               const Expanded(
                 child: Text(
@@ -363,10 +362,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   }
 
   Widget _buildPriceDetail() {
-    final subtotal = widget.items.fold(
-      0.0,
-      (sum, item) => sum + item.totalPrice,
-    );
+    final subtotal = widget.items.fold(0, (sum, item) => sum + item.totalPrice);
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0
@@ -446,10 +442,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   }
 
   Widget _buildBottomBar(OrderState orderState) {
-    final subtotal = widget.items.fold(
-      0.0,
-      (sum, item) => sum + item.totalPrice,
-    );
+    final subtotal = widget.items.fold(0, (sum, item) => sum + item.totalPrice);
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0

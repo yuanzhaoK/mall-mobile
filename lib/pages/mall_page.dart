@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/constants/app_strings.dart';
 
-import '../models/api_models.dart';
-import '../providers/mall_state.dart';
-import '../providers/cart_state.dart';
-import '../widgets/product_card.dart';
-import '../widgets/mall_filter_sheet.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/providers/mall_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/widgets/product_card.dart';
+import 'package:flutter_home_mall/widgets/mall_filter_sheet.dart';
 
-import 'product_detail_page.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
 
 /// 商场页面
 class MallPage extends StatefulWidget {
@@ -21,9 +21,7 @@ class MallPage extends StatefulWidget {
 }
 
 class _MallPageState extends State<MallPage> {
-  final RefreshController _refreshController = RefreshController(
-    initialRefresh: false,
-  );
+  final RefreshController _refreshController = RefreshController();
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -50,7 +48,6 @@ class _MallPageState extends State<MallPage> {
         builder: (context, mallState, child) {
           return SmartRefresher(
             controller: _refreshController,
-            enablePullDown: true,
             enablePullUp: mallState.hasMore,
             onRefresh: () => _onRefresh(mallState),
             onLoading: () => _onLoading(mallState),
@@ -140,7 +137,7 @@ class _MallPageState extends State<MallPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.filter_list,
                           size: 16,
                           color: AppColors.primary,
@@ -148,7 +145,7 @@ class _MallPageState extends State<MallPage> {
                         const SizedBox(width: 4),
                         Text(
                           mallState.filtersDescription,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.primary,
                             fontSize: 12,
                           ),
@@ -327,7 +324,7 @@ class _MallPageState extends State<MallPage> {
                   children: [
                     Text(
                       product.formattedPrice,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
@@ -389,7 +386,7 @@ class _MallPageState extends State<MallPage> {
               ),
               IconButton(
                 onPressed: () => _handleAddToCart(product),
-                icon: Icon(
+                icon: const Icon(
                   Icons.add_shopping_cart,
                   size: 20,
                   color: AppColors.primary,
@@ -406,7 +403,7 @@ class _MallPageState extends State<MallPage> {
 
   /// 构建加载项
   Widget _buildLoadingItem() {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
@@ -462,13 +459,13 @@ class _MallPageState extends State<MallPage> {
   }
 
   /// 下拉刷新
-  void _onRefresh(MallState mallState) async {
+  Future<void> _onRefresh(MallState mallState) async {
     await mallState.refresh();
     _refreshController.refreshCompleted();
   }
 
   /// 上拉加载
-  void _onLoading(MallState mallState) async {
+  Future<void> _onLoading(MallState mallState) async {
     await mallState.loadMore();
     if (mallState.hasMore) {
       _refreshController.loadComplete();
@@ -506,7 +503,7 @@ class _MallPageState extends State<MallPage> {
   /// 处理加购物车
   void _handleAddToCart(Product product) {
     final cartState = context.read<CartState>();
-    cartState.addToCart(product, quantity: 1);
+    cartState.addToCart(product);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

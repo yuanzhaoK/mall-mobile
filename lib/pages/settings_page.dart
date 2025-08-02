@@ -146,12 +146,12 @@ class _SettingsPageState extends State<SettingsPage> {
         _buildListTile(
           title: '语言',
           subtitle: _language,
-          onTap: () => _showLanguageDialog(),
+          onTap: _showLanguageDialog,
         ),
         _buildListTile(
           title: '货币',
           subtitle: _currency,
-          onTap: () => _showCurrencyDialog(),
+          onTap: _showCurrencyDialog,
         ),
       ],
     );
@@ -467,22 +467,22 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('版本信息'),
-        content: Column(
+        content: const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Flutter Home Mall'),
-            const SizedBox(height: 8),
-            const Text('版本: v1.0.0'),
-            const Text('构建号: 1'),
-            const SizedBox(height: 8),
-            const Text('基于 Flutter 开发的移动商城应用'),
-            const SizedBox(height: 16),
-            const Text('更新日志:', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 4),
-            const Text('• 完善个人中心功能模块'),
-            const Text('• 优化用户体验'),
-            const Text('• 修复已知问题'),
+            Text('Flutter Home Mall'),
+            SizedBox(height: 8),
+            Text('版本: v1.0.0'),
+            Text('构建号: 1'),
+            SizedBox(height: 8),
+            Text('基于 Flutter 开发的移动商城应用'),
+            SizedBox(height: 16),
+            Text('更新日志:', style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(height: 4),
+            Text('• 完善个人中心功能模块'),
+            Text('• 优化用户体验'),
+            Text('• 修复已知问题'),
           ],
         ),
         actions: [
@@ -605,11 +605,11 @@ class _DeveloperOptionsPageState extends State<DeveloperOptionsPage> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
               ),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Icon(Icons.warning, color: Colors.orange),
-                  const SizedBox(width: 12),
-                  const Expanded(
+                  Icon(Icons.warning, color: Colors.orange),
+                  SizedBox(width: 12),
+                  Expanded(
                     child: Text(
                       '开发者选项仅供调试使用，请谨慎操作',
                       style: TextStyle(color: Colors.orange),

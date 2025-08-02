@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import '../../config/app_config.dart';
+import 'package:flutter_home_mall/config/app_config.dart';
 
 /// GraphQL客户端配置和管理
 class GraphQLClientManager {
@@ -31,7 +31,7 @@ class GraphQLClientManager {
     // 创建自定义HTTP客户端，增加超时时间
     final httpClient = http.Client();
 
-    final HttpLink httpLink = HttpLink(
+    final httpLink = HttpLink(
       endpoint,
       defaultHeaders: {'Content-Type': 'application/json'},
       httpClient: httpClient,
@@ -42,9 +42,7 @@ class GraphQLClientManager {
     // 如果有token，添加认证头
     if (_token != null) {
       debugPrint('🔗 添加认证头，token: ${_token?.substring(0, 10)}...');
-      final AuthLink authLink = AuthLink(
-        getToken: () async => 'Bearer $_token',
-      );
+      final authLink = AuthLink(getToken: () async => 'Bearer $_token');
       link = authLink.concat(httpLink);
     } else {
       debugPrint('🔗 无token，创建基础客户端');
@@ -116,12 +114,12 @@ class GraphQLClientManager {
         }
       ''';
 
-      final QueryOptions options = QueryOptions(
+      final options = QueryOptions(
         document: gql(testQuery),
         fetchPolicy: FetchPolicy.noCache,
       );
 
-      final QueryResult result = await client
+      final result = await client
           .query(options)
           .timeout(const Duration(seconds: 15));
 
@@ -145,15 +143,15 @@ class GraphQLClientManager {
     FetchPolicy? fetchPolicy,
     Duration? timeout,
   }) async {
-    final QueryOptions options = QueryOptions(
+    final options = QueryOptions(
       document: gql(query),
       variables: variables ?? {},
       fetchPolicy: fetchPolicy ?? FetchPolicy.networkOnly,
       errorPolicy: ErrorPolicy.all,
     );
 
-    final Duration queryTimeout = timeout ?? const Duration(seconds: 30);
-    return await client.query(options).timeout(queryTimeout);
+    final queryTimeout = timeout ?? const Duration(seconds: 30);
+    return client.query(options).timeout(queryTimeout);
   }
 
   /// 执行GraphQL变更的通用方法
@@ -163,14 +161,14 @@ class GraphQLClientManager {
     FetchPolicy? fetchPolicy,
     Duration? timeout,
   }) async {
-    final MutationOptions options = MutationOptions(
+    final options = MutationOptions(
       document: gql(mutation),
       variables: variables ?? {},
       fetchPolicy: fetchPolicy ?? FetchPolicy.noCache,
       errorPolicy: ErrorPolicy.all,
     );
 
-    final Duration mutationTimeout = timeout ?? const Duration(seconds: 30);
-    return await client.mutate(options).timeout(mutationTimeout);
+    final mutationTimeout = timeout ?? const Duration(seconds: 30);
+    return client.mutate(options).timeout(mutationTimeout);
   }
 }

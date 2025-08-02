@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../models/api_models.dart';
-import '../models/home_models.dart' as home_models;
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/models/home_models.dart' as home_models;
 
 /// 商场状态管理
 class MallState extends ChangeNotifier {
@@ -214,8 +214,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_1',
         name: '苹果iPhone 15 Pro Max 256GB',
-        price: 9999.0,
-        originalPrice: 10999.0,
+        price: 9999,
+        originalPrice: 10999,
         imageUrl:
             'https://via.placeholder.com/300x300/FF6B6B/FFFFFF?text=iPhone',
         rating: 4.8,
@@ -224,8 +224,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_2',
         name: '华为Mate 60 Pro 512GB',
-        price: 6999.0,
-        originalPrice: 7499.0,
+        price: 6999,
+        originalPrice: 7499,
         imageUrl:
             'https://via.placeholder.com/300x300/4ECDC4/FFFFFF?text=Huawei',
         rating: 4.7,
@@ -234,8 +234,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_3',
         name: '小米14 Ultra 16GB+1TB',
-        price: 5999.0,
-        originalPrice: 6499.0,
+        price: 5999,
+        originalPrice: 6499,
         imageUrl:
             'https://via.placeholder.com/300x300/45B7D1/FFFFFF?text=Xiaomi',
         rating: 4.6,
@@ -244,8 +244,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_4',
         name: '三星Galaxy S24 Ultra 1TB',
-        price: 8999.0,
-        originalPrice: 9999.0,
+        price: 8999,
+        originalPrice: 9999,
         imageUrl:
             'https://via.placeholder.com/300x300/96CEB4/FFFFFF?text=Samsung',
         rating: 4.5,
@@ -256,8 +256,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_5',
         name: 'MacBook Pro 16英寸 M3 Max',
-        price: 25999.0,
-        originalPrice: 27999.0,
+        price: 25999,
+        originalPrice: 27999,
         imageUrl:
             'https://via.placeholder.com/300x300/A8E6CF/000000?text=MacBook',
         rating: 4.9,
@@ -266,8 +266,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_6',
         name: '联想ThinkPad X1 Carbon',
-        price: 12999.0,
-        originalPrice: 14999.0,
+        price: 12999,
+        originalPrice: 14999,
         imageUrl:
             'https://via.placeholder.com/300x300/FFD93D/000000?text=ThinkPad',
         rating: 4.4,
@@ -278,8 +278,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_7',
         name: '海尔冰箱 对开门 500L',
-        price: 3999.0,
-        originalPrice: 4999.0,
+        price: 3999,
+        originalPrice: 4999,
         imageUrl: 'https://via.placeholder.com/300x300/6C5CE7/FFFFFF?text=海尔',
         rating: 4.3,
         salesCount: 5600,
@@ -287,8 +287,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_8',
         name: '美的空调 1.5匹 变频',
-        price: 2499.0,
-        originalPrice: 2999.0,
+        price: 2499,
+        originalPrice: 2999,
         imageUrl: 'https://via.placeholder.com/300x300/FD79A8/FFFFFF?text=美的',
         rating: 4.2,
         salesCount: 8900,
@@ -298,8 +298,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_9',
         name: 'Nike Air Max 270 运动鞋',
-        price: 899.0,
-        originalPrice: 1199.0,
+        price: 899,
+        originalPrice: 1199,
         imageUrl: 'https://via.placeholder.com/300x300/00B894/FFFFFF?text=Nike',
         rating: 4.6,
         salesCount: 12500,
@@ -307,8 +307,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_10',
         name: 'Adidas 三叶草卫衣',
-        price: 599.0,
-        originalPrice: 799.0,
+        price: 599,
+        originalPrice: 799,
         imageUrl:
             'https://via.placeholder.com/300x300/E17055/FFFFFF?text=Adidas',
         rating: 4.4,
@@ -319,8 +319,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_11',
         name: '宜家 MALM 双人床架',
-        price: 999.0,
-        originalPrice: 1299.0,
+        price: 999,
+        originalPrice: 1299,
         imageUrl: 'https://via.placeholder.com/300x300/FDCB6E/000000?text=IKEA',
         rating: 4.1,
         salesCount: 4200,
@@ -328,8 +328,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_12',
         name: '飞利浦 LED台灯 护眼',
-        price: 299.0,
-        originalPrice: 399.0,
+        price: 299,
+        originalPrice: 399,
         imageUrl:
             'https://via.placeholder.com/300x300/74B9FF/FFFFFF?text=Philips',
         rating: 4.5,
@@ -340,8 +340,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_13',
         name: '兰蔻小黑瓶精华液 50ml',
-        price: 1080.0,
-        originalPrice: 1280.0,
+        price: 1080,
+        originalPrice: 1280,
         imageUrl: 'https://via.placeholder.com/300x300/A29BFE/FFFFFF?text=兰蔻',
         rating: 4.7,
         salesCount: 6500,
@@ -349,8 +349,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_14',
         name: '雅诗兰黛红石榴套装',
-        price: 899.0,
-        originalPrice: 1099.0,
+        price: 899,
+        originalPrice: 1099,
         imageUrl: 'https://via.placeholder.com/300x300/FD79A8/FFFFFF?text=雅诗兰黛',
         rating: 4.6,
         salesCount: 5200,
@@ -360,8 +360,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_15',
         name: '茅台飞天 53度 500ml',
-        price: 2699.0,
-        originalPrice: 2999.0,
+        price: 2699,
+        originalPrice: 2999,
         imageUrl: 'https://via.placeholder.com/300x300/2D3436/FFFFFF?text=茅台',
         rating: 4.9,
         salesCount: 1800,
@@ -369,8 +369,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_16',
         name: '五常大米 东北珍珠米 5kg',
-        price: 89.0,
-        originalPrice: 119.0,
+        price: 89,
+        originalPrice: 119,
         imageUrl: 'https://via.placeholder.com/300x300/00B894/FFFFFF?text=大米',
         rating: 4.3,
         salesCount: 15600,
@@ -380,8 +380,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_17',
         name: '迪卡侬 瑜伽垫 防滑加厚',
-        price: 159.0,
-        originalPrice: 199.0,
+        price: 159,
+        originalPrice: 199,
         imageUrl: 'https://via.placeholder.com/300x300/00CEC9/FFFFFF?text=迪卡侬',
         rating: 4.2,
         salesCount: 8900,
@@ -389,8 +389,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_18',
         name: '李宁羽毛球拍 专业级',
-        price: 899.0,
-        originalPrice: 1199.0,
+        price: 899,
+        originalPrice: 1199,
         imageUrl: 'https://via.placeholder.com/300x300/FDCB6E/000000?text=李宁',
         rating: 4.5,
         salesCount: 3400,
@@ -400,8 +400,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_19',
         name: '《Flutter实战》第二版',
-        price: 89.0,
-        originalPrice: 109.0,
+        price: 89,
+        originalPrice: 109,
         imageUrl:
             'https://via.placeholder.com/300x300/74B9FF/FFFFFF?text=Flutter',
         rating: 4.8,
@@ -410,8 +410,8 @@ class MallState extends ChangeNotifier {
       Product(
         id: 'mall_${page}_20',
         name: '《设计模式》经典版',
-        price: 69.0,
-        originalPrice: 89.0,
+        price: 69,
+        originalPrice: 89,
         imageUrl: 'https://via.placeholder.com/300x300/A29BFE/FFFFFF?text=设计模式',
         rating: 4.6,
         salesCount: 4200,
@@ -520,7 +520,7 @@ class MallState extends ChangeNotifier {
     bool? hasDiscount,
     String? searchKeyword,
   }) {
-    bool hasChanged = false;
+    var hasChanged = false;
 
     if (categoryId != null && categoryId != _selectedCategoryId) {
       _selectedCategoryId = categoryId;
@@ -582,6 +582,6 @@ class MallState extends ChangeNotifier {
 
   /// 加载更多数据
   Future<void> loadMore() async {
-    await loadProducts(refresh: false);
+    await loadProducts();
   }
 }

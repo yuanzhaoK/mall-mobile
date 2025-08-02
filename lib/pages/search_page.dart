@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/search_state.dart';
+import 'package:flutter_home_mall/providers/search_state.dart';
 
-import '../widgets/product_card.dart';
-import '../widgets/search_filter_sheet.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/widgets/product_card.dart';
+import 'package:flutter_home_mall/widgets/search_filter_sheet.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 搜索页面
 class SearchPage extends StatefulWidget {
-  final String? initialQuery;
-
   const SearchPage({Key? key, this.initialQuery}) : super(key: key);
+  final String? initialQuery;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -59,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -111,7 +110,6 @@ class _SearchPageState extends State<SearchPage> {
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
       ),
@@ -132,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Container(
               height: 40,
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceVariant,
+                color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: theme.colorScheme.outline.withValues(alpha: 0.3),
@@ -181,9 +179,7 @@ class _SearchPageState extends State<SearchPage> {
                         value.isNotEmpty && _searchFocusNode.hasFocus;
                   });
                 },
-                onSubmitted: (value) {
-                  _performSearch(value);
-                },
+                onSubmitted: _performSearch,
               ),
             ),
           ),
@@ -195,7 +191,7 @@ class _SearchPageState extends State<SearchPage> {
             builder: (context, searchState, child) {
               return TextButton(
                 onPressed: () => _performSearch(_searchController.text),
-                child: Text(
+                child: const Text(
                   '搜索',
                   style: TextStyle(
                     color: AppColors.primary,
@@ -220,7 +216,7 @@ class _SearchPageState extends State<SearchPage> {
       return const SizedBox.shrink();
     }
 
-    return Container(
+    return ColoredBox(
       color: Theme.of(context).colorScheme.surface,
       child: ListView.builder(
         itemCount: suggestions.length,
@@ -348,7 +344,7 @@ class _SearchPageState extends State<SearchPage> {
         decoration: BoxDecoration(
           color: isHot
               ? AppColors.primary.withValues(alpha: 0.1)
-              : theme.colorScheme.surfaceVariant,
+              : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
           border: isHot
               ? Border.all(color: AppColors.primary.withValues(alpha: 0.3))
@@ -358,7 +354,7 @@ class _SearchPageState extends State<SearchPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isHot) ...[
-              Icon(
+              const Icon(
                 Icons.local_fire_department,
                 size: 14,
                 color: AppColors.primary,
@@ -434,7 +430,6 @@ class _SearchPageState extends State<SearchPage> {
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
       ),

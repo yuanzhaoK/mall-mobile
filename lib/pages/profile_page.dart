@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
-import '../widgets/menu_item.dart';
-import '../services/graphql_service.dart';
-import '../models/api_models.dart';
-import '../pages/order_list_page.dart';
-import '../pages/profile_edit_page.dart';
-import '../pages/address_manage_page.dart';
-import '../pages/favorites_page.dart';
-import '../pages/settings_page.dart';
-import '../pages/help_center_page.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/constants/app_strings.dart';
+import 'package:flutter_home_mall/widgets/menu_item.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/order_list_page.dart';
+import 'package:flutter_home_mall/pages/profile_edit_page.dart';
+import 'package:flutter_home_mall/pages/address_manage_page.dart';
+import 'package:flutter_home_mall/pages/favorites_page.dart';
+import 'package:flutter_home_mall/pages/settings_page.dart';
+import 'package:flutter_home_mall/pages/help_center_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -251,8 +251,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildLoginBottomSheet() {
-    final TextEditingController usernameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
@@ -492,7 +492,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _performLogin(String identity, String password) async {
+  Future<void> _performLogin(String identity, String password) async {
     // 输入验证
     if (identity.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -536,7 +536,7 @@ class _ProfilePageState extends State<ProfilePage> {
         isLoading = false;
       });
 
-      String errorMessage = '登录失败';
+      var errorMessage = '登录失败';
       if (e.toString().contains('Authentication failed')) {
         errorMessage = '用户名或密码错误，请检查后重试';
       } else if (e.toString().contains('Connection')) {
@@ -587,7 +587,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _logout() async {
+  Future<void> _logout() async {
     try {
       // 显示加载状态
       setState(() {

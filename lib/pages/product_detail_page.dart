@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/product_detail_state.dart';
-import '../providers/cart_state.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/product_detail_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 商品详情页面
 class ProductDetailPage extends StatefulWidget {
-  final String productId;
-  final Product? product; // 可选的商品预览数据
+  // 可选的商品预览数据
 
   const ProductDetailPage({super.key, required this.productId, this.product});
+  final String productId;
+  final Product? product;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -418,7 +419,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.check_circle,
                       size: 16,
                       color: AppColors.primary,
@@ -426,7 +427,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     const SizedBox(width: 4),
                     Text(
                       serviceItem,
-                      style: TextStyle(fontSize: 12, color: AppColors.primary),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -463,7 +467,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(24),
             ),
-            child: Icon(Icons.store, color: AppColors.primary, size: 24),
+            child: const Icon(Icons.store, color: AppColors.primary, size: 24),
           ),
 
           const SizedBox(width: 12),
@@ -506,7 +510,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               // TODO: 进入店铺
             },
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: AppColors.primary),
+              side: const BorderSide(color: AppColors.primary),
               foregroundColor: AppColors.primary,
             ),
             child: const Text('进店看看'),
@@ -573,10 +577,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey[200]!,
-                              width: 1,
-                            ),
+                            bottom: BorderSide(color: Colors.grey[200]!),
                           ),
                         ),
                         child: Row(
@@ -660,10 +661,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           decoration: BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey[200]!,
-                                width: 1,
-                              ),
+                              bottom: BorderSide(color: Colors.grey[200]!),
                             ),
                           ),
                           child: Column(
@@ -791,7 +789,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                             ],
                           ),
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),
@@ -1077,7 +1075,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                         const SizedBox(height: 16),
                       ],
                     );
-                  }).toList(),
+                  }),
 
                   // 数量选择
                   Row(

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../providers/order_state.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../pages/order_detail_page.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/pages/order_detail_page.dart';
 
 /// 订单列表页面
 class OrderListPage extends StatefulWidget {
-  final int initialTabIndex;
-
   const OrderListPage({super.key, this.initialTabIndex = 0});
+  final int initialTabIndex;
 
   @override
   State<OrderListPage> createState() => _OrderListPageState();
@@ -438,10 +437,10 @@ class _OrderListPageState extends State<OrderListPage>
         onPressed: () => _repurchase(order),
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          side: BorderSide(color: AppColors.primary),
+          side: const BorderSide(color: AppColors.primary),
           minimumSize: const Size(80, 32),
         ),
-        child: Text(
+        child: const Text(
           '再次购买',
           style: TextStyle(fontSize: 12, color: AppColors.primary),
         ),

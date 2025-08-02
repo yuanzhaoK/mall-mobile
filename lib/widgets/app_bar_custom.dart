@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
-import '../providers/app_state.dart';
-import '../providers/cart_state.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/providers/app_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
 
 /// 自定义顶部栏组件
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final VoidCallback? onSearchTap;
-  final VoidCallback? onNotificationTap;
-  final VoidCallback? onCartTap;
-  final VoidCallback? onUserTap;
-  final bool showSearch;
-  final bool showNotification;
-  final bool showCart;
-  final bool showUser;
-
   const CustomAppBar({
     super.key,
     this.title = '',
@@ -30,17 +20,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showCart = true,
     this.showUser = true,
   });
+  final String title;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onNotificationTap;
+  final VoidCallback? onCartTap;
+  final VoidCallback? onUserTap;
+  final bool showSearch;
+  final bool showNotification;
+  final bool showCart;
+  final bool showUser;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.surface,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -85,7 +84,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ? AppColors.primary
                   : AppColors.surfaceVariant,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border, width: 1),
+              border: Border.all(color: AppColors.border),
             ),
             child: user != null
                 ? _buildUserAvatar(user.avatar, user.username)
@@ -151,12 +150,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.full),
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: Row(
           children: [
             const SizedBox(width: AppSpacing.md),
-            Icon(Icons.search, color: AppColors.textSecondary, size: 20),
+            const Icon(Icons.search, color: AppColors.textSecondary, size: 20),
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
@@ -200,11 +199,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: badges.Badge(
           position: badges.BadgePosition.topEnd(top: 8, end: 8),
-          showBadge: true, // 这里可以根据实际通知数量决定
           badgeContent: const SizedBox(width: 6, height: 6),
           badgeStyle: const badges.BadgeStyle(
             badgeColor: AppColors.error,
@@ -234,7 +232,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             decoration: BoxDecoration(
               color: AppColors.surfaceVariant,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border, width: 1),
+              border: Border.all(color: AppColors.border),
             ),
             child: badges.Badge(
               position: badges.BadgePosition.topEnd(top: 6, end: 6),
@@ -269,11 +267,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 /// 简化版顶部栏（用于商品详情等页面）
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final VoidCallback? onBack;
-  final List<Widget>? actions;
-  final bool centerTitle;
-
   const SimpleAppBar({
     super.key,
     required this.title,
@@ -281,6 +274,10 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.centerTitle = true,
   });
+  final String title;
+  final VoidCallback? onBack;
+  final List<Widget>? actions;
+  final bool centerTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -310,11 +307,6 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 /// 搜索页面顶部栏
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final String? initialQuery;
-  final Function(String)? onSearch;
-  final VoidCallback? onBack;
-  final List<String>? suggestions;
-
   const SearchAppBar({
     super.key,
     this.initialQuery,
@@ -322,6 +314,10 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onBack,
     this.suggestions,
   });
+  final String? initialQuery;
+  final Function(String)? onSearch;
+  final VoidCallback? onBack;
+  final List<String>? suggestions;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -355,14 +351,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.surface,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -399,7 +395,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   decoration: BoxDecoration(
                     color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.full),
-                    border: Border.all(color: AppColors.primary, width: 1),
+                    border: Border.all(color: AppColors.primary),
                   ),
                   child: TextField(
                     controller: _controller,

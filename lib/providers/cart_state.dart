@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart' hide Category;
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 购物车状态管理
 class CartState extends ChangeNotifier {
-  List<CartItem> _items = [];
+  final List<CartItem> _items = [];
   bool _isLoading = false;
   String? _error;
   bool _selectAll = false;
@@ -22,26 +22,26 @@ class CartState extends ChangeNotifier {
 
   /// 计算商品总价（不含运费和优惠）
   double get subtotalPrice {
-    return _items.fold(0.0, (sum, item) => sum + item.totalPrice);
+    return _items.fold(0, (sum, item) => sum + item.totalPrice);
   }
 
   /// 计算选中商品的总价
   double get selectedSubtotalPrice {
     return _items
         .where((item) => _selectedItems.contains(item.id))
-        .fold(0.0, (sum, item) => sum + item.totalPrice);
+        .fold(0, (sum, item) => sum + item.totalPrice);
   }
 
   /// 计算运费
   double get shippingFee {
-    if (isEmpty || selectedSubtotalPrice == 0) return 0.0;
-    if (selectedSubtotalPrice >= 99) return 0.0; // 满99免运费
-    return 10.0;
+    if (isEmpty || selectedSubtotalPrice == 0) return 0;
+    if (selectedSubtotalPrice >= 99) return 0; // 满99免运费
+    return 10;
   }
 
   /// 计算优惠金额
   double get discountAmount {
-    double discount = 0.0;
+    var discount = 0;
     final subtotal = selectedSubtotalPrice;
 
     // 满减优惠

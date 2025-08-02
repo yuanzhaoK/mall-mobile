@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../models/api_models.dart';
-import '../services/graphql_service.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
 
 /// 应用全局状态管理
 class AppState extends ChangeNotifier {

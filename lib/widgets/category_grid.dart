@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
 
 /// 分类网格组件
 class CategoryGrid extends StatelessWidget {
-  final List<Category> categories;
-  final int crossAxisCount;
-  final double itemHeight;
-  final Function(Category)? onCategoryTap;
-  final VoidCallback? onViewAll;
-  final bool showViewAll;
-  final String title;
-
   const CategoryGrid({
     super.key,
     required this.categories,
@@ -24,6 +16,13 @@ class CategoryGrid extends StatelessWidget {
     this.showViewAll = true,
     this.title = '商品分类',
   });
+  final List<Category> categories;
+  final int crossAxisCount;
+  final double itemHeight;
+  final Function(Category)? onCategoryTap;
+  final VoidCallback? onViewAll;
+  final bool showViewAll;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class CategoryGrid extends StatelessWidget {
                   style: AppTextStyles.body2.copyWith(color: AppColors.primary),
                 ),
                 const SizedBox(width: 4),
-                Icon(
+                const Icon(
                   Icons.arrow_forward_ios,
                   size: 12,
                   color: AppColors.primary,
@@ -87,7 +86,6 @@ class CategoryGrid extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        childAspectRatio: 1.0,
         crossAxisSpacing: AppSpacing.sm,
         mainAxisSpacing: AppSpacing.sm,
       ),
@@ -103,7 +101,7 @@ class CategoryGrid extends StatelessWidget {
   Widget _buildCategoryItem(Category category, int index) {
     return GestureDetector(
       onTap: () => onCategoryTap?.call(category),
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.getCategoryColor(index),
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -164,7 +162,7 @@ class CategoryGrid extends StatelessWidget {
             width: 32,
             height: 32,
             fit: BoxFit.cover,
-            placeholder: (context, url) => Container(
+            placeholder: (context, url) => ColoredBox(
               color: Colors.white,
               child: Icon(
                 _getDefaultIcon(category.name),
@@ -172,7 +170,7 @@ class CategoryGrid extends StatelessWidget {
                 color: AppColors.primary,
               ),
             ),
-            errorWidget: (context, url, error) => Container(
+            errorWidget: (context, url, error) => ColoredBox(
               color: Colors.white,
               child: Icon(
                 _getDefaultIcon(category.name),
@@ -192,11 +190,11 @@ class CategoryGrid extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -268,7 +266,11 @@ class CategoryGrid extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.category_outlined, size: 48, color: AppColors.textLight),
+          const Icon(
+            Icons.category_outlined,
+            size: 48,
+            color: AppColors.textLight,
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             '暂无分类数据',
@@ -282,10 +284,9 @@ class CategoryGrid extends StatelessWidget {
 
 /// 快捷入口组件（营销活动入口）
 class QuickEntryGrid extends StatelessWidget {
+  const QuickEntryGrid({super.key, required this.entries, this.onEntryTap});
   final List<QuickEntry> entries;
   final Function(QuickEntry)? onEntryTap;
-
-  const QuickEntryGrid({super.key, required this.entries, this.onEntryTap});
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +297,7 @@ class QuickEntryGrid extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('快捷入口', style: AppTextStyles.headline3),
+          const Text('快捷入口', style: AppTextStyles.headline3),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: entries
@@ -361,13 +362,6 @@ class QuickEntryGrid extends StatelessWidget {
 
 /// 快捷入口数据模型
 class QuickEntry {
-  final String id;
-  final String title;
-  final String? subtitle;
-  final IconData icon;
-  final List<Color> gradientColors;
-  final String? linkUrl;
-
   QuickEntry({
     required this.id,
     required this.title,
@@ -376,6 +370,12 @@ class QuickEntry {
     required this.gradientColors,
     this.linkUrl,
   });
+  final String id;
+  final String title;
+  final String? subtitle;
+  final IconData icon;
+  final List<Color> gradientColors;
+  final String? linkUrl;
 
   // 预定义的快捷入口
   static List<QuickEntry> defaultEntries = [

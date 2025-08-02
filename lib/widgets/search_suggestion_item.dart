@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 
 /// 搜索建议项组件
 class SearchSuggestionItem extends StatelessWidget {
-  final String text;
-  final IconData icon;
-  final VoidCallback onTap;
-  final VoidCallback? onDelete;
-  final bool isHot;
-
   const SearchSuggestionItem({
     Key? key,
     required this.text,
@@ -16,6 +10,11 @@ class SearchSuggestionItem extends StatelessWidget {
     this.onDelete,
     this.isHot = false,
   }) : super(key: key);
+  final String text;
+  final IconData icon;
+  final VoidCallback onTap;
+  final VoidCallback? onDelete;
+  final bool isHot;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class SearchSuggestionItem extends StatelessWidget {
                 color: Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Text(
+              child: const Text(
                 'HOT',
                 style: TextStyle(
                   color: Colors.red,

@@ -12,9 +12,8 @@ import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 
 /// 个人信息编辑页面
 class ProfileEditPage extends StatefulWidget {
-  final User user;
-
   const ProfileEditPage({super.key, required this.user});
+  final User user;
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -310,7 +309,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             prefixIcon: Icon(icon, color: AppColors.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: const BorderSide(color: AppColors.border),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -318,7 +317,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.border),
+              borderSide: const BorderSide(color: AppColors.border),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -373,9 +372,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   /// 选择头像
-  void _pickAvatar() async {
+  Future<void> _pickAvatar() async {
     try {
-      final XFile? image = await _picker.pickImage(
+      final image = await _picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 80,
         maxWidth: 400,
@@ -400,7 +399,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   /// 保存个人信息
-  void _saveProfile() async {
+  Future<void> _saveProfile() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }

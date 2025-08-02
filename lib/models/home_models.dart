@@ -1,15 +1,8 @@
 // 首页相关数据模型
-import 'product_models.dart';
+import 'package:flutter_home_mall/models/product_models.dart';
 
 // 轮播图模型
 class BannerItem {
-  final String id;
-  final String title;
-  final String imageUrl;
-  final String? linkUrl;
-  final String type;
-  final int sortOrder;
-
   BannerItem({
     required this.id,
     required this.title,
@@ -29,15 +22,16 @@ class BannerItem {
       sortOrder: json['sort_order'] ?? 0,
     );
   }
+  final String id;
+  final String title;
+  final String imageUrl;
+  final String? linkUrl;
+  final String type;
+  final int sortOrder;
 }
 
 // 分类模型
 class Category {
-  final String id;
-  final String name;
-  final String? iconUrl;
-  final int productCount;
-
   Category({
     required this.id,
     required this.name,
@@ -53,16 +47,14 @@ class Category {
       productCount: json['product_count'] ?? 0,
     );
   }
+  final String id;
+  final String name;
+  final String? iconUrl;
+  final int productCount;
 }
 
 // 热门项目模型
 class TrendingItem {
-  final String id;
-  final String name;
-  final String imageUrl;
-  final double score;
-  final String type;
-
   TrendingItem({
     required this.id,
     required this.name,
@@ -80,16 +72,15 @@ class TrendingItem {
       type: json['type'] ?? '',
     );
   }
+  final String id;
+  final String name;
+  final String imageUrl;
+  final double score;
+  final String type;
 }
 
 // 推荐模型
 class Recommendation {
-  final String id;
-  final String name;
-  final String type;
-  final String position;
-  final List<Product> products;
-
   Recommendation({
     required this.id,
     required this.name,
@@ -111,17 +102,15 @@ class Recommendation {
           [],
     );
   }
+  final String id;
+  final String name;
+  final String type;
+  final String position;
+  final List<Product> products;
 }
 
 // 广告模型
 class Advertisement {
-  final String id;
-  final String title;
-  final String imageUrl;
-  final String? linkUrl;
-  final String position;
-  final String type;
-
   Advertisement({
     required this.id,
     required this.title,
@@ -141,17 +130,16 @@ class Advertisement {
       type: json['type'] ?? '',
     );
   }
+  final String id;
+  final String title;
+  final String imageUrl;
+  final String? linkUrl;
+  final String position;
+  final String type;
 }
 
 // 首页数据模型
 class HomeData {
-  final List<BannerItem> banners;
-  final List<Product> featuredProducts;
-  final List<Category> categories;
-  final List<TrendingItem> trendingItems;
-  final List<Recommendation> recommendations;
-  final List<Advertisement> advertisements;
-
   HomeData({
     required this.banners,
     required this.featuredProducts,
@@ -195,4 +183,10 @@ class HomeData {
           [],
     );
   }
+  final List<BannerItem> banners;
+  final List<Product> featuredProducts;
+  final List<Category> categories;
+  final List<TrendingItem> trendingItems;
+  final List<Recommendation> recommendations;
+  final List<Advertisement> advertisements;
 }

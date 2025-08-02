@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
 
 /// 简单的AppBar组件
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final bool showBackButton;
-  final List<Widget>? actions;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-
   const SimpleAppBar({
     super.key,
     required this.title,
@@ -18,6 +12,11 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.foregroundColor,
   });
+  final String title;
+  final bool showBackButton;
+  final List<Widget>? actions;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +38,6 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
 /// 简化版自定义顶部栏
 class SimpleCustomAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final String title;
-  final VoidCallback? onSearchTap;
-  final VoidCallback? onNotificationTap;
-  final VoidCallback? onCartTap;
-  final VoidCallback? onUserTap;
-  final bool showSearch;
-  final bool showNotification;
-  final bool showCart;
-  final bool showUser;
-  final int cartItemCount;
-
   const SimpleCustomAppBar({
     super.key,
     this.title = '',
@@ -63,17 +51,27 @@ class SimpleCustomAppBar extends StatelessWidget
     this.showUser = true,
     this.cartItemCount = 0,
   });
+  final String title;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onNotificationTap;
+  final VoidCallback? onCartTap;
+  final VoidCallback? onUserTap;
+  final bool showSearch;
+  final bool showNotification;
+  final bool showCart;
+  final bool showUser;
+  final int cartItemCount;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return DecoratedBox(
+      decoration: const BoxDecoration(
         color: AppColors.surface,
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -112,7 +110,7 @@ class SimpleCustomAppBar extends StatelessWidget
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: const Icon(
           Icons.person_outline,
@@ -132,12 +130,12 @@ class SimpleCustomAppBar extends StatelessWidget
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.full),
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: Row(
           children: [
             const SizedBox(width: AppSpacing.md),
-            Icon(Icons.search, color: AppColors.textSecondary, size: 20),
+            const Icon(Icons.search, color: AppColors.textSecondary, size: 20),
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
@@ -181,7 +179,7 @@ class SimpleCustomAppBar extends StatelessWidget
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: Stack(
           children: [
@@ -221,7 +219,7 @@ class SimpleCustomAppBar extends StatelessWidget
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(color: AppColors.border),
         ),
         child: Stack(
           children: [

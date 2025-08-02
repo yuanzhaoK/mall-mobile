@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 搜索状态管理
 class SearchState extends ChangeNotifier {
@@ -108,8 +108,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_1',
         name: '苹果iPhone 15 Pro Max 256GB',
-        price: 9999.0,
-        originalPrice: 10999.0,
+        price: 9999,
+        originalPrice: 10999,
         imageUrl:
             'https://via.placeholder.com/300x300/FF6B6B/FFFFFF?text=iPhone',
         rating: 4.8,
@@ -118,8 +118,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_2',
         name: '华为Mate 60 Pro 512GB',
-        price: 6999.0,
-        originalPrice: 7499.0,
+        price: 6999,
+        originalPrice: 7499,
         imageUrl:
             'https://via.placeholder.com/300x300/4ECDC4/FFFFFF?text=Huawei',
         rating: 4.7,
@@ -128,8 +128,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_3',
         name: '小米14 Ultra 16GB+1TB',
-        price: 5999.0,
-        originalPrice: 6499.0,
+        price: 5999,
+        originalPrice: 6499,
         imageUrl:
             'https://via.placeholder.com/300x300/45B7D1/FFFFFF?text=Xiaomi',
         rating: 4.6,
@@ -138,8 +138,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_4',
         name: '三星Galaxy S24 Ultra 1TB',
-        price: 8999.0,
-        originalPrice: 9999.0,
+        price: 8999,
+        originalPrice: 9999,
         imageUrl:
             'https://via.placeholder.com/300x300/96CEB4/FFFFFF?text=Samsung',
         rating: 4.5,
@@ -148,8 +148,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_5',
         name: 'OPPO Find X7 Ultra 16GB+512GB',
-        price: 5499.0,
-        originalPrice: 5999.0,
+        price: 5499,
+        originalPrice: 5999,
         imageUrl: 'https://via.placeholder.com/300x300/FFEAA7/000000?text=OPPO',
         rating: 4.4,
         salesCount: 4320,
@@ -157,8 +157,8 @@ class SearchState extends ChangeNotifier {
       Product(
         id: 'search_6',
         name: 'vivo X100 Pro+ 16GB+1TB',
-        price: 4999.0,
-        originalPrice: 5499.0,
+        price: 4999,
+        originalPrice: 5499,
         imageUrl: 'https://via.placeholder.com/300x300/DDA0DD/FFFFFF?text=vivo',
         rating: 4.3,
         salesCount: 3890,
@@ -223,7 +223,7 @@ class SearchState extends ChangeNotifier {
     String? sortBy,
     bool? hasDiscount,
   }) {
-    bool hasChanged = false;
+    var hasChanged = false;
 
     if (category != null && category != _selectedCategory) {
       _selectedCategory = category;

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import '../../models/api_models.dart';
-import 'graphql_client.dart';
-import 'queries.dart';
-import 'mutations.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/queries.dart';
+import 'package:flutter_home_mall/services/graphql/mutations.dart';
 
 /// 购物车服务 - 处理购物车相关操作
 class CartService {

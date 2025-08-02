@@ -6,15 +6,6 @@ import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 
 /// 地址模型
 class Address {
-  final String id;
-  final String receiverName;
-  final String receiverPhone;
-  final String province;
-  final String city;
-  final String district;
-  final String detailAddress;
-  final bool isDefault;
-
   Address({
     required this.id,
     required this.receiverName,
@@ -25,6 +16,14 @@ class Address {
     required this.detailAddress,
     this.isDefault = false,
   });
+  final String id;
+  final String receiverName;
+  final String receiverPhone;
+  final String province;
+  final String city;
+  final String district;
+  final String detailAddress;
+  final bool isDefault;
 
   String get fullAddress => '$province$city$district$detailAddress';
 }
@@ -199,7 +198,7 @@ class _AddressManagePageState extends State<AddressManagePage> {
           ),
 
           // 操作按钮
-          Container(
+          DecoratedBox(
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
@@ -331,7 +330,7 @@ class _AddressManagePageState extends State<AddressManagePage> {
   void _setDefaultAddress(int index) {
     setState(() {
       // 清除所有默认状态
-      for (int i = 0; i < addresses.length; i++) {
+      for (var i = 0; i < addresses.length; i++) {
         addresses[i] = Address(
           id: addresses[i].id,
           receiverName: addresses[i].receiverName,

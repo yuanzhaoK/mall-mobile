@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../constants/app_colors.dart';
-import '../core/themes/app_theme.dart';
-import '../providers/home_state.dart';
-import '../providers/cart_state.dart';
-import '../widgets/simple_banner.dart';
-import '../widgets/category_grid.dart';
-import '../widgets/product_card.dart';
-import '../widgets/simple_app_bar.dart';
-import '../models/api_models.dart';
-import 'debug_page.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/providers/home_state.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/widgets/simple_banner.dart';
+import 'package:flutter_home_mall/widgets/category_grid.dart';
+import 'package:flutter_home_mall/widgets/product_card.dart';
+import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/debug_page.dart';
 
 /// 商城首页
 class HomePage extends StatefulWidget {
@@ -21,9 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final RefreshController _refreshController = RefreshController(
-    initialRefresh: false,
-  );
+  final RefreshController _refreshController = RefreshController();
 
   @override
   void initState() {
@@ -62,12 +60,9 @@ class _HomePageState extends State<HomePage> {
         builder: (context, homeState, child) {
           return SmartRefresher(
             controller: _refreshController,
-            enablePullDown: true,
-            enablePullUp: false,
             onRefresh: _onRefresh,
             header: const WaterDropMaterialHeader(
               backgroundColor: AppColors.primary,
-              color: Colors.white,
             ),
             child: _buildScrollableBody(homeState),
           );
@@ -157,7 +152,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('营销活动', style: AppTextStyles.headline3),
+          const Text('营销活动', style: AppTextStyles.headline3),
           const SizedBox(height: AppSpacing.md),
 
           // 营销卡片
@@ -296,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Icon(
+                      const Icon(
                         Icons.arrow_forward_ios,
                         size: 12,
                         color: AppColors.primary,
@@ -357,7 +352,11 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64, color: AppColors.textLight),
+            const Icon(
+              Icons.error_outline,
+              size: 64,
+              color: AppColors.textLight,
+            ),
             const SizedBox(height: AppSpacing.md),
             Text(
               '加载失败',
@@ -399,7 +398,7 @@ class _HomePageState extends State<HomePage> {
   // 事件处理方法
 
   /// 下拉刷新
-  void _onRefresh() async {
+  Future<void> _onRefresh() async {
     try {
       await context.read<HomeState>().refreshHomeData();
 

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/api_models.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 商品详情状态管理
 class ProductDetailState extends ChangeNotifier {
@@ -107,8 +107,8 @@ class ProductDetailState extends ChangeNotifier {
       product: Product(
         id: productId,
         name: 'iPhone 15 Pro Max 256GB 深空黑色',
-        price: 9999.0,
-        originalPrice: 10999.0,
+        price: 9999,
+        originalPrice: 10999,
         imageUrl:
             'https://via.placeholder.com/400x400/FF6B6B/FFFFFF?text=iPhone',
         rating: 4.8,
@@ -163,8 +163,8 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
         ProductSku(
           id: 'sku_1',
           name: '256GB 深空黑色',
-          price: 9999.0,
-          originalPrice: 10999.0,
+          price: 9999,
+          originalPrice: 10999,
           stock: 50,
           image: 'https://via.placeholder.com/100x100/000000/FFFFFF?text=Black',
           attributes: {'容量': '256GB', '颜色': '深空黑色'},
@@ -172,8 +172,8 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
         ProductSku(
           id: 'sku_2',
           name: '256GB 银色',
-          price: 9999.0,
-          originalPrice: 10999.0,
+          price: 9999,
+          originalPrice: 10999,
           stock: 30,
           image:
               'https://via.placeholder.com/100x100/C0C0C0/000000?text=Silver',
@@ -182,8 +182,8 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
         ProductSku(
           id: 'sku_3',
           name: '512GB 深空黑色',
-          price: 11999.0,
-          originalPrice: 12999.0,
+          price: 11999,
+          originalPrice: 12999,
           stock: 20,
           image: 'https://via.placeholder.com/100x100/000000/FFFFFF?text=Black',
           attributes: {'容量': '512GB', '颜色': '深空黑色'},
@@ -191,8 +191,8 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
         ProductSku(
           id: 'sku_4',
           name: '512GB 银色',
-          price: 11999.0,
-          originalPrice: 12999.0,
+          price: 11999,
+          originalPrice: 12999,
           stock: 15,
           image:
               'https://via.placeholder.com/100x100/C0C0C0/000000?text=Silver',
@@ -212,7 +212,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           userId: 'user_1',
           userName: '张**',
           userAvatar: 'https://via.placeholder.com/50x50/FF6B6B/FFFFFF?text=Z',
-          rating: 5.0,
+          rating: 5,
           content: '手机非常棒！拍照效果超级好，A17 Pro芯片性能强劲，游戏运行非常流畅。钛金属机身手感很棒，比之前轻了不少。',
           images: [
             'https://via.placeholder.com/200x200/FF6B6B/FFFFFF?text=Photo1',
@@ -226,7 +226,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           id: 'review_2',
           userId: 'user_2',
           userName: '李**',
-          rating: 4.0,
+          rating: 4,
           content: '整体不错，就是价格有点贵。不过用料确实好，系统也很流畅。',
           images: [],
           createdAt: DateTime.now().subtract(const Duration(days: 10)),
@@ -237,7 +237,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           id: 'review_3',
           userId: 'user_3',
           userName: '匿名用户',
-          rating: 5.0,
+          rating: 5,
           content: '苹果粉丝必买！每年都换新机，这次的升级还是很明显的。',
           images: [],
           createdAt: DateTime.now().subtract(const Duration(days: 15)),
@@ -277,7 +277,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
     if (_productDetail == null) return;
 
     for (final sku in _productDetail!.skus) {
-      bool matches = true;
+      var matches = true;
       for (final entry in _selectedAttributes.entries) {
         if (sku.attributes[entry.key] != entry.value) {
           matches = false;
@@ -356,7 +356,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
   Map<String, List<String>> getAvailableAttributes() {
     if (_productDetail == null) return {};
 
-    final Map<String, Set<String>> attributeMap = {};
+    final attributeMap = <String, Set<String>>{};
 
     for (final sku in _productDetail!.skus) {
       for (final entry in sku.attributes.entries) {
@@ -379,7 +379,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
     testAttributes[attributeName] = attributeValue;
 
     for (final sku in _productDetail!.skus) {
-      bool matches = true;
+      var matches = true;
       for (final entry in testAttributes.entries) {
         if (sku.attributes[entry.key] != entry.value) {
           matches = false;

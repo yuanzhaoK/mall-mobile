@@ -1,6 +1,6 @@
 // 订单相关数据模型
 import 'package:flutter/material.dart';
-import 'cart_models.dart';
+import 'package:flutter_home_mall/models/cart_models.dart';
 
 // 订单状态枚举
 enum OrderStatus {
@@ -46,17 +46,6 @@ enum PaymentMethod {
 
 // 订单商品项模型
 class OrderItem {
-  final String id;
-  final String productId;
-  final String productName;
-  final String productImage;
-  final double price;
-  final double? originalPrice;
-  final int quantity;
-  final String? skuId;
-  final String? skuName;
-  final Map<String, String> attributes;
-
   OrderItem({
     required this.id,
     required this.productId,
@@ -85,21 +74,6 @@ class OrderItem {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'product_id': productId,
-      'product_name': productName,
-      'product_image': productImage,
-      'price': price,
-      'original_price': originalPrice,
-      'quantity': quantity,
-      'sku_id': skuId,
-      'sku_name': skuName,
-      'attributes': attributes,
-    };
-  }
-
   // 从购物车项创建订单项
   factory OrderItem.fromCartItem(CartItem cartItem) {
     return OrderItem(
@@ -114,6 +88,31 @@ class OrderItem {
       skuName: null,
       attributes: {}, // 当前CartItem不包含属性信息
     );
+  }
+  final String id;
+  final String productId;
+  final String productName;
+  final String productImage;
+  final double price;
+  final double? originalPrice;
+  final int quantity;
+  final String? skuId;
+  final String? skuName;
+  final Map<String, String> attributes;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'product_id': productId,
+      'product_name': productName,
+      'product_image': productImage,
+      'price': price,
+      'original_price': originalPrice,
+      'quantity': quantity,
+      'sku_id': skuId,
+      'sku_name': skuName,
+      'attributes': attributes,
+    };
   }
 
   // 小计金额
@@ -139,16 +138,6 @@ class OrderItem {
 
 // 收货地址模型
 class ShippingAddress {
-  final String id;
-  final String name;
-  final String phone;
-  final String province;
-  final String city;
-  final String district;
-  final String address;
-  final String? postalCode;
-  final bool isDefault;
-
   ShippingAddress({
     required this.id,
     required this.name,
@@ -174,6 +163,15 @@ class ShippingAddress {
       isDefault: json['is_default'] ?? false,
     );
   }
+  final String id;
+  final String name;
+  final String phone;
+  final String province;
+  final String city;
+  final String district;
+  final String address;
+  final String? postalCode;
+  final bool isDefault;
 
   Map<String, dynamic> toJson() {
     return {
@@ -198,25 +196,6 @@ class ShippingAddress {
 
 // 订单模型
 class Order {
-  final String id;
-  final String orderNo;
-  final String userId;
-  final OrderStatus status;
-  final List<OrderItem> items;
-  final ShippingAddress shippingAddress;
-  final double subtotal;
-  final double shippingFee;
-  final double discount;
-  final double totalAmount;
-  final PaymentMethod? paymentMethod;
-  final DateTime createdAt;
-  final DateTime? paidAt;
-  final DateTime? shippedAt;
-  final DateTime? deliveredAt;
-  final String? remark;
-  final String? trackingNumber;
-  final String? cancelReason;
-
   Order({
     required this.id,
     required this.orderNo,
@@ -272,6 +251,24 @@ class Order {
       cancelReason: json['cancel_reason'],
     );
   }
+  final String id;
+  final String orderNo;
+  final String userId;
+  final OrderStatus status;
+  final List<OrderItem> items;
+  final ShippingAddress shippingAddress;
+  final double subtotal;
+  final double shippingFee;
+  final double discount;
+  final double totalAmount;
+  final PaymentMethod? paymentMethod;
+  final DateTime createdAt;
+  final DateTime? paidAt;
+  final DateTime? shippedAt;
+  final DateTime? deliveredAt;
+  final String? remark;
+  final String? trackingNumber;
+  final String? cancelReason;
 
   Map<String, dynamic> toJson() {
     return {
@@ -364,17 +361,16 @@ class Order {
 
 // 订单创建请求模型
 class CreateOrderRequest {
-  final List<CartItem> items;
-  final ShippingAddress shippingAddress;
-  final String? remark;
-  final String? couponId;
-
   CreateOrderRequest({
     required this.items,
     required this.shippingAddress,
     this.remark,
     this.couponId,
   });
+  final List<CartItem> items;
+  final ShippingAddress shippingAddress;
+  final String? remark;
+  final String? couponId;
 
   Map<String, dynamic> toJson() {
     return {

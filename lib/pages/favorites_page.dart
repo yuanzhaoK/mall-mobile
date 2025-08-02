@@ -26,8 +26,8 @@ class _FavoritesPageState extends State<FavoritesPage>
     Product(
       id: '1',
       name: 'iPhone 15 Pro Max',
-      price: 9999.0,
-      originalPrice: 10999.0,
+      price: 9999,
+      originalPrice: 10999,
       imageUrl: 'https://example.com/iphone.jpg',
       rating: 4.8,
       salesCount: 500,
@@ -35,8 +35,8 @@ class _FavoritesPageState extends State<FavoritesPage>
     Product(
       id: '2',
       name: 'MacBook Pro 16英寸',
-      price: 19999.0,
-      originalPrice: 21999.0,
+      price: 19999,
+      originalPrice: 21999,
       imageUrl: 'https://example.com/macbook.jpg',
       rating: 4.9,
       salesCount: 200,
@@ -97,14 +97,13 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   /// 构建Tab标签栏
   Widget _buildTabBar() {
-    return Container(
+    return ColoredBox(
       color: Colors.white,
       child: TabBar(
         controller: _tabController,
         labelColor: AppColors.primary,
         unselectedLabelColor: AppColors.textSecondary,
         indicatorColor: AppColors.primary,
-        indicatorWeight: 2,
         labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         unselectedLabelStyle: const TextStyle(
           fontSize: 16,
@@ -466,7 +465,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.orange, size: 16),
+                      const Icon(Icons.star, color: Colors.orange, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         '4.8',

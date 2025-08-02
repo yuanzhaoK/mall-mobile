@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../models/api_models.dart';
-import '../constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
 
 /// 购物车商品项组件
 class CartItemWidget extends StatelessWidget {
-  final CartItem item;
-  final bool isSelected;
-  final VoidCallback onToggleSelection;
-  final ValueChanged<int> onQuantityChanged;
-  final VoidCallback onRemove;
-
   const CartItemWidget({
     Key? key,
     required this.item,
@@ -19,6 +13,11 @@ class CartItemWidget extends StatelessWidget {
     required this.onQuantityChanged,
     required this.onRemove,
   }) : super(key: key);
+  final CartItem item;
+  final bool isSelected;
+  final VoidCallback onToggleSelection;
+  final ValueChanged<int> onQuantityChanged;
+  final VoidCallback onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,6 @@ class CartItemWidget extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
       ),
@@ -59,14 +57,14 @@ class CartItemWidget extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: item.product.imageUrl,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: theme.colorScheme.surfaceVariant,
+                placeholder: (context, url) => ColoredBox(
+                  color: theme.colorScheme.surfaceContainerHighest,
                   child: const Center(
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ),
-                errorWidget: (context, url, error) => Container(
-                  color: theme.colorScheme.surfaceVariant,
+                errorWidget: (context, url, error) => ColoredBox(
+                  color: theme.colorScheme.surfaceContainerHighest,
                   child: Icon(
                     Icons.image_not_supported_outlined,
                     color: theme.colorScheme.onSurfaceVariant,
@@ -157,7 +155,7 @@ class CartItemWidget extends StatelessWidget {
   Widget _buildQuantityController(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.3),
