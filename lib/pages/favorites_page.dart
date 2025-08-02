@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/models/product_models.dart';
-import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 
 /// 我的收藏页面
 class FavoritesPage extends StatefulWidget {
@@ -596,7 +595,7 @@ class _FavoritesPageState extends State<FavoritesPage>
   /// 全选/取消全选
   void _toggleSelectAll(bool? value) {
     setState(() {
-      if (value == true) {
+      if (value ?? false) {
         _selectedItems.addAll(_favoriteProducts.map((p) => p.id));
       } else {
         _selectedItems.clear();

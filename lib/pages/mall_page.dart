@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/constants/app_strings.dart';
-
 import 'package:flutter_home_mall/models/api_models.dart';
-import 'package:flutter_home_mall/providers/mall_state.dart';
-import 'package:flutter_home_mall/providers/cart_state.dart';
-import 'package:flutter_home_mall/widgets/product_card.dart';
-import 'package:flutter_home_mall/widgets/mall_filter_sheet.dart';
-
 import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/providers/mall_state.dart';
+import 'package:flutter_home_mall/widgets/mall_filter_sheet.dart';
+import 'package:flutter_home_mall/widgets/product_card.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 商场页面
 class MallPage extends StatefulWidget {
@@ -476,8 +474,9 @@ class _MallPageState extends State<MallPage> {
 
   /// 执行搜索
   void _performSearch(String query) {
-    final mallState = context.read<MallState>();
-    mallState.setFilters(searchKeyword: query.trim());
+    final mallState = context.read<MallState>()
+      ..setFilters(searchKeyword: query.trim());
+    debugPrint(mallState.filtersDescription);
   }
 
   /// 显示筛选面板
@@ -502,9 +501,8 @@ class _MallPageState extends State<MallPage> {
 
   /// 处理加购物车
   void _handleAddToCart(Product product) {
-    final cartState = context.read<CartState>();
-    cartState.addToCart(product);
-
+    final cartState = context.read<CartState>()..addToCart(product);
+    debugPrint(cartState.discountText);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product.name} 已加入购物车'),

@@ -1,7 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
 
 class GraphQLDiagnostics {
   /// 全面诊断GraphQL连接问题
@@ -100,7 +101,7 @@ class GraphQLDiagnostics {
     final timeouts = [5, 10, 15, 30];
     final results = <String, dynamic>{};
 
-    for (var timeout in timeouts) {
+    for (final timeout in timeouts) {
       try {
         debugPrint('⏱️ 测试 $timeout秒 超时...');
 
@@ -183,9 +184,9 @@ class GraphQLDiagnostics {
 
   /// 生成诊断报告
   static String generateReport(Map<String, dynamic> results) {
-    final buffer = StringBuffer();
-    buffer.writeln('🔍 GraphQL连接诊断报告');
-    buffer.writeln('=' * 40);
+    final buffer = StringBuffer()
+      ..writeln('🔍 GraphQL连接诊断报告')
+      ..writeln('=' * 40);
 
     // 基础连接
     final basicConnection = results['basicConnection'] as Map<String, dynamic>;
@@ -200,10 +201,11 @@ class GraphQLDiagnostics {
     final graphqlFormat = results['graphqlFormat'] as Map<String, dynamic>;
     buffer.writeln('\n🔗 GraphQL格式测试:');
     if (graphqlFormat['success']) {
-      buffer.writeln('✅ 成功 - 状态码: ${graphqlFormat['statusCode']}');
-      buffer.writeln(
-        '   GraphQL响应: ${graphqlFormat['isGraphQLResponse'] ? '是' : '否'}',
-      );
+      buffer
+        ..writeln('✅ 成功 - 状态码: ${graphqlFormat['statusCode']}')
+        ..writeln(
+          '   GraphQL响应: ${graphqlFormat['isGraphQLResponse'] ? '是' : '否'}',
+        );
     } else {
       buffer.writeln('❌ 失败 - ${graphqlFormat['error']}');
     }

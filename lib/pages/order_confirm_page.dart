@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_home_mall/providers/order_state.dart';
-import 'package:flutter_home_mall/providers/cart_state.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/pages/address_select_page.dart';
 import 'package:flutter_home_mall/pages/order_detail_page.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:provider/provider.dart';
 
 /// 订单确认页面
 class OrderConfirmPage extends StatefulWidget {
@@ -326,43 +326,44 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
     );
   }
 
-  Widget _buildCouponSection() {
-    return ColoredBox(
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {
-          // TODO: 跳转到优惠券选择页面
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('优惠券功能开发中')));
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Icon(Icons.local_offer, color: AppColors.warning, size: 20),
-              const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  '优惠券',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
+  Widget _buildCouponSection() => ColoredBox(
+    color: Colors.white,
+    child: InkWell(
+      onTap: () {
+        // TODO: 跳转到优惠券选择页面
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('优惠券功能开发中')));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            const Icon(Icons.local_offer, color: AppColors.warning, size: 20),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Text(
+                '优惠券',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
-              Text(
-                '暂无可用',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
-              const SizedBox(width: 8),
-              Icon(Icons.chevron_right, color: Colors.grey[400]),
-            ],
-          ),
+            ),
+            Text(
+              '暂无可用',
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.chevron_right, color: Colors.grey[400]),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 
   Widget _buildPriceDetail() {
-    final subtotal = widget.items.fold(0, (sum, item) => sum + item.totalPrice);
+    final subtotal = widget.items.fold<double>(
+      0,
+      (sum, item) => sum + item.totalPrice,
+    );
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0
@@ -442,7 +443,10 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
   }
 
   Widget _buildBottomBar(OrderState orderState) {
-    final subtotal = widget.items.fold(0, (sum, item) => sum + item.totalPrice);
+    final subtotal = widget.items.fold<double>(
+      0,
+      (sum, item) => sum + item.totalPrice,
+    );
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0
@@ -553,12 +557,12 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
       // 订单创建成功，清空购物车中的对应商品
       final cartState = context.read<CartState>();
       for (final item in widget.items) {
-        cartState.removeFromCart(item.id);
+        await cartState.removeFromCart(item.id);
       }
 
       // 跳转到订单详情页面
       if (mounted) {
-        Navigator.pushReplacement(
+        await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => OrderDetailPage(orderId: order.id),

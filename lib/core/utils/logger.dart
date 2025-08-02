@@ -119,16 +119,13 @@ class Logger {
     String message, [
     Object? error,
   ]) {
-    final buffer = StringBuffer();
-
-    // 添加emoji和级别
-    buffer.write('${level.emoji} [$timestamp] ');
-
-    // 添加标签
-    buffer.write('[$_tag] ');
-
-    // 添加消息
-    buffer.write(message);
+    final buffer = StringBuffer()
+      // 添加emoji和级别
+      ..write('${level.emoji} [$timestamp] ')
+      // 添加标签
+      ..write('[$_tag] ')
+      // 添加消息
+      ..write(message);
 
     // 添加错误信息
     if (error != null) {

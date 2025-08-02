@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/constants/app_strings.dart';
-import 'package:flutter_home_mall/widgets/menu_item.dart';
-import 'package:flutter_home_mall/services/graphql_service.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
-import 'package:flutter_home_mall/pages/order_list_page.dart';
-import 'package:flutter_home_mall/pages/profile_edit_page.dart';
 import 'package:flutter_home_mall/pages/address_manage_page.dart';
 import 'package:flutter_home_mall/pages/favorites_page.dart';
-import 'package:flutter_home_mall/pages/settings_page.dart';
 import 'package:flutter_home_mall/pages/help_center_page.dart';
+import 'package:flutter_home_mall/pages/order_list_page.dart';
+import 'package:flutter_home_mall/pages/profile_edit_page.dart';
+import 'package:flutter_home_mall/pages/settings_page.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/widgets/menu_item.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _checkLoginStatus();
   }
 
-  void _checkLoginStatus() async {
+  Future<void> _checkLoginStatus() async {
     setState(() {
       isLoggedIn = GraphQLService.isLoggedIn;
     });
@@ -78,95 +78,93 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildUserInfoCard() {
-    return GestureDetector(
-      onTap: () {
-        if (!isLoggedIn) {
-          _showLoginBottomSheet();
-        } else {
-          _navigateToProfileEdit();
-        }
-      },
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: AppColors.primary,
-                backgroundImage: isLoggedIn && currentUser?.avatar != null
-                    ? NetworkImage(currentUser!.avatar!)
-                    : null,
-                child: isLoggedIn && currentUser?.avatar == null
-                    ? Text(
-                        (currentUser?.username.isNotEmpty == true)
-                            ? currentUser!.username[0].toUpperCase()
-                            : (username.isNotEmpty
-                                  ? username[0].toUpperCase()
-                                  : 'U'),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      )
-                    : isLoggedIn == false
-                    ? const Icon(Icons.person, size: 40, color: Colors.white)
-                    : null,
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      isLoggedIn ? (currentUser?.username ?? username) : '点击登录',
-                      style: TextStyle(
-                        fontSize: 20,
+  Widget _buildUserInfoCard() => GestureDetector(
+    onTap: () {
+      if (!isLoggedIn) {
+        _showLoginBottomSheet();
+      } else {
+        _navigateToProfileEdit();
+      }
+    },
+    child: Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: AppColors.primary,
+              backgroundImage: isLoggedIn && currentUser?.avatar != null
+                  ? NetworkImage(currentUser!.avatar!)
+                  : null,
+              child: isLoggedIn && currentUser?.avatar == null
+                  ? Text(
+                      (currentUser?.username.isNotEmpty ?? false)
+                          ? currentUser!.username[0].toUpperCase()
+                          : (username.isNotEmpty
+                                ? username[0].toUpperCase()
+                                : 'U'),
+                      style: const TextStyle(
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    )
+                  : isLoggedIn == false
+                  ? const Icon(Icons.person, size: 40, color: Colors.white)
+                  : null,
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isLoggedIn ? (currentUser?.username ?? username) : '点击登录',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isLoggedIn
+                          ? AppColors.textPrimary
+                          : AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      isLoggedIn ? AppStrings.vipMember : '未登录用户',
+                      style: TextStyle(
+                        fontSize: 14,
                         color: isLoggedIn
-                            ? AppColors.textPrimary
+                            ? AppColors.primary
                             : AppColors.textSecondary,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        isLoggedIn ? AppStrings.vipMember : '未登录用户',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isLoggedIn
-                              ? AppColors.primary
-                              : AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Icon(
-                isLoggedIn ? Icons.edit : Icons.arrow_forward_ios,
-                color: AppColors.textSecondary,
-                size: 16,
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              isLoggedIn ? Icons.edit : Icons.arrow_forward_ios,
+              color: AppColors.textSecondary,
+              size: 16,
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 
   Widget _buildMenuItems() {
     return Column(

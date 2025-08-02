@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 /// 搜索建议项组件
 class SearchSuggestionItem extends StatelessWidget {
   const SearchSuggestionItem({
-    Key? key,
+    super.key,
     required this.text,
     required this.icon,
     required this.onTap,
     this.onDelete,
     this.isHot = false,
-  }) : super(key: key);
+  });
   final String text;
   final IconData icon;
   final VoidCallback onTap;

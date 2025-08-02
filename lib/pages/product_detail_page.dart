@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_home_mall/providers/product_detail_state.dart';
-import 'package:flutter_home_mall/providers/cart_state.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/providers/product_detail_state.dart';
+import 'package:provider/provider.dart';
 
 /// 商品详情页面
 class ProductDetailPage extends StatefulWidget {

@@ -4,29 +4,27 @@
 /// 提供统一的API入口和服务管理
 library;
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+// 导入数据模型
+import 'package:flutter_home_mall/models/user_models.dart';
+import 'package:flutter_home_mall/services/graphql/auth_service.dart';
+import 'package:flutter_home_mall/services/graphql/cart_service.dart';
+// 导入依赖
+import 'package:flutter_home_mall/services/graphql/member_service.dart';
+import 'package:flutter_home_mall/services/graphql/points_service.dart';
+import 'package:flutter_home_mall/services/graphql/recommendation_service.dart';
+
+export 'member_queries.dart';
+export 'member_service.dart';
+export 'recommendation_service.dart';
 // 导入所有模块化服务
 export 'schema_types.dart'
     hide
         AddressList,
         PointsExchangesResponse,
         FavoritesResponse,
-        PaginationInfo,
-        Product;
-export 'member_queries.dart';
-export 'member_service.dart';
-export 'recommendation_service.dart';
-
-// 导入依赖
-import 'package:flutter_home_mall/services/graphql/member_service.dart';
-import 'package:flutter_home_mall/services/graphql/points_service.dart';
-import 'package:flutter_home_mall/services/graphql/recommendation_service.dart';
-import 'package:flutter_home_mall/services/graphql/cart_service.dart';
-import 'package:flutter_home_mall/services/graphql/auth_service.dart';
-import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
-
-// 导入数据模型
-import 'package:flutter_home_mall/models/user_models.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+        PaginationInfo;
 
 /// 会员模块服务管理器（用户端）
 ///
@@ -47,17 +45,17 @@ class MemberModuleService {
   /// 初始化会员模块服务
   static Future<void> initialize({bool testConnection = false}) async {
     try {
-      print('🚀 初始化会员模块服务...');
+      debugPrint('🚀 初始化会员模块服务...');
 
       // 初始化GraphQL客户端
       if (testConnection) {
-        print('🔗 测试GraphQL连接...');
+        debugPrint('🔗 测试GraphQL连接...');
         // 这里可以添加连接测试逻辑
       }
 
-      print('✅ 会员模块服务初始化完成');
+      debugPrint('✅ 会员模块服务初始化完成');
     } catch (e) {
-      print('❌ 会员模块服务初始化失败: $e');
+      debugPrint('❌ 会员模块服务初始化失败: $e');
       rethrow;
     }
   }
@@ -366,10 +364,10 @@ class MemberModuleService {
   static Future<void> clearAllCache() async {
     try {
       // 清除推荐系统缓存
-      print('🧹 正在清除推荐缓存...');
-      print('✅ 会员模块缓存已清除');
+      debugPrint('🧹 正在清除推荐缓存...');
+      debugPrint('✅ 会员模块缓存已清除');
     } catch (e) {
-      print('❌ 清除缓存失败: $e');
+      debugPrint('❌ 清除缓存失败: $e');
     }
   }
 
@@ -378,7 +376,7 @@ class MemberModuleService {
     String operation,
     Map<String, dynamic> params,
   ) {
-    print('📋 服务操作: $operation, 参数: $params');
+    debugPrint('📋 服务操作: $operation, 参数: $params');
   }
 }
 

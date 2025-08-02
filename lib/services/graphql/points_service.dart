@@ -1,7 +1,7 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
 import 'package:flutter_home_mall/services/graphql/member_queries.dart';
-import 'package:flutter_home_mall/models/user_models.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 /// 积分系统GraphQL服务（用户端）
 ///
@@ -40,7 +40,7 @@ class PointsService {
       final result = await _client.query(options);
 
       if (result.hasException) {
-        print('❌ 获取积分兑换商品失败: ${result.exception}');
+        debugPrint('❌ 获取积分兑换商品失败: ${result.exception}');
         return null;
       }
 
@@ -52,7 +52,7 @@ class PointsService {
 
       return null;
     } catch (e) {
-      print('❌ 获取积分兑换商品异常: $e');
+      debugPrint('❌ 获取积分兑换商品异常: $e');
       return null;
     }
   }
@@ -74,7 +74,7 @@ class PointsService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 积分兑换失败: ${result.exception}');
+        debugPrint('❌ 积分兑换失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
@@ -84,7 +84,7 @@ class PointsService {
 
       return null;
     } catch (e) {
-      print('❌ 积分兑换异常: $e');
+      debugPrint('❌ 积分兑换异常: $e');
       rethrow;
     }
   }
@@ -103,7 +103,7 @@ class PointsService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 每日签到失败: ${result.exception}');
+        debugPrint('❌ 每日签到失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
@@ -113,7 +113,7 @@ class PointsService {
 
       return null;
     } catch (e) {
-      print('❌ 每日签到异常: $e');
+      debugPrint('❌ 每日签到异常: $e');
       rethrow;
     }
   }
@@ -191,7 +191,7 @@ class PointsService {
       // 这里简化处理，实际项目中需要根据后端接口返回值判断
       return true;
     } catch (e) {
-      print('❌ 检查签到状态异常: $e');
+      debugPrint('❌ 检查签到状态异常: $e');
       return false;
     }
   }
@@ -203,7 +203,7 @@ class PointsService {
       // 这里简化处理，返回模拟数据
       return 0;
     } catch (e) {
-      print('❌ 获取连续签到天数异常: $e');
+      debugPrint('❌ 获取连续签到天数异常: $e');
       return 0;
     }
   }
@@ -248,7 +248,7 @@ class PointsService {
     String operation,
     Map<String, dynamic> params,
   ) {
-    print('🎯 积分操作: $operation, 参数: $params');
+    debugPrint('🎯 积分操作: $operation, 参数: $params');
   }
 }
 

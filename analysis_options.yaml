@@ -18,23 +18,26 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     prefer_expression_function_bodies: ignore
+    flutter_style_todos: ignore
+    use_setters_to_change_properties: ignore
+    use_build_context_synchronously: ignore
   # 排除不需要分析的文件
   exclude:
-    - '**/*.g.dart'  # 生成的代码
-    - '**/*.freezed.dart'  # Freezed生成的代码
-    - 'build/**'  # 构建文件
-    - 'ios/**'  # iOS原生代码
-    - 'android/**'  # Android原生代码
-    - 'windows/**'  # Windows原生代码
-    - 'macos/**'  # macOS原生代码
-    - 'linux/**'  # Linux原生代码
-    - 'web/**'  # Web文件
-  
+    - "**/*.g.dart" # 生成的代码
+    - "**/*.freezed.dart" # Freezed生成的代码
+    - "build/**" # 构建文件
+    - "ios/**" # iOS原生代码
+    - "android/**" # Android原生代码
+    - "windows/**" # Windows原生代码
+    - "macos/**" # macOS原生代码
+    - "linux/**" # Linux原生代码
+    - "web/**" # Web文件
+
   # 强类型检查
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  
+
   # 开启实验性功能(已不再需要)
   # enable-experiment:
   #   - records
@@ -49,11 +52,11 @@ linter:
     avoid_empty_else: true
     avoid_returning_null_for_future: true
     avoid_types_as_parameter_names: true
-    
+
     # 文档和注释
-    public_member_api_docs: false  # 可以根据需要开启
+    public_member_api_docs: false # 可以根据需要开启
     package_api_docs: false
-    
+
     # 格式化
     lines_longer_than_80_chars: false
     prefer_const_constructors: true
@@ -63,7 +66,7 @@ linter:
     prefer_final_fields: true
     prefer_final_in_for_each: true
     prefer_final_locals: true
-    
+
     # 性能优化
     use_full_hex_values_for_flutter_colors: true
     use_key_in_widget_constructors: true
@@ -76,15 +79,15 @@ linter:
     unnecessary_raw_strings: true
     unnecessary_string_escapes: true
     unnecessary_string_interpolations: true
-    
+
     # 空安全
     avoid_null_checks_in_equality_operators: true
     prefer_null_aware_operators: true
-    
+
     # 安全性
     avoid_web_libraries_in_flutter: true
     no_duplicate_case_values: true
-    
+
     # 样式和可读性
     curly_braces_in_flow_control_structures: true
     prefer_generic_function_type_aliases: true
@@ -92,27 +95,27 @@ linter:
     prefer_is_not_empty: true
     prefer_iterable_whereType: true
     prefer_typing_uninitialized_variables: true
-    
+
     # 错误处理
     avoid_catching_errors: true
     avoid_returning_null_for_void: true
-    
+
     # 测试相关
     avoid_relative_lib_imports: true
     # prefer_relative_imports: true  # 与always_use_package_imports冲突
-    
+
     # 性能
     avoid_function_literals_in_foreach_calls: true
     prefer_for_elements_to_map_fromIterable: true
     prefer_if_elements_to_conditional_expressions: true
     prefer_inlined_adds: true
     prefer_spread_collections: true
-    
+
     # 文件和包
     avoid_slow_async_io: true
     cancel_subscriptions: true
     close_sinks: true
-    
+
     # 其他重要规则
     always_declare_return_types: true
     always_use_package_imports: true

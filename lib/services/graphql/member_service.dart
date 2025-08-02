@@ -1,7 +1,8 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_home_mall/models/user_models.dart';
 import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
 import 'package:flutter_home_mall/services/graphql/member_queries.dart';
-import 'package:flutter_home_mall/models/user_models.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 ///
 /// 提供用户端会员相关功能
@@ -23,7 +24,7 @@ class MemberService {
       final result = await _client.query(options);
 
       if (result.hasException) {
-        print('❌ 获取当前用户信息失败: ${result.exception}');
+        debugPrint('❌ 获取当前用户信息失败: ${result.exception}');
         return null;
       }
 
@@ -33,7 +34,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 获取当前用户信息异常: $e');
+      debugPrint('❌ 获取当前用户信息异常: $e');
       return null;
     }
   }
@@ -63,7 +64,7 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 更新个人资料失败: ${result.exception}');
+        debugPrint('❌ 更新个人资料失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
@@ -73,7 +74,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 更新个人资料异常: $e');
+      debugPrint('❌ 更新个人资料异常: $e');
       rethrow;
     }
   }
@@ -99,13 +100,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 修改密码失败: ${result.exception}');
+        debugPrint('❌ 修改密码失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['changePassword'] == true;
     } catch (e) {
-      print('❌ 修改密码异常: $e');
+      debugPrint('❌ 修改密码异常: $e');
       rethrow;
     }
   }
@@ -124,7 +125,7 @@ class MemberService {
       final result = await _client.query(options);
 
       if (result.hasException) {
-        print('❌ 获取地址列表失败: ${result.exception}');
+        debugPrint('❌ 获取地址列表失败: ${result.exception}');
         return null;
       }
 
@@ -134,7 +135,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 获取地址列表异常: $e');
+      debugPrint('❌ 获取地址列表异常: $e');
       return null;
     }
   }
@@ -172,7 +173,7 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 添加地址失败: ${result.exception}');
+        debugPrint('❌ 添加地址失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
@@ -182,7 +183,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 添加地址异常: $e');
+      debugPrint('❌ 添加地址异常: $e');
       rethrow;
     }
   }
@@ -222,7 +223,7 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 更新地址失败: ${result.exception}');
+        debugPrint('❌ 更新地址失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
@@ -232,7 +233,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 更新地址异常: $e');
+      debugPrint('❌ 更新地址异常: $e');
       rethrow;
     }
   }
@@ -248,13 +249,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 删除地址失败: ${result.exception}');
+        debugPrint('❌ 删除地址失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['deleteAddress'] == true;
     } catch (e) {
-      print('❌ 删除地址异常: $e');
+      debugPrint('❌ 删除地址异常: $e');
       rethrow;
     }
   }
@@ -270,13 +271,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 设置默认地址失败: ${result.exception}');
+        debugPrint('❌ 设置默认地址失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['setDefaultAddress'] == true;
     } catch (e) {
-      print('❌ 设置默认地址异常: $e');
+      debugPrint('❌ 设置默认地址异常: $e');
       rethrow;
     }
   }
@@ -303,7 +304,7 @@ class MemberService {
       final result = await _client.query(options);
 
       if (result.hasException) {
-        print('❌ 获取收藏列表失败: ${result.exception}');
+        debugPrint('❌ 获取收藏列表失败: ${result.exception}');
         return null;
       }
 
@@ -313,7 +314,7 @@ class MemberService {
 
       return null;
     } catch (e) {
-      print('❌ 获取收藏列表异常: $e');
+      debugPrint('❌ 获取收藏列表异常: $e');
       return null;
     }
   }
@@ -329,13 +330,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 添加收藏失败: ${result.exception}');
+        debugPrint('❌ 添加收藏失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['addToFavorites'] == true;
     } catch (e) {
-      print('❌ 添加收藏异常: $e');
+      debugPrint('❌ 添加收藏异常: $e');
       rethrow;
     }
   }
@@ -351,13 +352,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 取消收藏失败: ${result.exception}');
+        debugPrint('❌ 取消收藏失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['removeFromFavorites'] == true;
     } catch (e) {
-      print('❌ 取消收藏异常: $e');
+      debugPrint('❌ 取消收藏异常: $e');
       rethrow;
     }
   }
@@ -373,13 +374,13 @@ class MemberService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 批量取消收藏失败: ${result.exception}');
+        debugPrint('❌ 批量取消收藏失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['batchRemoveFavorites'] == true;
     } catch (e) {
-      print('❌ 批量取消收藏异常: $e');
+      debugPrint('❌ 批量取消收藏异常: $e');
       rethrow;
     }
   }

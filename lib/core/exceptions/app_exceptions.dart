@@ -33,6 +33,14 @@ abstract class AppException implements Exception {
 
 /// 网络异常
 class NetworkException extends AppException {
+  const NetworkException({
+    required super.message,
+    required super.code,
+    super.details,
+    super.stackTrace,
+    this.statusCode,
+  });
+
   /// 创建网络异常
   factory NetworkException.fromStatusCode(int statusCode, [String? message]) {
     switch (statusCode) {
@@ -74,13 +82,6 @@ class NetworkException extends AppException {
         );
     }
   }
-  const NetworkException({
-    required super.message,
-    required super.code,
-    super.details,
-    super.stackTrace,
-    this.statusCode,
-  });
 
   /// HTTP状态码
   final int? statusCode;

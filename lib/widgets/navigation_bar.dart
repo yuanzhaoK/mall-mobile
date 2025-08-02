@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView.builder(
-          // while we dont have our data bydefault we show 3 scalton
+          // while we dont have our data by default we show 3 scalton
           itemCount: isLoading ? 3 : demoDataLength,
           itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.only(bottom: 16),
@@ -89,71 +89,69 @@ class RestaurantInfoBigCard extends StatelessWidget {
   final bool isFreeDelivery;
   final VoidCallback press;
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: press,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // pass list of images here
-          BigCardImageSlide(images: images),
-          const SizedBox(height: 8),
-          Text(name, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 4),
-          PriceRangeAndFoodtype(foodType: foodType),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              RatingWithCounter(rating: rating, numOfRating: numOfRating),
-              const SizedBox(width: 8),
-              SvgPicture.string(
-                clockIconSvg,
-                height: 20,
-                width: 20,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(
-                    context,
-                  ).textTheme.bodyLarge!.color!.withOpacity(0.5),
-                  BlendMode.srcIn,
-                ),
+  Widget build(BuildContext context) => InkWell(
+    onTap: press,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // pass list of images here
+        BigCardImageSlide(images: images),
+        const SizedBox(height: 8),
+        Text(name, style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 4),
+        PriceRangeAndFoodtype(foodType: foodType),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            RatingWithCounter(rating: rating, numOfRating: numOfRating),
+            const SizedBox(width: 8),
+            SvgPicture.string(
+              clockIconSvg,
+              height: 20,
+              width: 20,
+              colorFilter: ColorFilter.mode(
+                Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.color!.withValues(alpha: 0.5),
+                BlendMode.srcIn,
               ),
-              const SizedBox(width: 8),
-              Text(
-                '$deliveryTime Min',
-                style: Theme.of(context).textTheme.labelSmall,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '$deliveryTime Min',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: SmallDot(),
+            ),
+            SvgPicture.string(
+              deliveryIconSvg,
+              height: 20,
+              width: 20,
+              colorFilter: ColorFilter.mode(
+                Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.color!.withValues(alpha: 0.5),
+                BlendMode.srcIn,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: SmallDot(),
-              ),
-              SvgPicture.string(
-                deliveryIconSvg,
-                height: 20,
-                width: 20,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(
-                    context,
-                  ).textTheme.bodyLarge!.color!.withOpacity(0.5),
-                  BlendMode.srcIn,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                isFreeDelivery ? 'Free' : 'Paid',
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+            ),
+            const SizedBox(width: 8),
+            Text(
+              isFreeDelivery ? 'Free' : 'Paid',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 class PriceRangeAndFoodtype extends StatelessWidget {
   const PriceRangeAndFoodtype({
     super.key,
-    this.priceRange = '\$\$',
+    this.priceRange = r'$$',
     required this.foodType,
   });
 
@@ -270,7 +268,7 @@ class RatingWithCounter extends StatelessWidget {
         Text(
           rating.toString(),
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
-            color: const Color(0xFF010F07).withOpacity(0.74),
+            color: const Color(0xFF010F07).withValues(alpha: 0.74),
           ),
         ),
         const SizedBox(width: 8),
@@ -287,7 +285,7 @@ class RatingWithCounter extends StatelessWidget {
         Text(
           '$numOfRating+ Ratings',
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
-            color: const Color(0xFF010F07).withOpacity(0.74),
+            color: const Color(0xFF010F07).withValues(alpha: 0.74),
           ),
         ),
       ],
@@ -304,7 +302,8 @@ class SmallDot extends StatelessWidget {
       height: 4,
       width: 4,
       decoration: BoxDecoration(
-        color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.4),
+        color: Theme.of(context).textTheme.bodyLarge!.color!
+          ..withValues(alpha: 0.4),
         shape: BoxShape.circle,
       ),
     );
@@ -340,7 +339,7 @@ class BigCardImageSlideScalton extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black..withValues(alpha: 0.08),
             borderRadius: const BorderRadius.all(Radius.circular(12)),
           ),
         ),
@@ -376,7 +375,7 @@ class DotIndicator extends StatelessWidget {
       height: 5,
       width: 8,
       decoration: BoxDecoration(
-        color: isActive ? activeColor : inActiveColor.withOpacity(0.25),
+        color: isActive ? activeColor : inActiveColor.withValues(alpha: 0.25),
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
     );
@@ -398,7 +397,7 @@ class ScaltonLine extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      color: Colors.black.withOpacity(0.08),
+      color: Colors.black.withValues(alpha: 0.08),
     );
   }
 }

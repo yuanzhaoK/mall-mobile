@@ -41,7 +41,7 @@ class CartState extends ChangeNotifier {
 
   /// 计算优惠金额
   double get discountAmount {
-    var discount = 0;
+    double discount = 0;
     final subtotal = selectedSubtotalPrice;
 
     // 满减优惠

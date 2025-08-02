@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_home_mall/providers/cart_state.dart';
-import 'package:flutter_home_mall/widgets/cart_item_widget.dart';
-
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/pages/order_confirm_page.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/widgets/cart_item_widget.dart';
+import 'package:provider/provider.dart';
 
 /// 购物车页面
 class CartPage extends StatelessWidget {

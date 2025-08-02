@@ -492,7 +492,10 @@ class OrderState extends ChangeNotifier {
   Order _generateMockOrderFromRequest(CreateOrderRequest request) {
     final now = DateTime.now();
     final orderItems = request.items.map(OrderItem.fromCartItem).toList();
-    final subtotal = orderItems.fold(0, (sum, item) => sum + item.subtotal);
+    final subtotal = orderItems.fold<double>(
+      0,
+      (sum, item) => sum + item.subtotal,
+    );
     final shippingFee = subtotal >= 99 ? 0.0 : 10.0;
     final discount = subtotal >= 300
         ? 50.0

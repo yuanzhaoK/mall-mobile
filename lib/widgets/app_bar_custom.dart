@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/providers/app_state.dart';
 import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:provider/provider.dart';
 
 /// 自定义顶部栏组件
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

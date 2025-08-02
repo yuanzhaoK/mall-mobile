@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_home_mall/services/graphql_service.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
 
 class LoginTestPage extends StatefulWidget {
   const LoginTestPage({super.key});
@@ -52,7 +52,7 @@ class _LoginTestPageState extends State<LoginTestPage> {
         addLog('👤 用户ID: ${result.user.id}');
         addLog('👤 用户名: ${result.user.username}');
         addLog('📧 邮箱: ${result.user.email}');
-        addLog('👤 会员等级: ${result.user.memberLevel}');
+        addLog('👤 会员等级: ${result.user}');
         addLog('🔑 Token: ${result.token.substring(0, 30)}...');
         addLog('✅ 已保存到本地存储');
 

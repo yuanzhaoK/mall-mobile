@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 购物车商品项组件
 class CartItemWidget extends StatelessWidget {
   const CartItemWidget({
-    Key? key,
+    super.key,
     required this.item,
     required this.isSelected,
     required this.onToggleSelection,
     required this.onQuantityChanged,
     required this.onRemove,
-  }) : super(key: key);
+  });
   final CartItem item;
   final bool isSelected;
   final VoidCallback onToggleSelection;

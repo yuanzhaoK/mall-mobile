@@ -1,7 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_home_mall/config/app_config.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectionTester {
   /// 测试多个端点的连接状态
@@ -22,7 +23,7 @@ class ConnectionTester {
 
     debugPrint('🔍 开始测试GraphQL端点连接...');
 
-    for (var endpoint in endpoints) {
+    for (final endpoint in endpoints) {
       debugPrint('测试端点: $endpoint');
 
       try {
@@ -52,7 +53,7 @@ class ConnectionTester {
 
   /// 获取本机网络信息
   static Future<List<String>> getNetworkInfo() async {
-    var networkInfo = <String>[];
+    final networkInfo = <String>[];
 
     try {
       for (final interface in await NetworkInterface.list()) {

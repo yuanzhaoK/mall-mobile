@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_home_mall/providers/order_state.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/providers/order_state.dart';
+import 'package:provider/provider.dart';
 
 /// 地址选择页面
 class AddressSelectPage extends StatefulWidget {

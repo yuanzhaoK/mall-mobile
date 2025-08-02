@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/providers/search_state.dart';
-
 import 'package:flutter_home_mall/widgets/product_card.dart';
 import 'package:flutter_home_mall/widgets/search_filter_sheet.dart';
-import 'package:flutter_home_mall/constants/app_colors.dart';
-
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:provider/provider.dart';
 
 /// 搜索页面
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key, this.initialQuery}) : super(key: key);
+  const SearchPage({super.key, this.initialQuery});
   final String? initialQuery;
 
   @override
@@ -30,11 +28,10 @@ class _SearchPageState extends State<SearchPage> {
 
     // 初始化搜索状态
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final searchState = context.read<SearchState>();
-      searchState.initializeHotSearches();
+      final searchState = context.read<SearchState>()..initializeHotSearches();
 
       // 如果有初始查询，立即搜索
-      if (widget.initialQuery?.isNotEmpty == true) {
+      if (widget.initialQuery?.isNotEmpty ?? false) {
         searchState.searchProducts(widget.initialQuery!);
       }
     });

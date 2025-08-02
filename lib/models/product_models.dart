@@ -122,7 +122,7 @@ class ProductDetail {
   // 平均评分
   double get averageRating {
     if (reviews.isEmpty) return 0;
-    return reviews.fold(0, (sum, review) => sum + review.rating) /
+    return reviews.fold<double>(0, (sum, review) => sum + review.rating) /
         reviews.length;
   }
 

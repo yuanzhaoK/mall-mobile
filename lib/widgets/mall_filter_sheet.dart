@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_home_mall/providers/mall_state.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/mall_state.dart';
 
 /// 商场筛选面板
 class MallFilterSheet extends StatefulWidget {

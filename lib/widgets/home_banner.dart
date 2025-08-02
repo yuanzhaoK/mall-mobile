@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 首页轮播图组件
 class HomeBanner extends StatefulWidget {
@@ -81,116 +81,112 @@ class _HomeBannerState extends State<HomeBanner> {
   }
 
   /// 构建单个轮播项
-  Widget _buildBannerItem(BannerItem banner) {
-    return GestureDetector(
-      onTap: () => widget.onBannerTap?.call(banner),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.surfaceVariant,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // 背景图片
-            CachedNetworkImage(
-              imageUrl: banner.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => ColoredBox(
-                color: AppColors.surfaceVariant,
-                child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-              errorWidget: (context, url, error) => ColoredBox(
-                color: AppColors.surfaceVariant,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.image_not_supported,
-                      size: 48,
+  Widget _buildBannerItem(BannerItem banner) => GestureDetector(
+    onTap: () => widget.onBannerTap?.call(banner),
+    child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // 背景图片
+          CachedNetworkImage(
+            imageUrl: banner.imageUrl,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => const ColoredBox(
+              color: AppColors.surfaceVariant,
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            ),
+            errorWidget: (context, url, error) => ColoredBox(
+              color: AppColors.surfaceVariant,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.image_not_supported,
+                    size: 48,
+                    color: AppColors.textLight,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    '图片加载失败',
+                    style: AppTextStyles.caption.copyWith(
                       color: AppColors.textLight,
                     ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      '图片加载失败',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textLight,
-                      ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // 渐变遮罩（增强文字可读性）
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.3),
+                ],
+              ),
+            ),
+          ),
+
+          // 标题文字
+          if (banner.title.isNotEmpty)
+            Positioned(
+              bottom: AppSpacing.lg,
+              left: AppSpacing.md,
+              right: AppSpacing.md,
+              child: Text(
+                banner.title,
+                style: AppTextStyles.headline3.copyWith(
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: const Offset(0, 1),
+                      blurRadius: 3,
+                      color: Colors.black.withValues(alpha: 0.5),
                     ),
                   ],
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
 
-            // 渐变遮罩（增强文字可读性）
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.3),
-                  ],
+          // 类型标签
+          if (banner.type.isNotEmpty)
+            Positioned(
+              top: AppSpacing.md,
+              right: AppSpacing.md,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
                 ),
-              ),
-            ),
-
-            // 标题文字
-            if (banner.title.isNotEmpty)
-              Positioned(
-                bottom: AppSpacing.lg,
-                left: AppSpacing.md,
-                right: AppSpacing.md,
+                decoration: BoxDecoration(
+                  color: _getTypeColor(banner.type),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                ),
                 child: Text(
-                  banner.title,
-                  style: AppTextStyles.headline3.copyWith(
+                  _getTypeLabel(banner.type),
+                  style: AppTextStyles.caption.copyWith(
                     color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(0, 1),
-                        blurRadius: 3,
-                        color: Colors.black.withValues(alpha: 0.5),
-                      ),
-                    ],
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-
-            // 类型标签
-            if (banner.type.isNotEmpty)
-              Positioned(
-                top: AppSpacing.md,
-                right: AppSpacing.md,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm,
-                    vertical: AppSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _getTypeColor(banner.type),
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  child: Text(
-                    _getTypeLabel(banner.type),
-                    style: AppTextStyles.caption.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
   /// 构建指示器
   Widget _buildIndicators() {
@@ -225,55 +221,53 @@ class _HomeBannerState extends State<HomeBanner> {
   }
 
   /// 构建导航按钮
-  Widget _buildNavigationButtons() {
-    return Positioned.fill(
-      child: Row(
-        children: [
-          // 左箭头
-          Expanded(
-            child: GestureDetector(
-              onTap: _carouselController.previousPage,
-              child: ColoredBox(
-                color: Colors.transparent,
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: AppSpacing.sm),
-                    child: Icon(
-                      Icons.chevron_left,
-                      color: Colors.white,
-                      size: 32,
-                    ),
+  Widget _buildNavigationButtons() => Positioned.fill(
+    child: Row(
+      children: [
+        // 左箭头
+        Expanded(
+          child: GestureDetector(
+            onTap: _carouselController.previousPage,
+            child: const ColoredBox(
+              color: Colors.transparent,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: AppSpacing.sm),
+                  child: Icon(
+                    Icons.chevron_left,
+                    color: Colors.white,
+                    size: 32,
                   ),
                 ),
               ),
             ),
           ),
+        ),
 
-          // 右箭头
-          Expanded(
-            child: GestureDetector(
-              onTap: _carouselController.nextPage,
-              child: ColoredBox(
-                color: Colors.transparent,
-                child: const Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(right: AppSpacing.sm),
-                    child: Icon(
-                      Icons.chevron_right,
-                      color: Colors.white,
-                      size: 32,
-                    ),
+        // 右箭头
+        Expanded(
+          child: GestureDetector(
+            onTap: _carouselController.nextPage,
+            child: const ColoredBox(
+              color: Colors.transparent,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: AppSpacing.sm),
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
+                    size: 32,
                   ),
                 ),
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 
   /// 构建空状态
   Widget _buildEmptyState() {

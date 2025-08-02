@@ -65,10 +65,7 @@ class GraphQLService {
           throw Exception('GraphQL服务连接失败');
         }
       }
-
-      print('✅ GraphQL服务初始化完成');
     } catch (e) {
-      print('❌ GraphQL服务初始化失败: $e');
       rethrow;
     }
   }
@@ -78,6 +75,7 @@ class GraphQLService {
     try {
       // 检查客户端是否已初始化
       final client = GraphQLClientManager.client;
+      // ignore: unnecessary_null_comparison
       return client != null;
     } catch (e) {
       return false;

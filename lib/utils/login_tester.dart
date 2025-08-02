@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:flutter_home_mall/services/graphql_service.dart';
 import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class LoginTester {
   /// 测试不同的登录凭据
@@ -164,19 +164,21 @@ class LoginTester {
 
   /// 生成登录测试报告
   static String generateLoginReport(Map<String, dynamic> results) {
-    final buffer = StringBuffer();
-    buffer.writeln('🔐 登录测试报告');
-    buffer.writeln('=' * 40);
+    final buffer = StringBuffer()
+      ..writeln('🔐 登录测试报告')
+      ..writeln('=' * 40);
 
     if (results.containsKey('success')) {
       final success = results['success'] as Map<String, dynamic>;
-      buffer.writeln('\n✅ 找到有效凭据:');
-      buffer.writeln('   用户名: ${success['credentials']['identity']}');
-      buffer.writeln('   用户信息: ${success['user']}');
-      buffer.writeln('   Token: ${success['token']}');
+      buffer
+        ..writeln('\n✅ 找到有效凭据:')
+        ..writeln('   用户名: ${success['credentials']['identity']}')
+        ..writeln('   用户信息: ${success['user']}')
+        ..writeln('   Token: ${success['token']}');
     } else {
-      buffer.writeln('\n❌ 未找到有效凭据');
-      buffer.writeln('\n测试结果:');
+      buffer
+        ..writeln('\n❌ 未找到有效凭据')
+        ..writeln('\n测试结果:');
 
       results.forEach((key, value) {
         if (key.startsWith('attempt_')) {
@@ -193,20 +195,22 @@ class LoginTester {
 
   /// 生成mutation测试报告
   static String generateMutationReport(Map<String, dynamic> results) {
-    final buffer = StringBuffer();
-    buffer.writeln('🔐 Mutation测试报告');
-    buffer.writeln('=' * 40);
+    final buffer = StringBuffer()
+      ..writeln('🔐 Mutation测试报告')
+      ..writeln('=' * 40);
 
     results.forEach((mutationName, result) {
       final resultData = result as Map<String, dynamic>;
       buffer.writeln('\n$mutationName:');
 
       if (resultData['success'] == true) {
-        buffer.writeln('   ✅ 成功');
-        buffer.writeln('   数据: ${resultData['data']}');
+        buffer
+          ..writeln('   ✅ 成功')
+          ..writeln('   数据: ${resultData['data']}');
       } else {
-        buffer.writeln('   ❌ 失败');
-        buffer.writeln('   错误: ${resultData['error']}');
+        buffer
+          ..writeln('   ❌ 失败')
+          ..writeln('   错误: ${resultData['error']}');
         if (resultData['graphqlErrors'] != null) {
           buffer.writeln('   GraphQL错误: ${resultData['graphqlErrors']}');
         }

@@ -1,8 +1,9 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
-import 'package:flutter_home_mall/services/graphql/member_queries.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_home_mall/models/product_models.dart';
 import 'package:flutter_home_mall/models/user_models.dart';
+import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
+import 'package:flutter_home_mall/services/graphql/member_queries.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 /// 推荐类型枚举
 enum RecommendationType {
@@ -48,7 +49,7 @@ class RecommendationService {
       final result = await _client.query(options);
 
       if (result.hasException) {
-        print('❌ 获取推荐商品失败: ${result.exception}');
+        debugPrint('❌ 获取推荐商品失败: ${result.exception}');
         return null;
       }
 
@@ -60,7 +61,7 @@ class RecommendationService {
 
       return null;
     } catch (e) {
-      print('❌ 获取推荐商品异常: $e');
+      debugPrint('❌ 获取推荐商品异常: $e');
       return null;
     }
   }
@@ -84,7 +85,7 @@ class RecommendationService {
       // 这里使用通用推荐作为示例
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取相似商品异常: $e');
+      debugPrint('❌ 获取相似商品异常: $e');
       return null;
     }
   }
@@ -98,7 +99,7 @@ class RecommendationService {
       // 基于用户购买历史的推荐算法
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取购买推荐异常: $e');
+      debugPrint('❌ 获取购买推荐异常: $e');
       return null;
     }
   }
@@ -112,7 +113,7 @@ class RecommendationService {
       // 获取热门/趋势商品
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取热门商品异常: $e');
+      debugPrint('❌ 获取热门商品异常: $e');
       return null;
     }
   }
@@ -126,7 +127,7 @@ class RecommendationService {
       // 基于用户浏览历史的推荐
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取浏览推荐异常: $e');
+      debugPrint('❌ 获取浏览推荐异常: $e');
       return null;
     }
   }
@@ -146,13 +147,13 @@ class RecommendationService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 关注用户失败: ${result.exception}');
+        debugPrint('❌ 关注用户失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['followMember'] == true;
     } catch (e) {
-      print('❌ 关注用户异常: $e');
+      debugPrint('❌ 关注用户异常: $e');
       rethrow;
     }
   }
@@ -168,13 +169,13 @@ class RecommendationService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 取消关注失败: ${result.exception}');
+        debugPrint('❌ 取消关注失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['unfollowMember'] == true;
     } catch (e) {
-      print('❌ 取消关注异常: $e');
+      debugPrint('❌ 取消关注异常: $e');
       rethrow;
     }
   }
@@ -190,28 +191,16 @@ class RecommendationService {
       final result = await _client.mutate(options);
 
       if (result.hasException) {
-        print('❌ 分享商品失败: ${result.exception}');
+        debugPrint('❌ 分享商品失败: ${result.exception}');
         throw Exception(result.exception.toString());
       }
 
       return result.data?['shareProduct'] == true;
     } catch (e) {
-      print('❌ 分享商品异常: $e');
+      debugPrint('❌ 分享商品异常: $e');
       rethrow;
     }
   }
-
-  /// =================================
-  /// 推荐算法配置
-  /// =================================
-
-  /// 推荐权重配置
-  static const Map<String, double> _recommendationWeights = {
-    'collaborative_filtering': 0.4, // 协同过滤
-    'content_based': 0.3, // 基于内容
-    'popularity': 0.2, // 热门度
-    'user_behavior': 0.1, // 用户行为
-  };
 
   /// 获取指定类型的推荐
   static Future<List<Product>?> getRecommendationsByType(
@@ -246,7 +235,7 @@ class RecommendationService {
       // 基于分类的推荐
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取分类推荐异常: $e');
+      debugPrint('❌ 获取分类推荐异常: $e');
       return null;
     }
   }
@@ -259,7 +248,7 @@ class RecommendationService {
       // 基于季节的推荐
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取季节推荐异常: $e');
+      debugPrint('❌ 获取季节推荐异常: $e');
       return null;
     }
   }
@@ -272,7 +261,7 @@ class RecommendationService {
       // 新品推荐
       return getRecommendedProducts(limit: limit);
     } catch (e) {
-      print('❌ 获取新品推荐异常: $e');
+      debugPrint('❌ 获取新品推荐异常: $e');
       return null;
     }
   }
@@ -291,9 +280,9 @@ class RecommendationService {
   }) async {
     try {
       // 实际实现中应该调用行为记录的API
-      print('🎯 记录用户行为: $action, 用户: $userId, 商品: $productId');
+      debugPrint('🎯 记录用户行为: $action, 用户: $userId, 商品: $productId');
     } catch (e) {
-      print('❌ 记录用户行为异常: $e');
+      debugPrint('❌ 记录用户行为异常: $e');
     }
   }
 
@@ -371,11 +360,11 @@ class RecommendationService {
     required int position,
   }) async {
     try {
-      print(
+      debugPrint(
         '📊 推荐点击: 用户$userId, 商品$productId, 类型$recommendationType, 位置$position',
       );
     } catch (e) {
-      print('❌ 记录推荐点击异常: $e');
+      debugPrint('❌ 记录推荐点击异常: $e');
     }
   }
 
@@ -387,11 +376,11 @@ class RecommendationService {
     required String conversionType, // 'purchase', 'add_to_cart', etc.
   }) async {
     try {
-      print(
+      debugPrint(
         '💰 推荐转化: 用户$userId, 商品$productId, 类型$recommendationType, 转化$conversionType',
       );
     } catch (e) {
-      print('❌ 记录推荐转化异常: $e');
+      debugPrint('❌ 记录推荐转化异常: $e');
     }
   }
 
@@ -422,7 +411,7 @@ class RecommendationService {
 
   /// 记录推荐系统日志
   static void logRecommendation(String operation, Map<String, dynamic> params) {
-    print('🤖 推荐系统: $operation, 参数: $params');
+    debugPrint('🤖 推荐系统: $operation, 参数: $params');
   }
 }
 

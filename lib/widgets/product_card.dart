@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
-import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/providers/cart_state.dart';
+import 'package:provider/provider.dart';
 
 /// 商品卡片组件
 class ProductCard extends StatelessWidget {
@@ -86,95 +86,91 @@ class ProductCard extends StatelessWidget {
   }
 
   /// 构建图片区域
-  Widget _buildImageSection(BuildContext context) {
-    return Stack(
-      children: [
-        // 商品图片
-        Container(
-          height: 120,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(AppRadius.md),
-              topRight: Radius.circular(AppRadius.md),
-            ),
-            color: AppColors.surfaceVariant,
+  Widget _buildImageSection(BuildContext context) => Stack(
+    children: [
+      // 商品图片
+      Container(
+        height: 120,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppRadius.md),
+            topRight: Radius.circular(AppRadius.md),
           ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(AppRadius.md),
-              topRight: Radius.circular(AppRadius.md),
+          color: AppColors.surfaceVariant,
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppRadius.md),
+            topRight: Radius.circular(AppRadius.md),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: product.imageUrl,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => const ColoredBox(
+              color: AppColors.surfaceVariant,
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
             ),
-            child: CachedNetworkImage(
-              imageUrl: product.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => ColoredBox(
-                color: AppColors.surfaceVariant,
-                child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-              errorWidget: (context, url, error) => ColoredBox(
-                color: AppColors.surfaceVariant,
-                child: const Icon(
-                  Icons.image_not_supported,
-                  color: AppColors.textLight,
-                  size: 32,
-                ),
+            errorWidget: (context, url, error) => const ColoredBox(
+              color: AppColors.surfaceVariant,
+              child: Icon(
+                Icons.image_not_supported,
+                color: AppColors.textLight,
+                size: 32,
               ),
             ),
           ),
         ),
+      ),
 
-        // 收藏按钮
-        if (showFavorite)
-          Positioned(
-            top: AppSpacing.sm,
-            right: AppSpacing.sm,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.9),
-                shape: BoxShape.circle,
+      // 收藏按钮
+      if (showFavorite)
+        Positioned(
+          top: AppSpacing.sm,
+          right: AppSpacing.sm,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.9),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: onFavorite,
+              icon: const Icon(
+                Icons.favorite_border,
+                color: AppColors.textSecondary,
+                size: 20,
               ),
-              child: IconButton(
-                onPressed: onFavorite,
-                icon: const Icon(
-                  Icons.favorite_border,
-                  color: AppColors.textSecondary,
-                  size: 20,
-                ),
-                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+              padding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+
+      // 折扣标签
+      if (product.hasDiscount)
+        Positioned(
+          top: AppSpacing.sm,
+          left: AppSpacing.sm,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.xs,
+              vertical: 2,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.discount,
+              borderRadius: BorderRadius.circular(AppRadius.xs),
+            ),
+            child: Text(
+              '-${product.discountPercentage!.toStringAsFixed(0)}%',
+              style: AppTextStyles.caption.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
-
-        // 折扣标签
-        if (product.hasDiscount)
-          Positioned(
-            top: AppSpacing.sm,
-            left: AppSpacing.sm,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.xs,
-                vertical: 2,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.discount,
-                borderRadius: BorderRadius.circular(AppRadius.xs),
-              ),
-              child: Text(
-                '-${product.discountPercentage!.toStringAsFixed(0)}%',
-                style: AppTextStyles.caption.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
+        ),
+    ],
+  );
 
   /// 构建标题
   Widget _buildTitle() {

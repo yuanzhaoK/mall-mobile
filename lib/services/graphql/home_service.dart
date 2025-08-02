@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/models/home_models.dart' as home_models;
 import 'package:flutter_home_mall/services/graphql/graphql_client.dart';
 import 'package:flutter_home_mall/services/graphql/queries.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 /// 首页服务 - 处理首页数据获取相关操作
 class HomeService {

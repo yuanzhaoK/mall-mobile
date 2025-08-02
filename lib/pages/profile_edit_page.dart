@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/models/user_models.dart';
 import 'package:flutter_home_mall/providers/app_state.dart';
-import 'package:flutter_home_mall/services/graphql_service.dart';
 import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 /// 个人信息编辑页面
 class ProfileEditPage extends StatefulWidget {
@@ -420,10 +419,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         username: _usernameController.text.trim(),
         email: _emailController.text.trim(),
         avatar: widget.user.avatar, // TODO: 上传头像后更新URL
-        memberLevel: widget.user.memberLevel,
-        points: widget.user.points,
-        balance: widget.user.balance,
-        couponsCount: widget.user.couponsCount,
       );
 
       // 更新全局状态

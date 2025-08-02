@@ -75,20 +75,16 @@ class OrderItem {
   }
 
   // 从购物车项创建订单项
-  factory OrderItem.fromCartItem(CartItem cartItem) {
-    return OrderItem(
-      id: cartItem.id,
-      productId: cartItem.product.id,
-      productName: cartItem.product.name,
-      productImage: cartItem.product.imageUrl,
-      price: cartItem.unitPrice,
-      originalPrice: cartItem.product.originalPrice,
-      quantity: cartItem.quantity,
-      skuId: null, // 当前CartItem不包含SKU信息
-      skuName: null,
-      attributes: {}, // 当前CartItem不包含属性信息
-    );
-  }
+  factory OrderItem.fromCartItem(CartItem cartItem) => OrderItem(
+    id: cartItem.id,
+    productId: cartItem.product.id,
+    productName: cartItem.product.name,
+    productImage: cartItem.product.imageUrl,
+    price: cartItem.unitPrice,
+    originalPrice: cartItem.product.originalPrice,
+    quantity: cartItem.quantity,
+    attributes: {}, // 当前CartItem不包含属性信息
+  );
   final String id;
   final String productId;
   final String productName;

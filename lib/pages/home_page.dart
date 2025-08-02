@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
-import 'package:flutter_home_mall/providers/home_state.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/debug_page.dart';
 import 'package:flutter_home_mall/providers/cart_state.dart';
-import 'package:flutter_home_mall/widgets/simple_banner.dart';
+import 'package:flutter_home_mall/providers/home_state.dart';
 import 'package:flutter_home_mall/widgets/category_grid.dart';
 import 'package:flutter_home_mall/widgets/product_card.dart';
 import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
-import 'package:flutter_home_mall/pages/debug_page.dart';
+import 'package:flutter_home_mall/widgets/simple_banner.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 商城首页
 class HomePage extends StatefulWidget {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_home_mall/providers/search_state.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
+import 'package:flutter_home_mall/providers/search_state.dart';
 
 /// 搜索筛选面板
 class SearchFilterSheet extends StatefulWidget {
-  const SearchFilterSheet({Key? key, required this.searchState})
-    : super(key: key);
+  const SearchFilterSheet({super.key, required this.searchState});
   final SearchState searchState;
 
   @override

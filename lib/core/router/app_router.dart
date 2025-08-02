@@ -4,24 +4,23 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_home_mall/core/utils/logger.dart';
+import 'package:flutter_home_mall/models/cart_models.dart';
+import 'package:flutter_home_mall/pages/address_select_page.dart';
+import 'package:flutter_home_mall/pages/cart_page.dart';
+import 'package:flutter_home_mall/pages/debug_page.dart';
+import 'package:flutter_home_mall/pages/home_page.dart';
+import 'package:flutter_home_mall/pages/login_test_page.dart';
+import 'package:flutter_home_mall/pages/mall_page.dart';
+import 'package:flutter_home_mall/pages/order_confirm_page.dart';
+import 'package:flutter_home_mall/pages/order_detail_page.dart';
+import 'package:flutter_home_mall/pages/order_list_page.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/pages/profile_page.dart';
+import 'package:flutter_home_mall/pages/search_page.dart';
+import 'package:flutter_home_mall/providers/app_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter_home_mall/providers/app_state.dart';
-import 'package:flutter_home_mall/pages/home_page.dart';
-import 'package:flutter_home_mall/pages/mall_page.dart';
-import 'package:flutter_home_mall/pages/profile_page.dart';
-import 'package:flutter_home_mall/pages/cart_page.dart';
-import 'package:flutter_home_mall/pages/search_page.dart';
-import 'package:flutter_home_mall/pages/product_detail_page.dart';
-import 'package:flutter_home_mall/pages/order_list_page.dart';
-import 'package:flutter_home_mall/pages/order_detail_page.dart';
-import 'package:flutter_home_mall/pages/order_confirm_page.dart';
-import 'package:flutter_home_mall/pages/address_select_page.dart';
-import 'package:flutter_home_mall/pages/login_test_page.dart';
-import 'package:flutter_home_mall/pages/debug_page.dart';
-import 'package:flutter_home_mall/models/cart_models.dart';
-import 'package:flutter_home_mall/core/utils/logger.dart';
 
 /// 应用路由配置类
 class AppRouter {

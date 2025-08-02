@@ -283,10 +283,10 @@ class SearchState extends ChangeNotifier {
     if (query.trim().isEmpty) return;
 
     // 移除重复项
-    _searchHistory.remove(query);
-
-    // 添加到开头
-    _searchHistory.insert(0, query);
+    _searchHistory
+      ..remove(query)
+      // 添加到开头
+      ..insert(0, query);
 
     // 限制历史记录数量
     if (_searchHistory.length > 20) {

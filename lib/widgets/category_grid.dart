@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/models/api_models.dart';
 
 /// 分类网格组件
 class CategoryGrid extends StatelessWidget {

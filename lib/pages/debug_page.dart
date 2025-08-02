@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_home_mall/services/graphql_service.dart';
-import 'package:flutter_home_mall/utils/connection_tester.dart';
-import 'package:flutter_home_mall/utils/network_helper.dart';
-import 'package:flutter_home_mall/utils/port_scanner.dart';
-import 'package:flutter_home_mall/utils/graphql_diagnostics.dart';
-import 'package:flutter_home_mall/utils/login_tester.dart';
 import 'package:flutter_home_mall/config/app_config.dart';
 import 'package:flutter_home_mall/pages/login_test_page.dart';
+import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/utils/connection_tester.dart';
+import 'package:flutter_home_mall/utils/graphql_diagnostics.dart';
+import 'package:flutter_home_mall/utils/login_tester.dart';
+import 'package:flutter_home_mall/utils/network_helper.dart';
+import 'package:flutter_home_mall/utils/port_scanner.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({super.key});
@@ -101,7 +101,7 @@ class _DebugPageState extends State<DebugPage> {
 
     addLog('🔄 测试所有可能的端点...');
 
-    for (var endpoint in testEndpoints) {
+    for (final endpoint in testEndpoints) {
       addLog('测试: $endpoint');
       final isWorking = await ConnectionTester.testEndpoint(endpoint);
       addLog('${isWorking ? '✅' : '❌'} $endpoint - ${isWorking ? '成功' : '失败'}');
@@ -110,7 +110,7 @@ class _DebugPageState extends State<DebugPage> {
     // 获取网络信息
     addLog('📶 获取网络信息...');
     final networkInfo = await ConnectionTester.getNetworkInfo();
-    for (var info in networkInfo) {
+    for (final info in networkInfo) {
       addLog('🌐 $info');
     }
 
@@ -176,7 +176,7 @@ class _DebugPageState extends State<DebugPage> {
     );
     if (graphqlServices.isNotEmpty) {
       addLog('✅ 找到GraphQL服务:');
-      for (var service in graphqlServices) {
+      for (final service in graphqlServices) {
         addLog('   📍 $service');
       }
     } else {
@@ -190,7 +190,7 @@ class _DebugPageState extends State<DebugPage> {
     );
     if (localGraphqlServices.isNotEmpty) {
       addLog('✅ 找到localhost GraphQL服务:');
-      for (var service in localGraphqlServices) {
+      for (final service in localGraphqlServices) {
         addLog('   📍 $service');
       }
     } else {
@@ -295,7 +295,7 @@ class _DebugPageState extends State<DebugPage> {
 
     String? workingEndpoint;
 
-    for (var endpoint in endpoints) {
+    for (final endpoint in endpoints) {
       addLog('🔗 测试: $endpoint');
 
       final testResult = await ConnectionTester.testEndpointDetailed(endpoint);
@@ -413,7 +413,7 @@ class _DebugPageState extends State<DebugPage> {
 
       // 将报告按行分割并添加到日志
       final reportLines = report.split('\n');
-      for (var line in reportLines) {
+      for (final line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }
@@ -487,7 +487,7 @@ class _DebugPageState extends State<DebugPage> {
         mutationResults,
       );
       final reportLines = mutationReport.split('\n');
-      for (var line in reportLines) {
+      for (final line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }
@@ -520,7 +520,7 @@ class _DebugPageState extends State<DebugPage> {
         credentialsResults,
       );
       final reportLines = credentialsReport.split('\n');
-      for (var line in reportLines) {
+      for (final line in reportLines) {
         if (line.trim().isNotEmpty) {
           addLog(line);
         }

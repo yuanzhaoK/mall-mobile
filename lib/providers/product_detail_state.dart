@@ -28,6 +28,7 @@ class ProductDetailState extends ChangeNotifier {
   Map<String, String> get selectedAttributes =>
       Map.unmodifiable(_selectedAttributes);
   int get quantity => _quantity;
+  // ignore: use_if_null_to_convert_nulls_to_bools
   bool get canAddToCart => _selectedSku?.hasStock == true && _quantity > 0;
 
   // 页面状态getters
