@@ -67,6 +67,11 @@ class _LoginDialogState extends State<LoginDialog> {
       final authResponse = await GraphQLService.login(username, password);
 
       if (authResponse != null) {
+        debugPrint('🔐 登录对话框收到成功响应: ${authResponse.user.username}');
+        debugPrint(
+          '🔐 登录响应中的会员等级: ${authResponse.memberLevel?.displayName ?? "null"}',
+        );
+
         // 保存凭据（如果用户选择记住）
         await CredentialsStorage.saveCredentials(
           username: username,
@@ -74,14 +79,19 @@ class _LoginDialogState extends State<LoginDialog> {
           remember: _rememberCredentials,
         );
 
-        // 登录成功回调
+        // 重置加载状态
+        setState(() {
+          _isLoading = false;
+        });
+
+        // 先执行成功回调更新状态
         widget.onLoginSuccess(authResponse);
 
-        // 关闭对话框
-        if (mounted) Navigator.pop(context);
-
-        // 显示成功消息
+        // 确保组件仍然挂载后再关闭对话框
         if (mounted) {
+          Navigator.pop(context);
+
+          // 显示成功消息
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('欢迎回来，${authResponse.user.username}！'),
@@ -90,9 +100,11 @@ class _LoginDialogState extends State<LoginDialog> {
           );
         }
       } else {
+        debugPrint('🔐 登录失败：AuthResponse为null');
         throw Exception('登录失败：未知错误');
       }
     } catch (e) {
+      debugPrint('🔐 登录异常: $e');
       // 登录失败
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

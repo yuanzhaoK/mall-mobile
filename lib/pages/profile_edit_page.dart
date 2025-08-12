@@ -33,7 +33,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     super.initState();
     _usernameController = TextEditingController(text: widget.user.username);
     _emailController = TextEditingController(text: widget.user.email);
-    _phoneController = TextEditingController(text: widget.user.identity);
+    _phoneController = TextEditingController(text: widget.user.phone);
   }
 
   @override
@@ -415,7 +415,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       // 更新本地用户信息
       final updatedUser = User(
         id: widget.user.id,
-        identity: _phoneController.text.trim(),
+        phone: _phoneController.text.trim(),
         username: _usernameController.text.trim(),
         email: _emailController.text.trim(),
         avatar: widget.user.avatar, // TODO: 上传头像后更新URL
