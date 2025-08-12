@@ -8,7 +8,9 @@ import 'package:flutter_home_mall/pages/help_center_page.dart';
 import 'package:flutter_home_mall/pages/order_list_page.dart';
 import 'package:flutter_home_mall/pages/profile_edit_page.dart';
 import 'package:flutter_home_mall/pages/settings_page.dart';
+import 'package:flutter_home_mall/services/credentials_storage.dart';
 import 'package:flutter_home_mall/services/graphql_service.dart';
+import 'package:flutter_home_mall/widgets/login_dialog.dart';
 import 'package:flutter_home_mall/widgets/menu_item.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -244,326 +246,17 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _buildLoginBottomSheet(),
-    );
-  }
-
-  Widget _buildLoginBottomSheet() {
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
-
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        children: [
-          // 顶部拖拽指示器
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-
-          // 标题
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  '用户登录',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-
-          // 登录表单
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  // 用户名输入框
-                  TextField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: '用户名/手机号',
-                      hintText: '请输入用户名或手机号',
-                      prefixIcon: const Icon(Icons.person_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // 密码输入框
-                  TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: '密码',
-                      hintText: '请输入密码',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // 忘记密码
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // 处理忘记密码
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(const SnackBar(content: Text('忘记密码功能')));
-                      },
-                      child: const Text('忘记密码?'),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // 登录按钮
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: isLoading
-                          ? null
-                          : () => _performLogin(
-                              usernameController.text,
-                              passwordController.text,
-                            ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: isLoading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
-                              ),
-                            )
-                          : const Text(
-                              '登录',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // 快速登录选项
-                  const Text(
-                    '其他登录方式',
-                    style: TextStyle(color: AppColors.textSecondary),
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildQuickLoginButton(
-                        icon: Icons.fingerprint,
-                        label: '指纹登录',
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('指纹登录功能')),
-                          );
-                        },
-                      ),
-                      _buildQuickLoginButton(
-                        icon: Icons.face,
-                        label: '面容登录',
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('面容登录功能')),
-                          );
-                        },
-                      ),
-                      _buildQuickLoginButton(
-                        icon: Icons.phone_android,
-                        label: '短信登录',
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('短信登录功能')),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-
-                  // 注册提示
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        '还没有账号？',
-                        style: TextStyle(color: AppColors.textSecondary),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(const SnackBar(content: Text('注册功能')));
-                        },
-                        child: const Text('立即注册'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+      builder: (context) => LoginDialog(
+        onLoginSuccess: (authResponse) {
+          setState(() {
+            isLoggedIn = true;
+            currentUser = authResponse.user;
+            username = authResponse.user.username;
+            isLoading = false;
+          });
+        },
       ),
     );
-  }
-
-  Widget _buildQuickLoginButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Icon(icon, color: AppColors.primary, size: 30),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _performLogin(String identity, String password) async {
-    // 输入验证
-    if (identity.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('请输入用户名和密码'), backgroundColor: Colors.red),
-      );
-      return;
-    }
-
-    // 显示加载状态
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      // 调用GraphQL登录API
-      final authResponse = await GraphQLService.login(identity, password);
-
-      if (authResponse != null) {
-        // 登录成功
-        setState(() {
-          isLoggedIn = true;
-          currentUser = authResponse.user;
-          username = authResponse.user.username;
-          isLoading = false;
-        });
-
-        Navigator.pop(context);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('欢迎回来，${authResponse.user.username}！'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      } else {
-        throw Exception('登录失败：未知错误');
-      }
-    } catch (e) {
-      // 登录失败
-      setState(() {
-        isLoading = false;
-      });
-
-      var errorMessage = '登录失败';
-      if (e.toString().contains('Authentication failed')) {
-        errorMessage = '用户名或密码错误，请检查后重试';
-      } else if (e.toString().contains('Connection')) {
-        errorMessage = '网络连接问题，请检查网络设置';
-      } else if (e.toString().contains('SocketException')) {
-        errorMessage = '无法连接到服务器，请稍后重试';
-      } else if (e.toString().contains('TimeoutException')) {
-        errorMessage = '连接超时，请检查网络';
-      } else {
-        // 显示更详细的错误信息用于调试
-        errorMessage = '登录失败: ${e.toString()}';
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 5),
-          action: SnackBarAction(
-            label: '重试',
-            textColor: Colors.white,
-            onPressed: () => _performLogin(identity, password),
-          ),
-        ),
-      );
-
-      // 在开发环境中显示完整错误信息
-      debugPrint('🔐 完整错误信息: $e');
-    }
   }
 
   /// 导航到个人信息编辑页面
@@ -594,6 +287,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // 调用GraphQL注销API
       await GraphQLService.logout();
+
+      // 清除保存的凭据
+      await CredentialsStorage.clearCredentials();
 
       // 更新本地状态
       setState(() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
+import 'package:flutter_home_mall/services/credentials_storage.dart';
 import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 
 /// 设置页面
@@ -172,6 +173,12 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: '删除所有搜索记录',
           trailing: const Icon(Icons.chevron_right),
           onTap: _clearSearchHistory,
+        ),
+        _buildListTile(
+          title: '清除保存的账号密码',
+          subtitle: '删除记住的登录凭据',
+          trailing: const Icon(Icons.chevron_right),
+          onTap: _clearSavedCredentials,
         ),
         _buildListTile(
           title: '隐私政策',
@@ -452,6 +459,46 @@ class _SettingsPageState extends State<SettingsPage> {
                   backgroundColor: Colors.green,
                 ),
               );
+            },
+            child: const Text('确定'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 清除保存的账号密码
+  void _clearSavedCredentials() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('清除保存的账号密码'),
+        content: const Text('确定要删除记住的登录凭据吗？下次登录需要重新输入账号密码。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              try {
+                // 清除保存的凭据
+                await CredentialsStorage.clearCredentials();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('保存的账号密码已清除'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('清除失败: $e'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             },
             child: const Text('确定'),
           ),
