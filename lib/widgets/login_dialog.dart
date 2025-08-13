@@ -37,11 +37,14 @@ class _LoginDialogState extends State<LoginDialog> {
   Future<void> _loadSavedCredentials() async {
     final savedCredentials = await CredentialsStorage.loadCredentials();
     if (savedCredentials != null) {
+      debugPrint('🔐 已加载保存的凭据: ${savedCredentials.username}');
       setState(() {
         _usernameController.text = savedCredentials.username;
         _passwordController.text = savedCredentials.password;
         _rememberCredentials = savedCredentials.remember;
       });
+    } else {
+      debugPrint('🔐 未找到保存的凭据');
     }
   }
 

@@ -8,7 +8,6 @@ import 'package:flutter_home_mall/pages/help_center_page.dart';
 import 'package:flutter_home_mall/pages/order_list_page.dart';
 import 'package:flutter_home_mall/pages/profile_edit_page.dart';
 import 'package:flutter_home_mall/pages/settings_page.dart';
-import 'package:flutter_home_mall/services/credentials_storage.dart';
 import 'package:flutter_home_mall/services/graphql_service.dart';
 import 'package:flutter_home_mall/services/user_storage.dart';
 import 'package:flutter_home_mall/widgets/login_dialog.dart';
@@ -556,9 +555,9 @@ class _ProfilePageState extends State<ProfilePage> {
       // 调用GraphQL注销API
       await GraphQLService.logout();
 
-      // 清除保存的凭据和用户数据
-      await CredentialsStorage.clearCredentials();
+      // 清除用户数据（保留记住的账号密码）
       await UserStorage.clearUserData();
+      debugPrint('🔐 退出登录：已清除用户数据，保留记住的账号密码');
 
       // 更新本地状态
       setState(() {
