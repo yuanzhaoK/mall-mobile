@@ -4,6 +4,8 @@ import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/pages/category_list_page.dart';
 import 'package:flutter_home_mall/pages/debug_page.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/services/analytics_service.dart';
 import 'package:flutter_home_mall/providers/cart_state.dart';
 import 'package:flutter_home_mall/providers/home_state.dart';
 import 'package:flutter_home_mall/widgets/category_grid.dart';
@@ -498,9 +500,20 @@ class _HomePageState extends State<HomePage> {
 
   /// 处理商品点击
   void _handleProductTap(Product product) {
-    ScaffoldMessenger.of(
+    // 跟踪商品点击事件
+    AnalyticsService.trackProductTap(
+      product: product,
+      source: 'home',
+      extra: {'section': 'featured_products'},
+    );
+
+    Navigator.push(
       context,
-    ).showSnackBar(SnackBar(content: Text('点击商品: ${product.name}')));
+      MaterialPageRoute(
+        builder: (context) =>
+            ProductDetailPage(productId: product.id, product: product),
+      ),
+    );
   }
 
   /// 处理加购物车

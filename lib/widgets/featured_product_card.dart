@@ -1,91 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/services/analytics_service.dart';
 
 class FeaturedProductCard extends StatelessWidget {
-  const FeaturedProductCard({super.key, required this.product});
+  const FeaturedProductCard({super.key, required this.product, this.onTap});
   final Product product;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadow,
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // 产品图标或占位符
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: AppColors.primaryGradient1.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: onTap ?? () => _navigateToProductDetail(context),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.shadow,
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: Offset(0, 2),
             ),
-            child: Icon(
-              _getProductIcon(),
-              color: AppColors.primaryGradient1,
-              size: 30,
-            ),
-          ),
-          const SizedBox(width: 16),
-
-          // 产品信息
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name.isEmpty ? '未命名产品' : product.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  product.formattedPrice,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryGradient1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // 购买按钮
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.primaryGradient1,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              '查看',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+          ],
+        ),
+        child: Row(
+          children: [
+            // 产品图标或占位符
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: AppColors.primaryGradient1.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                _getProductIcon(),
+                color: AppColors.primaryGradient1,
+                size: 30,
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+
+            // 产品信息
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name.isEmpty ? '未命名产品' : product.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    product.formattedPrice,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryGradient1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // 购买按钮
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.primaryGradient1,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Text(
+                '查看',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -137,5 +143,19 @@ class FeaturedProductCard extends StatelessWidget {
     } else {
       return Icons.shopping_bag;
     }
+  }
+
+  /// 导航到商品详情页
+  void _navigateToProductDetail(BuildContext context) {
+    // 跟踪商品点击事件
+    AnalyticsService.trackProductTap(product: product, source: 'featured_card');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ProductDetailPage(productId: product.id, product: product),
+      ),
+    );
   }
 }

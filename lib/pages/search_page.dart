@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/product_detail_page.dart';
 import 'package:flutter_home_mall/providers/search_state.dart';
+import 'package:flutter_home_mall/services/analytics_service.dart';
 import 'package:flutter_home_mall/widgets/product_card.dart';
 import 'package:flutter_home_mall/widgets/search_filter_sheet.dart';
 import 'package:provider/provider.dart';
@@ -597,9 +599,24 @@ class _SearchPageState extends State<SearchPage> {
 
   /// 处理商品点击
   void _handleProductTap(Product product) {
-    // TODO: 跳转到商品详情页
-    ScaffoldMessenger.of(
+    // 跟踪商品点击事件
+    AnalyticsService.trackProductTap(
+      product: product,
+      source: 'search',
+      extra: {
+        'search_query': context.read<SearchState>().currentQuery,
+        'result_position': context.read<SearchState>().searchResults.indexOf(
+          product,
+        ),
+      },
+    );
+
+    Navigator.push(
       context,
-    ).showSnackBar(SnackBar(content: Text('点击商品: ${product.name}')));
+      MaterialPageRoute(
+        builder: (context) =>
+            ProductDetailPage(productId: product.id, product: product),
+      ),
+    );
   }
 }

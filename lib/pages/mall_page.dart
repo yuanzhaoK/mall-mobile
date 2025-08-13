@@ -5,6 +5,7 @@ import 'package:flutter_home_mall/models/api_models.dart';
 import 'package:flutter_home_mall/pages/product_detail_page.dart';
 import 'package:flutter_home_mall/providers/cart_state.dart';
 import 'package:flutter_home_mall/providers/mall_state.dart';
+import 'package:flutter_home_mall/services/analytics_service.dart';
 import 'package:flutter_home_mall/widgets/mall_filter_sheet.dart';
 import 'package:flutter_home_mall/widgets/product_card.dart';
 import 'package:provider/provider.dart';
@@ -491,6 +492,17 @@ class _MallPageState extends State<MallPage> {
 
   /// 处理商品点击
   void _handleProductTap(Product product) {
+    // 跟踪商品点击事件
+    AnalyticsService.trackProductTap(
+      product: product,
+      source: 'mall',
+      extra: {
+        'category': context.read<MallState>().selectedCategory,
+        'sort_type': context.read<MallState>().sortBy,
+        'view_type': context.read<MallState>().isGridView ? 'grid' : 'list',
+      },
+    );
+
     Navigator.push(
       context,
       MaterialPageRoute(

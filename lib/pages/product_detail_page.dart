@@ -32,11 +32,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
     // 监听滚动位置
     _scrollController.addListener(_onScroll);
-
-    // 加载商品详情
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProductDetailState>().loadProductDetail(widget.productId);
-    });
   }
 
   @override
@@ -59,7 +54,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProductDetailState(),
+      create: (_) => ProductDetailState()..loadProductDetail(widget.productId),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Consumer<ProductDetailState>(
@@ -172,9 +167,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                // TODO: 分享功能
-              },
+              onPressed: () => _handleShare(state.productDetail!),
               icon: const Icon(Icons.share_outlined),
             ),
             IconButton(
@@ -507,7 +500,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           // 进入店铺按钮
           OutlinedButton(
             onPressed: () {
-              // TODO: 进入店铺
+              _handleShopNavigation(detail);
             },
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppColors.primary),
@@ -821,9 +814,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             _buildActionButton(
               icon: Icons.chat_bubble_outline,
               label: '客服',
-              onTap: () {
-                // TODO: 客服功能
-              },
+              onTap: () => _handleCustomerService(),
             ),
 
             const SizedBox(width: 12),
@@ -1224,12 +1215,573 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   }
 
   void _buyNow(ProductDetailState state) {
-    // TODO: 实现立即购买功能
+    _handleBuyNow(state);
+  }
+
+  /// 处理商品分享
+  void _handleShare(ProductDetail detail) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildShareSheet(detail),
+    );
+  }
+
+  /// 构建分享面板
+  Widget _buildShareSheet(ProductDetail detail) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 拖拽指示器
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // 商品信息预览
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: detail.images.isNotEmpty
+                        ? detail.images.first
+                        : '',
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.image, color: Colors.grey),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        detail.product.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '¥${detail.product.price.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.price,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
+          // 分享选项
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '分享到',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildShareOption(
+                      icon: Icons.wechat,
+                      label: '微信',
+                      color: Colors.green,
+                      onTap: () => _shareToWeChat(detail),
+                    ),
+                    _buildShareOption(
+                      icon: Icons.chat_bubble,
+                      label: '朋友圈',
+                      color: Colors.blue,
+                      onTap: () => _shareToMoments(detail),
+                    ),
+                    _buildShareOption(
+                      icon: Icons.link,
+                      label: '复制链接',
+                      color: Colors.orange,
+                      onTap: () => _copyLink(detail),
+                    ),
+                    _buildShareOption(
+                      icon: Icons.more_horiz,
+                      label: '更多',
+                      color: Colors.grey,
+                      onTap: () => _shareMore(detail),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  /// 构建分享选项
+  Widget _buildShareOption({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, size: 32, color: color),
+          ),
+          const SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        ],
+      ),
+    );
+  }
+
+  /// 分享到微信
+  void _shareToWeChat(ProductDetail detail) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('微信分享功能需要集成微信SDK')));
+  }
+
+  /// 分享到朋友圈
+  void _shareToMoments(ProductDetail detail) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('朋友圈分享功能需要集成微信SDK')));
+  }
+
+  /// 复制链接
+  void _copyLink(ProductDetail detail) {
+    Navigator.pop(context);
+    // TODO: 实现复制到剪贴板
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('商品链接已复制到剪贴板')));
+  }
+
+  /// 更多分享选项
+  void _shareMore(ProductDetail detail) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('更多分享选项')));
+  }
+
+  /// 处理客服功能
+  void _handleCustomerService() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildCustomerServiceSheet(),
+    );
+  }
+
+  /// 构建客服服务面板
+  Widget _buildCustomerServiceSheet() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 拖拽指示器
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // 标题
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              '联系客服',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ),
+
+          const Divider(),
+
+          // 客服选项
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                _buildServiceOption(
+                  icon: Icons.chat,
+                  title: '在线客服',
+                  subtitle: '工作时间: 9:00-21:00',
+                  onTap: () => _openOnlineChat(),
+                ),
+                const SizedBox(height: 16),
+                _buildServiceOption(
+                  icon: Icons.phone,
+                  title: '客服热线',
+                  subtitle: '400-123-4567',
+                  onTap: () => _callCustomerService(),
+                ),
+                const SizedBox(height: 16),
+                _buildServiceOption(
+                  icon: Icons.help_outline,
+                  title: '常见问题',
+                  subtitle: '查看帮助文档',
+                  onTap: () => _openFAQ(),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  /// 构建服务选项
+  Widget _buildServiceOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[200]!),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 24),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 打开在线客服
+  void _openOnlineChat() {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('在线客服功能开发中')));
+  }
+
+  /// 拨打客服电话
+  void _callCustomerService() {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('拨打客服电话: 400-123-4567')));
+  }
+
+  /// 打开常见问题
+  void _openFAQ() {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('常见问题页面开发中')));
+  }
+
+  /// 处理立即购买
+  void _handleBuyNow(ProductDetailState state) {
+    if (!state.canAddToCart) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('请选择商品规格')));
+      return;
+    }
+
+    // 显示购买确认对话框
+    showDialog(
+      context: context,
+      builder: (context) => _buildBuyNowDialog(state),
+    );
+  }
+
+  /// 构建立即购买对话框
+  Widget _buildBuyNowDialog(ProductDetailState state) {
+    final detail = state.productDetail!;
+    final selectedSku = state.selectedSku;
+    final quantity = state.quantity;
+    final totalPrice = (selectedSku?.price ?? detail.product.price) * quantity;
+
+    return AlertDialog(
+      title: const Text('确认购买'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('商品: ${detail.product.name}'),
+          if (selectedSku != null) ...[
+            const SizedBox(height: 8),
+            Text('规格: ${selectedSku.name}'),
+          ],
+          const SizedBox(height: 8),
+          Text('数量: $quantity'),
+          const SizedBox(height: 8),
+          Text(
+            '总价: ¥${totalPrice.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.price,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('取消'),
+        ),
+        ElevatedButton(
+          onPressed: () => _confirmBuyNow(state),
+          child: const Text('确认购买'),
+        ),
+      ],
+    );
+  }
+
+  /// 确认立即购买
+  void _confirmBuyNow(ProductDetailState state) {
+    Navigator.pop(context);
+
+    // TODO: 实现跳转到结算页面
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('立即购买功能开发中'),
+        content: Text('正在跳转到结算页面...'),
         duration: Duration(seconds: 2),
       ),
     );
+
+    // 模拟跳转到订单确认页面
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => OrderConfirmPage(
+    //       products: [/* 商品信息 */],
+    //     ),
+    //   ),
+    // );
+  }
+
+  /// 处理店铺导航
+  void _handleShopNavigation(ProductDetail detail) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildShopInfoSheet(detail),
+    );
+  }
+
+  /// 构建店铺信息面板
+  Widget _buildShopInfoSheet(ProductDetail detail) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 拖拽指示器
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // 店铺信息
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    // 店铺头像
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.store,
+                        color: AppColors.primary,
+                        size: 32,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+
+                    // 店铺信息
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            detail.shopName,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                size: 16,
+                                color: Colors.orange,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${detail.shopRating.toStringAsFixed(1)}分',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // 操作按钮
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => _followShop(detail),
+                        child: const Text('关注店铺'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _enterShop(detail),
+                        child: const Text('进入店铺'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  /// 关注店铺
+  void _followShop(ProductDetail detail) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('已关注 ${detail.shopName}')));
+  }
+
+  /// 进入店铺
+  void _enterShop(ProductDetail detail) {
+    Navigator.pop(context);
+    // TODO: 导航到店铺页面
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('正在进入 ${detail.shopName}...')));
   }
 }

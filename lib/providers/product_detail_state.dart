@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/utils/image_assets.dart';
 
 /// 商品详情状态管理
 class ProductDetailState extends ChangeNotifier {
@@ -104,50 +105,23 @@ class ProductDetailState extends ChangeNotifier {
 
   /// 生成模拟商品详情数据
   ProductDetail _generateMockProductDetail(String productId) {
+    // 根据productId生成不同的商品数据
+    final productData = _getProductDataById(productId);
+
     return ProductDetail(
       product: Product(
         id: productId,
-        name: 'iPhone 15 Pro Max 256GB 深空黑色',
-        price: 9999,
-        originalPrice: 10999,
-        imageUrl:
-            'https://via.placeholder.com/400x400/FF6B6B/FFFFFF?text=iPhone',
-        rating: 4.8,
-        salesCount: 12580,
+        name: productData['name'],
+        price: productData['price'],
+        originalPrice: productData['originalPrice'],
+        imageUrl: productData['imageUrl'],
+        rating: productData['rating'],
+        salesCount: productData['salesCount'],
       ),
-      images: [
-        'https://via.placeholder.com/400x400/FF6B6B/FFFFFF?text=iPhone+1',
-        'https://via.placeholder.com/400x400/4ECDC4/FFFFFF?text=iPhone+2',
-        'https://via.placeholder.com/400x400/45B7D1/FFFFFF?text=iPhone+3',
-        'https://via.placeholder.com/400x400/96CEB4/FFFFFF?text=iPhone+4',
-        'https://via.placeholder.com/400x400/FFEAA7/000000?text=iPhone+5',
-      ],
-      description: '''
-iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更轻更坚固。
-
-【核心特性】
-• A17 Pro芯片，3纳米工艺，性能提升20%
-• 钛金属机身，重量减轻19克
-• 6.7英寸超视网膜XDR显示屏
-• 4800万像素主摄系统
-• 支持USB-C接口
-• 全天候电池续航
-
-【拍照系统】
-• 4800万像素主摄
-• 1200万像素超广角
-• 1200万像素长焦（5倍光学变焦）
-• 电影级视频录制
-
-【其他功能】
-• Face ID面容识别
-• 无线充电支持
-• MagSafe磁吸充电
-• IP68级防水
-• 5G网络支持
-      ''',
-      brand: 'Apple',
-      category: '手机数码',
+      images: productData['images'],
+      description: productData['description'],
+      brand: productData['brand'],
+      category: productData['category'],
       specifications: [
         ProductSpec(name: '屏幕尺寸', value: '6.7', unit: '英寸'),
         ProductSpec(name: '分辨率', value: '2796x1290'),
@@ -167,7 +141,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           price: 9999,
           originalPrice: 10999,
           stock: 50,
-          image: 'https://via.placeholder.com/100x100/000000/FFFFFF?text=Black',
+          image: ImageAssets.getSkuImage('深空黑色'),
           attributes: {'容量': '256GB', '颜色': '深空黑色'},
         ),
         ProductSku(
@@ -176,8 +150,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           price: 9999,
           originalPrice: 10999,
           stock: 30,
-          image:
-              'https://via.placeholder.com/100x100/C0C0C0/000000?text=Silver',
+          image: ImageAssets.getSkuImage('银色'),
           attributes: {'容量': '256GB', '颜色': '银色'},
         ),
         ProductSku(
@@ -186,7 +159,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           price: 11999,
           originalPrice: 12999,
           stock: 20,
-          image: 'https://via.placeholder.com/100x100/000000/FFFFFF?text=Black',
+          image: ImageAssets.getSkuImage('深空黑色'),
           attributes: {'容量': '512GB', '颜色': '深空黑色'},
         ),
         ProductSku(
@@ -195,8 +168,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           price: 11999,
           originalPrice: 12999,
           stock: 15,
-          image:
-              'https://via.placeholder.com/100x100/C0C0C0/000000?text=Silver',
+          image: ImageAssets.getSkuImage('银色'),
           attributes: {'容量': '512GB', '颜色': '银色'},
         ),
       ],
@@ -212,12 +184,22 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           id: 'review_1',
           userId: 'user_1',
           userName: '张**',
-          userAvatar: 'https://via.placeholder.com/50x50/FF6B6B/FFFFFF?text=Z',
+          userAvatar: ImageAssets.getUserAvatar('张'),
           rating: 5,
           content: '手机非常棒！拍照效果超级好，A17 Pro芯片性能强劲，游戏运行非常流畅。钛金属机身手感很棒，比之前轻了不少。',
           images: [
-            'https://via.placeholder.com/200x200/FF6B6B/FFFFFF?text=Photo1',
-            'https://via.placeholder.com/200x200/4ECDC4/FFFFFF?text=Photo2',
+            ImageAssets.placeholder(
+              width: 200,
+              height: 200,
+              color: 'FF6B6B',
+              text: 'Photo1',
+            ),
+            ImageAssets.placeholder(
+              width: 200,
+              height: 200,
+              color: '4ECDC4',
+              text: 'Photo2',
+            ),
           ],
           createdAt: DateTime.now().subtract(const Duration(days: 5)),
           skuInfo: '256GB 深空黑色',
@@ -227,6 +209,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           id: 'review_2',
           userId: 'user_2',
           userName: '李**',
+          userAvatar: ImageAssets.getUserAvatar('李'),
           rating: 4,
           content: '整体不错，就是价格有点贵。不过用料确实好，系统也很流畅。',
           images: [],
@@ -238,6 +221,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
           id: 'review_3',
           userId: 'user_3',
           userName: '匿名用户',
+          userAvatar: ImageAssets.getUserAvatar('匿名'),
           rating: 5,
           content: '苹果粉丝必买！每年都换新机，这次的升级还是很明显的。',
           images: [],
@@ -247,7 +231,7 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
       ],
       stock: 115,
       isInWishlist: false,
-      shopName: 'Apple官方旗舰店',
+      shopName: productData['shopName'],
       shopRating: 4.9,
     );
   }
@@ -413,5 +397,215 @@ iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更�
     _selectedTabIndex = 0;
     _error = null;
     notifyListeners();
+  }
+
+  /// 根据商品ID获取商品数据
+  Map<String, dynamic> _getProductDataById(String productId) {
+    // 定义多种商品数据
+    final productDataMap = {
+      // iPhone系列
+      'iphone_15': {
+        'name': 'iPhone 15 Pro Max 256GB 深空黑色',
+        'price': 9999.0,
+        'originalPrice': 10999.0,
+        'imageUrl': ImageAssets.getProductMainImage('iphone_15'),
+        'rating': 4.8,
+        'salesCount': 12580,
+        'brand': 'Apple',
+        'category': '手机数码',
+        'description': '''
+iPhone 15 Pro Max，搭载强大的A17 Pro芯片，采用钛金属设计，更轻更坚固。
+
+【核心特性】
+• A17 Pro芯片，3纳米工艺，性能提升20%
+• 钛金属机身，重量减轻19克
+• 6.7英寸超视网膜XDR显示屏
+• 4800万像素主摄系统
+• 支持USB-C接口
+• 全天候电池续航
+
+【拍照系统】
+• 4800万像素主摄
+• 1200万像素超广角
+• 1200万像素长焦（5倍光学变焦）
+• 电影级视频录制
+
+【其他功能】
+• Face ID面容识别
+• 无线充电支持
+• MagSafe磁吸充电
+• IP68级防水
+• 5G网络支持
+        ''',
+        'shopName': 'Apple官方旗舰店',
+        'images': ImageAssets.getProductImages('iphone_15'),
+      },
+
+      // MacBook系列
+      'macbook_pro': {
+        'name': 'MacBook Pro 14英寸 M3 芯片 银色',
+        'price': 15999.0,
+        'originalPrice': 16999.0,
+        'imageUrl': ImageAssets.getProductMainImage('macbook_pro'),
+        'rating': 4.9,
+        'salesCount': 8760,
+        'brand': 'Apple',
+        'category': '电脑办公',
+        'description': '''
+全新MacBook Pro，搭载突破性的M3芯片，为专业工作流程而生。
+
+【核心特性】
+• M3芯片，8核CPU和10核GPU
+• 14英寸Liquid视网膜XDR显示屏
+• 18小时超长电池续航
+• 雷雳4端口和MagSafe 3充电
+• 1080p FaceTime高清摄像头
+• 六扬声器音响系统
+
+【性能表现】
+• 统一内存架构，内存带宽高达100GB/s
+• ProRes和ProRAW加速
+• 支持最多两台外接6K显示器
+• 安静高效的散热设计
+
+【专业功能】
+• 触控栏替代传统功能键
+• Force Touch触控板
+• 背光妙控键盘
+• 指纹识别Touch ID
+        ''',
+        'shopName': 'Apple官方旗舰店',
+        'images': ImageAssets.getProductImages('macbook_pro'),
+      },
+
+      // 小米系列
+      'xiaomi_14': {
+        'name': '小米14 Ultra 16GB+512GB 钛金属黑',
+        'price': 6999.0,
+        'originalPrice': 7499.0,
+        'imageUrl': ImageAssets.getProductMainImage('xiaomi_14'),
+        'rating': 4.7,
+        'salesCount': 25630,
+        'brand': '小米',
+        'category': '手机数码',
+        'description': '''
+小米14 Ultra，影像旗舰再进化，徕卡光学镜头加持。
+
+【核心特性】
+• 第三代骁龙8旗舰处理器
+• 6.73英寸2K四曲面屏幕
+• 5300mAh大容量电池
+• 90W有线快充 + 50W无线快充
+• IP68防水防尘
+• 哈曼卡顿立体声双扬声器
+
+【影像系统】
+• 徕卡Summicron镜头
+• 5000万像素主摄，光圈f/1.6-f/4.0
+• 5000万像素潜望式长焦，5倍光学变焦
+• 5000万像素超广角微距
+• 3200万像素前置摄像头
+
+【其他亮点】
+• 澎湃OS系统
+• 全功能NFC
+• 红外遥控
+• 立体声双扬声器
+        ''',
+        'shopName': '小米官方旗舰店',
+        'images': ImageAssets.getProductImages('xiaomi_14'),
+      },
+
+      // 华为系列
+      'huawei_mate60': {
+        'name': '华为Mate 60 Pro+ 16GB+512GB 雅川青',
+        'price': 8999.0,
+        'originalPrice': 9999.0,
+        'imageUrl': ImageAssets.getProductMainImage('huawei_mate60'),
+        'rating': 4.6,
+        'salesCount': 18940,
+        'brand': '华为',
+        'category': '手机数码',
+        'description': '''
+华为Mate 60 Pro+，先锋科技，非凡体验。
+
+【核心特性】
+• 麒麟9000S芯片，6nm工艺
+• 6.82英寸OLED曲面屏
+• 5000mAh硅碳负极电池
+• 88W有线超级快充
+• 50W无线超级快充
+• 昆仑玻璃，更坚韧耐用
+
+【影像系统】
+• 超感知主摄，f/1.4-f/4.0十档可变光圈
+• 4800万像素超广角摄像头
+• 4800万像素潜望式长焦
+• 1300万像素前置超广角摄像头
+• XMAGE影像技术
+
+【智慧体验】
+• HarmonyOS 4系统
+• 卫星通话功能
+• 向上滑动手势
+• 智慧语音助手小艺
+        ''',
+        'shopName': '华为官方旗舰店',
+        'images': ImageAssets.getProductImages('huawei_mate60'),
+      },
+
+      // 默认商品（如果ID不匹配）
+      'default': {
+        'name': '精选商品 - 品质保证',
+        'price': 299.0,
+        'originalPrice': 399.0,
+        'imageUrl': ImageAssets.getProductMainImage('default'),
+        'rating': 4.5,
+        'salesCount': 5280,
+        'brand': '精选品牌',
+        'category': '精选好物',
+        'description': '''
+精选优质商品，为您带来超值购物体验。
+
+【产品特色】
+• 严选品质，层层把关
+• 性价比超高，物超所值
+• 全国包邮，售后无忧
+• 7天无理由退换货
+• 正品保证，假一赔十
+
+【服务承诺】
+• 24小时客服在线
+• 快速发货，次日达
+• 专业包装，安全送达
+• 贴心服务，满意购物
+
+【品质保障】
+• 厂家直供，源头品质
+• 多重检测，安全放心
+• 环保材质，健康无害
+• 持久耐用，超长寿命
+        ''',
+        'shopName': '精选好物旗舰店',
+        'images': ImageAssets.getProductImages('default'),
+      },
+    };
+
+    // 尝试匹配productId，如果找不到就使用默认数据
+    var key = 'default';
+    if (productDataMap.containsKey(productId)) {
+      key = productId;
+    } else {
+      // 模糊匹配
+      for (final mapKey in productDataMap.keys) {
+        if (productId.toLowerCase().contains(mapKey) ||
+            mapKey.contains(productId.toLowerCase())) {
+          key = mapKey;
+          break;
+        }
+      }
+    }
+
+    return productDataMap[key]!;
   }
 }

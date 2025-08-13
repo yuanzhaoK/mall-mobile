@@ -4,6 +4,7 @@ import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/models/product_models.dart';
 import 'package:flutter_home_mall/pages/product_detail_page.dart';
+import 'package:flutter_home_mall/services/analytics_service.dart';
 import 'package:flutter_home_mall/widgets/simple_app_bar.dart';
 
 /// 我的收藏页面
@@ -671,6 +672,16 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   /// 跳转到商品详情
   void _navigateToProductDetail(Product product) {
+    // 跟踪商品点击事件
+    AnalyticsService.trackProductTap(
+      product: product,
+      source: 'favorites',
+      extra: {
+        'total_favorites': _favoriteProducts.length,
+        'product_index': _favoriteProducts.indexOf(product),
+      },
+    );
+
     Navigator.push(
       context,
       MaterialPageRoute(

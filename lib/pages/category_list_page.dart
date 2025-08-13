@@ -27,8 +27,9 @@ class _CategoryListPageState extends State<CategoryListPage> {
 
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
+    _searchController
+      ..removeListener(_onSearchChanged)
+      ..dispose();
     super.dispose();
   }
 
@@ -76,50 +77,40 @@ class _CategoryListPageState extends State<CategoryListPage> {
   }
 
   /// 构建搜索栏
-  Widget _buildSearchBar() {
-    return Container(
-      margin: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: '搜索分类...',
-          hintStyle: AppTextStyles.body2.copyWith(
-            color: AppColors.textSecondary,
-          ),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
-          suffixIcon: _searchQuery.isNotEmpty
-              ? IconButton(
-                  onPressed: () {
-                    _searchController.clear();
-                  },
-                  icon: const Icon(Icons.clear, color: AppColors.textSecondary),
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          filled: true,
-          fillColor: Colors.white,
+  Widget _buildSearchBar() => Container(
+    margin: const EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      boxShadow: const [
+        BoxShadow(color: AppColors.shadow, blurRadius: 8, offset: Offset(0, 2)),
+      ],
+    ),
+    child: TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+        hintText: '搜索分类...',
+        hintStyle: AppTextStyles.body2.copyWith(color: AppColors.textSecondary),
+        prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+        suffixIcon: _searchQuery.isNotEmpty
+            ? IconButton(
+                onPressed: _searchController.clear,
+                icon: const Icon(Icons.clear, color: AppColors.textSecondary),
+              )
+            : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderSide: BorderSide.none,
         ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
+        filled: true,
+        fillColor: Colors.white,
       ),
-    );
-  }
+    ),
+  );
 
   /// 构建分类统计信息
   Widget _buildCategoryStats(
@@ -227,27 +218,25 @@ class _CategoryListPageState extends State<CategoryListPage> {
   }
 
   /// 构建列表视图切换
-  Widget _buildListViewToggle(List<Category> categories) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text('列表视图', style: AppTextStyles.headline3),
-              const Spacer(),
-              Icon(Icons.list, color: AppColors.primary, size: 20),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
+  Widget _buildListViewToggle(List<Category> categories) => Container(
+    margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Row(
+          children: [
+            Text('列表视图', style: AppTextStyles.headline3),
+            Spacer(),
+            Icon(Icons.list, color: AppColors.primary, size: 20),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
 
-          // 分类列表
-          ...categories.map((category) => _buildListItem(category)),
-        ],
-      ),
-    );
-  }
+        // 分类列表
+        ...categories.map(_buildListItem),
+      ],
+    ),
+  );
 
   /// 构建列表项
   Widget _buildListItem(Category category) {
@@ -319,41 +308,35 @@ class _CategoryListPageState extends State<CategoryListPage> {
   }
 
   /// 构建空状态
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            _searchQuery.isNotEmpty
-                ? Icons.search_off
-                : Icons.category_outlined,
-            size: 64,
-            color: AppColors.textLight,
+  Widget _buildEmptyState() => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          _searchQuery.isNotEmpty ? Icons.search_off : Icons.category_outlined,
+          size: 64,
+          color: AppColors.textLight,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(
+          _searchQuery.isNotEmpty ? '没有找到相关分类' : '暂无分类数据',
+          style: AppTextStyles.body1.copyWith(color: AppColors.textSecondary),
+        ),
+        if (_searchQuery.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            '尝试使用其他关键词搜索',
+            style: AppTextStyles.body2.copyWith(color: AppColors.textLight),
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            _searchQuery.isNotEmpty ? '没有找到相关分类' : '暂无分类数据',
-            style: AppTextStyles.body1.copyWith(color: AppColors.textSecondary),
+          TextButton(
+            onPressed: _searchController.clear,
+            child: const Text('清除搜索条件'),
           ),
-          if (_searchQuery.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              '尝试使用其他关键词搜索',
-              style: AppTextStyles.body2.copyWith(color: AppColors.textLight),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            TextButton(
-              onPressed: () {
-                _searchController.clear();
-              },
-              child: const Text('清除搜索条件'),
-            ),
-          ],
         ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
 
   /// 根据分类名称获取图标
   IconData _getCategoryIcon(String categoryName) {

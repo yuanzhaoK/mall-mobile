@@ -18,7 +18,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     prefer_expression_function_bodies: ignore
-    flutter_style_todos: ignore
+    flutter_style_todos: ignore ignore
     use_setters_to_change_properties: ignore
     use_build_context_synchronously: ignore
   # 排除不需要分析的文件
