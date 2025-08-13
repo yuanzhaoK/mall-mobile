@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_mall/constants/app_colors.dart';
 import 'package:flutter_home_mall/core/themes/app_theme.dart';
 import 'package:flutter_home_mall/models/api_models.dart';
+import 'package:flutter_home_mall/pages/category_list_page.dart';
 import 'package:flutter_home_mall/pages/debug_page.dart';
 import 'package:flutter_home_mall/providers/cart_state.dart';
 import 'package:flutter_home_mall/providers/home_state.dart';
@@ -482,9 +483,10 @@ class _HomePageState extends State<HomePage> {
 
   /// 处理查看全部分类
   void _handleViewAllCategories() {
-    ScaffoldMessenger.of(
+    Navigator.push(
       context,
-    ).showSnackBar(const SnackBar(content: Text('分类页面开发中...')));
+      MaterialPageRoute(builder: (context) => const CategoryListPage()),
+    );
   }
 
   /// 处理查看全部商品
